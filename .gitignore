@@ -1,0 +1,11 @@
+node_modules/
+npm-debug.log
+logs/
+.DS_Store
+archive/
+docs/
+.env
+
+# Mobile Cloud/Backup syncs
+.tmp
+.temp
