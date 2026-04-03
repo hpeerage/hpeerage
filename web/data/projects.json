@@ -1,14 +1,13 @@
 {
     "earn": [
         {
-            "id": "playit",
             "title": "Playit Platform",
-            "category": "PC-Motel Hybrid Total Management",
             "description": "PC-Motel Hybrid Integration Management System.",
+            "status": "active",
+            "category": "PC-Motel Hybrid Total Management",
             "url": "https://hpeerage.github.io/playit-platform/",
-            "image": "assets/portfolio/playit_preview.png",
-            "size": "large",
-            "status": "active"
+            "size": "medium",
+            "image": "assets/portfolio/portfolio_02_Playit-luncher.png"
         },
         {
             "id": "aria",
