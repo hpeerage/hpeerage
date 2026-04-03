@@ -10,14 +10,13 @@
             "image": "assets/portfolio/portfolio_02_Playit-luncher.png"
         },
         {
-            "id": "aria",
             "title": "Jeongseon Aria",
-            "category": "Wellness Tourism Curation Platform",
             "description": "Wellness Tourism Curation Platform with 82 Healing Points.",
+            "status": "active",
+            "category": "Wellness Tourism Curation Platform",
             "url": "https://hpeerage.github.io/aria/",
-            "image": "assets/portfolio/aria_preview.png",
             "size": "medium",
-            "status": "active"
+            "image": "assets/portfolio/portfolio_01_Aria-웰니스-관광-큐레이션.png"
         }
     ],
     "great": [
