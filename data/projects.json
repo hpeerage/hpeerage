@@ -35,6 +35,15 @@
             "url": "https://hpeerage.github.io/playit-platform/#/",
             "size": "medium",
             "image": "images/portfolio/portfolio_02_Playit-PC-Tel-Total-Management.png"
+        },
+        {
+            "title": "playit_partner",
+            "description": "플래이잇 협력업체 포스 런처",
+            "status": "active",
+            "category": "luncher",
+            "url": "https://hpeerage.github.io/playit-platform/#/partner",
+            "size": "medium",
+            "image": "images/portfolio/portfolio_02_Playit-partner_luncher.png"
         }
     ],
     "great": [
