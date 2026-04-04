@@ -430,7 +430,8 @@
             if(path.startsWith('http') || path.startsWith('data:')) return path;
             // Support legacy assets path by redirecting to images
             const cleanPath = path.replace('assets/portfolio/', 'images/portfolio/');
-            return `https://raw.githubusercontent.com/${REPO.owner}/${REPO.repo}/main/${cleanPath}`;
+            // Ensure we look inside the 'web' folder for raw content in this repo
+            return `https://raw.githubusercontent.com/${REPO.owner}/${REPO.repo}/main/web/${cleanPath}`;
         }
 
         function renderEarn() {
