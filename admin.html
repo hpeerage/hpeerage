@@ -245,11 +245,13 @@
                 <div class="input-group">
                     <label class="input-label">Portfolio Cover Image</label>
                     <div id="drop-zone" class="asset-uploader" 
+                         style="cursor: pointer;"
+                         onclick="document.getElementById('m-file').click()"
                          ondragover="event.preventDefault(); this.classList.add('dragging')" 
                          ondragleave="this.classList.remove('dragging')"
                          ondrop="handleDrop(event)">
                         <i class="fas fa-cloud-upload-alt" style="font-size: 30px; color: var(--purple); margin-bottom: 10px;"></i>
-                        <p id="m-file-name">Drag & Drop Image Here</p>
+                        <p id="m-file-name">Click to Browse or Drag & Drop Image Here</p>
                         <input type="file" id="m-file" style="display: none;" onchange="handleFile(this)">
                     </div>
                 </div>
