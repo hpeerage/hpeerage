@@ -28,13 +28,13 @@
             "size": "medium"
         },
         {
-            "id": "pms",
-            "category": "Management System",
             "title": "Playit PMS Admin",
             "description": "전국 48개 지점의 무인 호텔을 관리하는 실시간 관제 시스템입니다. 대시보드, 주문 알림, 객실 상태 관리 기능을 포함한 고성능 어드민 패널입니다.",
-            "image": "images/portfolio/portfolio_02_Playit-PC-Tel-Total-Management.png",
-            "url": "https://hpeerage.github.io/hpeerage/web/admin.html",
-            "size": "large"
+            "status": "active",
+            "category": "Management System",
+            "url": "https://hpeerage.github.io/playit-platform/#/",
+            "size": "medium",
+            "image": "images/portfolio/portfolio_02_Playit-PC-Tel-Total-Management.png"
         }
     ],
     "great": [
