@@ -1440,3 +1440,132 @@ body::before {
     .contact-links { flex-direction: column; gap: 20px; }
     .spectrum-row { flex-wrap: wrap; justify-content: center; }
 }
+/* --- Responsive Optimization (Mobile First/Adjustments) --- */
+@media (max-width: 480px) {
+    /* 1. Global Layout & Background Logo */
+    .logo-wrapper {
+        opacity: 0.05 !important; 
+        transform: translate(-50%, -50%) scale(0.3) !important;
+        z-index: -1 !important;
+        pointer-events: none;
+    }
+
+    .grid-container {
+        padding: 0 20px;
+    }
+
+    /* 2. Hero Section Refinement */
+    .hero-section {
+        padding-bottom: 8vh;
+    }
+
+    .brand-title {
+        font-size: clamp(3rem, 15vw, 4.5rem);
+        text-align: center;
+    }
+
+    .brand-formula {
+        font-size: 14px;
+        letter-spacing: 0.05em;
+    }
+
+    /* 3. Earn Section (Bento Grid) Mobile Stack */
+    .section-headline {
+        font-size: clamp(2rem, 10vw, 3rem);
+        margin-bottom: 40px;
+        padding: 0 10px;
+    }
+
+    .bento-grid {
+        grid-template-columns: 1fr !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+        padding: 0 20px;
+    }
+
+    .bento-card {
+        height: auto !important;
+        min-height: 400px;
+        grid-column: span 1 !important;
+    }
+
+    .card-content {
+        padding: 40px 24px;
+    }
+
+    .card-title {
+        font-size: 24px;
+    }
+
+    /* Always show hover info on mobile since there is no hover */
+    .card-hover-info {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        visibility: visible !important;
+        margin-bottom: 20px;
+    }
+
+    .case-study-btn {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* 4. Esteem Section Stack */
+    .split-layout {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .mission-title {
+        font-size: 32px;
+        text-align: center;
+    }
+
+    .mission-sub {
+        text-align: center;
+    }
+
+    .value-card {
+        padding: 20px;
+        gap: 15px;
+    }
+
+    .value-index {
+        font-size: 32px;
+    }
+
+    .value-content h4 {
+        font-size: 20px;
+    }
+
+    /* 5. Respect Section (Horizontal Scroll) Optimization */
+    .horizontal-content {
+        align-items: center;
+    }
+
+    .respect-slide {
+        padding: 0 24px;
+        min-width: 85vw;
+    }
+
+    .section-headline h2 {
+        font-size: clamp(2rem, 10vw, 3rem);
+        line-height: 1.2;
+    }
+
+    /* 6. Footer & Contact */
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .footer-brand h2 {
+        font-size: 24px;
+    }
+
+    .contact-list {
+        align-items: center;
+    }
+}
