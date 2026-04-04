@@ -142,6 +142,31 @@ phases.forEach(phase => {
             y: 0,
             duration: 1.2
         });
+
+        // Special inner animations for Holy Section
+        if (id === "#Holy_Section") {
+            const holyTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#Holy_Section",
+                    start: "top 60%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+
+            holyTl.to(".spectrum-row", { opacity: 1, duration: 1, ease: "power2.out" })
+                  .to(".spectrum-step", { 
+                    opacity: 1, 
+                    stagger: 0.2, 
+                    duration: 0.8, 
+                    scale: 1, 
+                    ease: "back.out(1.7)" 
+                  }, "-=0.5")
+                  .to(".holy-mission-block", { opacity: 1, y: 0, duration: 1.5, ease: "slow(0.7, 0.7, false)" }, "-=0.8")
+                  .to(".holy-formula", { opacity: 1, duration: 1, ease: "power1.inOut" }, "-=0.5");
+            
+            // Add complete class to spectrum-row for the glowing orb animation in CSS
+            holyTl.call(() => document.querySelector(".spectrum-row")?.classList.add("complete"), null, "+=0.2");
+        }
     }
 });
 
@@ -247,7 +272,7 @@ const GITHUB_RAW_BASE = `https://raw.githubusercontent.com/${REPO.owner}/${REPO.
 
 const fallbackData = {
     earn: [
-        { id: "playit", category: "Hospitality TECH", title: "Playit Platform", description: "All-in-one management for motels & PC areas.", image: "assets/portfolio/portfolio_02_Playit-luncher.png", url: "https://playit.kr", size: "large" },
+        { id: "playit", category: "Hospitality TECH", title: "Playit Platform", description: "All-in-one management for motels & PC areas.", image: "images/portfolio/portfolio_02_Playit-luncher.png", url: "https://playit.kr", size: "large" },
     ],
     great: [],
     system: { links: { email: "contact@hpeerage.com", github: "#", linkedin: "#" } }

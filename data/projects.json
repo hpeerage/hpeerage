@@ -1,13 +1,14 @@
 {
     "earn": [
         {
+            "id": "playit",
+            "category": "Hospitality TECH",
             "title": "Playit Platform",
-            "description": "PC-Motel Hybrid Integration Management System.",
-            "status": "active",
-            "category": "PC-Motel Hybrid Total Management",
-            "url": "https://hpeerage.github.io/playit-platform/#/client",
-            "size": "medium",
-            "image": "images/portfolio/portfolio_02_Playit-luncher.png"
+            "description": "All-in-one management for motels & PC areas.",
+            "image": "images/portfolio/portfolio_02_Playit-luncher.png",
+            "url": "https://playit.kr",
+            "size": "large",
+            "status": "active"
         },
         {
             "id": "aria",
@@ -26,7 +27,7 @@
             "category": "site",
             "url": "https://hpeerage.github.io/duct/",
             "size": "medium",
-            "image": "assets/portfolio/Clean-Air-Duct-전문가용-닥트-시공-및-A-S.png"
+            "image": "images/portfolio/Clean-Air-Duct-전문가용-닥트-시공-및-A-S.png"
         }
     ],
     "great": [
