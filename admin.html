@@ -430,7 +430,13 @@
             if(path.startsWith('http') || path.startsWith('data:')) return path;
             // Support legacy assets path by redirecting to images
             const cleanPath = path.replace('assets/portfolio/', 'images/portfolio/');
-            // Ensure we look inside the 'web' folder for raw content in this repo
+            
+            // If hosted on hpeerage.com or github.io, use relative path (bypass private repo raw url issue)
+            if (window.location.hostname.includes('hpeerage.com') || window.location.hostname.includes('github.io')) {
+                return cleanPath;
+            }
+            
+            // Fallback to raw github content for local preview
             return `https://raw.githubusercontent.com/${REPO.owner}/${REPO.repo}/main/web/${cleanPath}`;
         }
 
