@@ -26,6 +26,15 @@
             "image": "images/portfolio/portfolio_03_Duct.png",
             "url": "https://hpeerage.github.io/duct/",
             "size": "medium"
+        },
+        {
+            "id": "pms",
+            "category": "Management System",
+            "title": "Playit PMS Admin",
+            "description": "전국 48개 지점의 무인 호텔을 관리하는 실시간 관제 시스템입니다. 대시보드, 주문 알림, 객실 상태 관리 기능을 포함한 고성능 어드민 패널입니다.",
+            "image": "images/portfolio/portfolio_02_Playit-PC-Tel-Total-Management.png",
+            "url": "https://hpeerage.github.io/hpeerage/web/admin.html",
+            "size": "large"
         }
     ],
     "great": [
@@ -34,8 +43,8 @@
             "title": "Expert Mastery Design",
             "description": "25년 이상의 PM 및 디자인 노하우가 집약된 기획 방법론입니다. 단순한 기능 구현을 넘어 브랜드의 본연의 가치를 전달하는 최적의 사용자 경험을 창조합니다.",
             "type": "image",
-            "image": "images/mastery_blueprint.png",
-            "after_img": "images/mastery_blueprint.png",
+            "image": "images/blueprint.png",
+            "after_img": "images/blueprint.png",
             "status": "active"
         }
     ],
