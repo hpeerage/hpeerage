@@ -360,7 +360,7 @@
             localStorage.setItem('gh_token', token);
             
             const manualPath = document.getElementById('gh-path').value.trim();
-            const possiblePaths = manualPath ? [manualPath] : ['data/projects.json', 'web/data/projects.json'];
+            const possiblePaths = manualPath ? [manualPath] : ['data/projects.json'];
             
             let success = false;
             try {
@@ -425,8 +425,9 @@
         function getImageUrl(path) {
             if(!path) return 'none';
             if(path.startsWith('http') || path.startsWith('data:')) return path;
-            // Prefix with GitHub raw content if it's a relative path to ensure visibility everywhere
-            return `https://raw.githubusercontent.com/${REPO.owner}/${REPO.repo}/main/${path}`;
+            // Support legacy assets path by redirecting to images
+            const cleanPath = path.replace('assets/portfolio/', 'images/portfolio/');
+            return `https://raw.githubusercontent.com/${REPO.owner}/${REPO.repo}/main/${cleanPath}`;
         }
 
         function renderEarn() {
@@ -495,7 +496,7 @@
             
             try {
                 const content = btoa(unescape(encodeURIComponent(JSON.stringify(db, null, 4))));
-                const res = await fetch(`https://api.github.com/repos/${REPO.owner}/${REPO.repo}/contents/data/projects.json`, {
+                const res = await fetch(`https://api.github.com/repos/${REPO.owner}/${REPO.repo}/contents/${currentDataPath || 'data/projects.json'}`, {
                     method: 'PUT',
                     headers: { 'Authorization': `token ${token}` },
                     body: JSON.stringify({ message: message, content, sha: currentSha })
@@ -593,8 +594,8 @@
 
                 const file = document.getElementById('m-file').files[0];
                 if(file) {
-                    const path = `web/assets/portfolio/${file.name}`;
-                    entry.image = `assets/portfolio/${file.name}`;
+                    const path = `images/portfolio/${file.name}`;
+                    entry.image = `images/portfolio/${file.name}`;
                     if(currentSectionType === 'great') entry.after_img = entry.image;
                     await pushAsset(file, path, token);
                 } else if(editingIdx >= 0) { 

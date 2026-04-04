@@ -281,11 +281,15 @@ const fallbackData = {
 function getImageUrl(path) {
     if(!path) return '';
     if(path.startsWith('http') || path.startsWith('data:')) return path;
+    
+    // Support legacy assets path by redirecting to images
+    const cleanPath = path.replace('assets/portfolio/', 'images/portfolio/');
+    
     // Prefix with GitHub raw content if we are in local file mode or for relative paths
     if (window.location.protocol === 'file:') {
-        return GITHUB_RAW_BASE + path;
+        return GITHUB_RAW_BASE + cleanPath;
     }
-    return path;
+    return cleanPath;
 }
 
 async function loadDynamicContent() {
