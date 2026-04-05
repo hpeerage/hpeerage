@@ -238,7 +238,7 @@ function renderMobileGreat(greatProjects) {
 }
 
 function renderEarnSection(projects) {
-    const grid = document.querySelector('.bento-grid');
+    const grid = document.getElementById('Earn_Cards_Container');
     if(!grid) return;
     grid.innerHTML = projects.map(p => `
         <div class="bento-card ${p.id}-card feature-card ${p.size}">
