@@ -169,10 +169,81 @@ function renderAll(data) {
     if(data.earn) renderEarnSection(data.earn);
     if(data.great) renderGreatSection(data.great);
     if(data.system && data.system.links) renderSystemLinks(data.system.links);
-    
-    initSectionAnimations();
-    initBentoTilt();
-    initMobileObserver();
+    if (data) renderAllSections(data);
+}
+
+// --- Adaptive Device Detection ---
+const isMobile = () => window.innerWidth <= 768;
+
+// --- Combined Render Management ---
+async function renderAllSections(data) {
+    try {
+        const projects = data.projects;
+
+        if (isMobile()) {
+            renderMobileLayout(projects);
+        } else {
+            renderDesktopLayout(projects);
+        }
+        
+        initSectionAnimations();
+        if (!isMobile()) initBentoTilt();
+        if (isMobile()) initMobileObserver();
+    } catch (err) {
+        console.error("Critical: Failed to load projects.", err);
+    }
+}
+
+function renderMobileLayout(projects) {
+    document.body.classList.add('mobile-adaptive');
+    renderMobileEarn(projects.filter(p => p.section === 'Earn'));
+    renderMobileGreat(projects.filter(p => p.section === 'Great'));
+}
+
+function renderDesktopLayout(projects) {
+    document.body.classList.remove('mobile-adaptive');
+    renderEarnSection(projects.filter(p => p.section === 'Earn'));
+    renderGreatSection(projects.filter(p => p.section === 'Great'));
+}
+
+// --- Mobile-Specific Rendering (Bulletproof Layout) ---
+function renderMobileEarn(earnProjects) {
+    const container = document.getElementById('Earn_Cards_Container');
+    if (!container) return;
+
+    container.innerHTML = earnProjects.map(m => `
+        <div class="mobile-project-card" onclick="window.open('${m.links.live}', '_blank')">
+            <div class="mobile-card-img" style="background-image: url('${m.image}')"></div>
+            <div class="mobile-card-content">
+                <span class="mobile-tag">${m.tags[0]}</span>
+                <h3>${m.title}</h3>
+                <p>${m.description_short}</p>
+                <div class="mobile-card-footer">
+                    <span>View Project</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderMobileGreat(greatProjects) {
+    const container = document.getElementById('Great_Cards_Container');
+    if (!container) return;
+
+    container.innerHTML = greatProjects.map(m => `
+        <div class="mobile-great-card" onclick="window.open('${m.links.live}', '_blank')">
+            <div class="mobile-great-blueprint" style="background-image: url('${m.image}')"></div>
+            <div class="mobile-great-info">
+                <span class="mobile-tag-gold">Expert Mastery</span>
+                <h3>${m.title}</h3>
+                <p>${m.description_short}</p>
+                <div class="mobile-progress-ui">
+                    <div class="mobile-progress-bar" style="width: 85%"></div>
+                </div>
+            </div>
+        </div>
+    `).join('');
 }
 
 function renderEarnSection(projects) {
