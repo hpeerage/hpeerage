@@ -202,13 +202,13 @@ function renderMobileEarn(earnProjects) {
     const container = document.getElementById('Earn_Cards_Container');
     if (!container || !earnProjects) return;
 
-    container.innerHTML = earnProjects.map(m => `
-        <div class="mobile-project-card" onclick="window.open('${m.url}', '_blank')">
-            <div class="mobile-card-img" style="background-image: url('${m.image}')"></div>
+    container.innerHTML = earnProjects.map(p => `
+        <div class="mobile-project-card" onclick="window.open('${p.url || '#'}', '_blank')">
+            <div class="mobile-card-img" style="background-image: url('${p.image}')"></div>
             <div class="mobile-card-content">
-                <span class="mobile-tag">${m.category || 'Portfolio'}</span>
-                <h3>${m.title}</h3>
-                <p>${m.description}</p>
+                <span class="mobile-tag">${p.tag || 'Project'}</span>
+                <h3 class="mobile-card-title">${p.title}</h3>
+                <p class="mobile-card-desc">${p.description}</p>
                 <div class="mobile-card-footer">
                     <span>View Project</span>
                     <i class="fas fa-arrow-right"></i>
@@ -216,6 +216,17 @@ function renderMobileEarn(earnProjects) {
             </div>
         </div>
     `).join('');
+
+    // --- Premium Reveal Animation Trigger ---
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('reveal');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.mobile-project-card').forEach(card => observer.observe(card));
 }
 
 function renderMobileGreat(greatProjects) {
