@@ -1467,8 +1467,8 @@ body::before {
 @media (max-width: 480px) {
     /* 1. Global Layout & Background Background Polish */
     .logo-wrapper {
-        opacity: 0.03 !important; 
-        transform: translate(-50%, -50%) scale(0.25) !important;
+        opacity: 0.15 !important; /* Restored visibility while maintaining depth */
+        transform: translate(-50%, -50%) scale(0.35) !important;
         pointer-events: none;
     }
 
@@ -1484,24 +1484,29 @@ body::before {
 
     /* 2. Hero Section: Smooth Typography */
     .hero-section {
-        padding-bottom: 15vh;
+        padding-top: 10vh;
+        padding-bottom: 20vh;
         justify-content: center;
     }
 
     .brand-title {
-        font-size: clamp(2.5rem, 12vw, 3.5rem);
-        letter-spacing: -0.02em;
-        margin-bottom: 8px;
+        font-size: clamp(2rem, 10vw, 3.2rem);
+        letter-spacing: -0.01em;
+        margin-bottom: 12px;
+        z-index: 10;
+        position: relative;
     }
 
     .brand-formula {
-        font-size: 12px;
-        opacity: 0.8;
-        letter-spacing: 0.02em;
+        font-size: 11px;
+        opacity: 0.85;
+        letter-spacing: 0.01em;
         line-height: 1.6;
-        max-width: 300px;
+        max-width: 250px;
         margin: 0 auto;
         padding: 0 10px;
+        z-index: 10;
+        position: relative;
     }
 
     /* 3. Earn Section: High Density Readability */
@@ -1525,12 +1530,26 @@ body::before {
         background: linear-gradient(to bottom, rgba(14,14,20,0.3), rgba(14,14,20,0.7));
     }
 
-    .great-card.large {
-        min-height: 420px;
+    .bento-card {
+        min-height: 380px !important;
+        height: auto !important;
     }
 
-    .great-card h3 {
-        font-size: 26px;
+    .card-image-bg {
+        background-size: contain !important; /* Prevent cutoff */
+        background-position: top center !important;
+        background-repeat: no-repeat !important;
+        height: 60% !important; /* Reserve more space for text below */
+        top: 20px !important;
+    }
+
+    .card-content {
+        padding: 24px 20px !important;
+        background: linear-gradient(to top, #1a1a24 70%, transparent);
+        bottom: 0;
+        width: 100%;
+        position: relative;
+        z-index: 5;
     }
 
     /* 5. Respect Section: Dynamic Stacking */
