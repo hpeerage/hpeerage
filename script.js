@@ -210,6 +210,50 @@ function renderDesktopLayout(data) {
 }
 
 // --- Mobile-Specific Rendering (Bulletproof Layout) ---
+function renderMobileGreat(greatProjects) {
+    const container = document.getElementById('Great_Cards_Container');
+    if (!container || !greatProjects) return;
+
+    container.innerHTML = greatProjects.map(p => `
+        <div class="mobile-project-card reveal" style="grid-column: span 2;">
+            <div class="mobile-card-img" style="background-image: url('${p.image}')"></div>
+            <div class="mobile-card-content">
+                <span class="mobile-tag">${p.tag || 'Project'}</span>
+                <h3 class="mobile-card-title">${p.title}</h3>
+                <p class="mobile-card-desc">${p.description}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderMobileEsteem(esteemData) {
+    const container = document.getElementById('Esteem_Cards_Container');
+    if (!container || !esteemData) return;
+
+    container.innerHTML = esteemData.map(e => `
+        <div class="mobile-project-card" style="border-left: 4px solid #FFD700 !important;">
+            <div class="mobile-card-content">
+                <span class="mobile-tag" style="background: rgba(255, 215, 0, 0.1) !important; color: #FFD700 !important; border-color: rgba(255, 215, 0, 0.3) !important;">
+                    ${e.tag || 'Value'}
+                </span>
+                <h3 class="mobile-card-title" style="color: #FFD700;">${e.title}</h3>
+                <p class="mobile-card-desc">${e.description}</p>
+            </div>
+        </div>
+    `).join('');
+
+    // Apply Intersection Observer to Esteem cards too
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('reveal');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    container.querySelectorAll('.mobile-project-card').forEach(card => observer.observe(card));
+}
+
 function renderMobileEarn(earnProjects) {
     const container = document.getElementById('Earn_Cards_Container');
     if (!container || !earnProjects) return;
