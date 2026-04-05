@@ -1624,84 +1624,94 @@ body::before {
 }
 
 /* --- Adaptive Mobile-Specific Independent Styles (Triggered by JS) --- */
-/* --- Premium Mobile Refinements (The "Best" Version) --- */
+/* --- Cinematic Bento Overhaul (The "Overwhelming" Version) --- */
 .mobile-adaptive .hero-section {
-    min-height: 80vh !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    background: radial-gradient(circle at center, rgba(237, 28, 36, 0.05) 0%, transparent 70%);
-}
-
-.mobile-adaptive #Main_Logo_SVG {
-    opacity: 1 !important;
-    transform: scale(1.8) !important;
-    filter: drop-shadow(0 0 25px rgba(237, 28, 36, 0.4)) !important;
-    animation: mobileIgnite 2s infinite alternate ease-in-out;
-}
-
-@keyframes mobileIgnite {
-    from { filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2)); transform: scale(1.8); }
-    to { filter: drop-shadow(0 0 30px rgba(237, 28, 36, 0.6)); transform: scale(1.9); }
-}
-
-.mobile-adaptive .section-headline {
-    font-size: 1.8rem !important;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    margin-bottom: 40px !important;
+    min-height: 100vh !important;
     position: relative;
-    padding-left: 15px;
+    background: radial-gradient(circle at 50% 50%, rgba(237, 28, 36, 0.15) 0%, #050505 80%);
+    overflow: hidden;
 }
 
-.mobile-adaptive .section-headline::before {
+.mobile-adaptive .hero-section::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 4px;
-    height: 100%;
-    background: var(--brand-red, #ED1C24);
-    box-shadow: 0 0 10px rgba(237, 28, 36, 0.5);
+    width: 200%;
+    height: 200%;
+    background: url('https://www.transparenttextures.com/patterns/stardust.png');
+    opacity: 0.1;
+    animation: nebulaMove 60s linear infinite;
+}
+
+@keyframes nebulaMove {
+    from { transform: translate(-25%, -25%) rotate(0deg); }
+    to { transform: translate(-25%, -25%) rotate(360deg); }
+}
+
+/* Asymmetric Bento Grid for Mobile */
+.mobile-adaptive #Earn_Cards_Container {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 15px !important;
+    padding: 15px !important;
 }
 
 .mobile-project-card {
-    background: rgba(25, 25, 28, 0.6) !important;
-    backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6) !important;
-    transform: translateY(30px);
-    opacity: 0;
-    transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    grid-column: span 2; /* Default: wide items */
+    position: relative;
+    background: rgba(30, 30, 35, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.03) !important;
+    overflow: hidden;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.mobile-project-card.reveal {
-    transform: translateY(0);
-    opacity: 1;
+/* Make every 3rd card small for rhythm */
+.mobile-project-card:nth-child(3n+2),
+.mobile-project-card:nth-child(3n+3) {
+    grid-column: span 1;
+}
+
+/* Light Sweep Effect on Cards */
+.mobile-project-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -100%;
+    width: 50%;
+    height: 200%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transform: rotate(30deg);
+    transition: none;
+}
+
+.mobile-project-card.reveal::after {
+    animation: lightSweep 4s infinite ease-in-out;
+}
+
+@keyframes lightSweep {
+    0% { left: -100%; }
+    20% { left: 150%; }
+    100% { left: 150%; }
 }
 
 .mobile-card-img {
-    height: 240px;
-    background-size: cover !important; /* Visual impact first */
-    background-position: center top;
-    filter: grayscale(0.2) contrast(1.1);
-    transition: filter 0.5s;
+    height: 180px;
 }
 
-.mobile-project-card:active .mobile-card-img {
-    filter: grayscale(0) contrast(1.2);
+.mobile-project-card:nth-child(3n+2) .mobile-card-img,
+.mobile-project-card:nth-child(3n+3) .mobile-card-img {
+    height: 120px;
 }
 
-.mobile-tag {
-    background: rgba(237, 28, 36, 0.1) !important;
-    border: 1px solid rgba(237, 28, 36, 0.3) !important;
-    color: #ff4d4d !important;
-    padding: 6px 12px !important;
-    border-radius: 4px !important;
-    font-weight: 700 !important;
+/* Ghost Text Layer for Depth */
+.mobile-adaptive .ghost-bg-text {
+    position: absolute;
+    font-size: 8rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.02);
+    z-index: -1;
+    white-space: nowrap;
     text-transform: uppercase;
-    font-size: 0.7rem !important;
+    pointer-events: none;
 }
 
 .mobile-tag {

@@ -187,8 +187,20 @@ const isMobile = () => window.innerWidth <= 768;
 // --- Combined Render Management ---
 function renderMobileLayout(data) {
     document.body.classList.add('mobile-adaptive');
-    if (data.earn) renderMobileEarn(data.earn);
-    if (data.great) renderMobileGreat(data.great);
+    
+    // Inject Ghost Text for Depth
+    const hero = document.querySelector('.hero-section');
+    if (hero) {
+        const ghost = document.createElement('div');
+        ghost.className = 'ghost-bg-text';
+        ghost.innerText = 'HPEERAGE';
+        ghost.style.top = '10%';
+        hero.appendChild(ghost);
+    }
+
+    renderMobileEarn(data.earn);
+    renderMobileGreat(data.great);
+    renderMobileEsteem(data.esteem);
 }
 
 function renderDesktopLayout(data) {
@@ -202,17 +214,13 @@ function renderMobileEarn(earnProjects) {
     const container = document.getElementById('Earn_Cards_Container');
     if (!container || !earnProjects) return;
 
-    container.innerHTML = earnProjects.map(p => `
+    container.innerHTML = earnProjects.map((p, index) => `
         <div class="mobile-project-card" onclick="window.open('${p.url || '#'}', '_blank')">
             <div class="mobile-card-img" style="background-image: url('${p.image}')"></div>
             <div class="mobile-card-content">
                 <span class="mobile-tag">${p.tag || 'Project'}</span>
                 <h3 class="mobile-card-title">${p.title}</h3>
                 <p class="mobile-card-desc">${p.description}</p>
-                <div class="mobile-card-footer">
-                    <span>View Project</span>
-                    <i class="fas fa-arrow-right"></i>
-                </div>
             </div>
         </div>
     `).join('');
