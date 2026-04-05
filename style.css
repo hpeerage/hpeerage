@@ -369,6 +369,37 @@ body::before {
     box-shadow: 0 8px 30px rgba(0, 242, 254, 0.5);
     transform: translateY(-5px);
 }
+/* --- Mobile Layout Refinements --- */
+.mobile-adaptive * {
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    word-break: keep-all !important; /* Elegant Korean wrapping */
+}
+
+.mobile-adaptive .section-headline,
+.mobile-adaptive h1,
+.mobile-adaptive h2,
+.mobile-adaptive h3 {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Hide other slides in Respect section on mobile */
+.mobile-adaptive .slide-victory,
+.mobile-adaptive .slide-respect {
+    display: none !important;
+}
+
+.mobile-adaptive .respect-slide.slide-adventure {
+    width: 100vw !important;
+    flex: 0 0 100vw !important;
+}
+
+.mobile-adaptive .horizontal-wrapper {
+    overflow-x: hidden !important;
+}
+
 /* --- Card Footer Link --- */
 .card-footer-link {
     margin-top: 24px;
