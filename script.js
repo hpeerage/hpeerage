@@ -166,58 +166,49 @@ async function loadDynamicContent() {
 }
 
 function renderAll(data) {
-    if(data.earn) renderEarnSection(data.earn);
-    if(data.great) renderGreatSection(data.great);
-    if(data.system && data.system.links) renderSystemLinks(data.system.links);
-    if (data) renderAllSections(data);
+    if (!data) return;
+
+    if (isMobile()) {
+        renderMobileLayout(data);
+    } else {
+        renderDesktopLayout(data);
+    }
+    
+    if (data.system && data.system.links) renderSystemLinks(data.system.links);
+    
+    initSectionAnimations();
+    if (!isMobile()) initBentoTilt();
+    if (isMobile()) initMobileObserver();
 }
 
 // --- Adaptive Device Detection ---
 const isMobile = () => window.innerWidth <= 768;
 
 // --- Combined Render Management ---
-async function renderAllSections(data) {
-    try {
-        const projects = data.projects;
-
-        if (isMobile()) {
-            renderMobileLayout(projects);
-        } else {
-            renderDesktopLayout(projects);
-        }
-        
-        initSectionAnimations();
-        if (!isMobile()) initBentoTilt();
-        if (isMobile()) initMobileObserver();
-    } catch (err) {
-        console.error("Critical: Failed to load projects.", err);
-    }
-}
-
-function renderMobileLayout(projects) {
+function renderMobileLayout(data) {
     document.body.classList.add('mobile-adaptive');
-    renderMobileEarn(projects.filter(p => p.section === 'Earn'));
-    renderMobileGreat(projects.filter(p => p.section === 'Great'));
+    if (data.earn) renderMobileEarn(data.earn);
+    if (data.great) renderMobileGreat(data.great);
 }
 
-function renderDesktopLayout(projects) {
+function renderDesktopLayout(data) {
     document.body.classList.remove('mobile-adaptive');
-    renderEarnSection(projects.filter(p => p.section === 'Earn'));
-    renderGreatSection(projects.filter(p => p.section === 'Great'));
+    if (data.earn) renderEarnSection(data.earn);
+    if (data.great) renderGreatSection(data.great);
 }
 
 // --- Mobile-Specific Rendering (Bulletproof Layout) ---
 function renderMobileEarn(earnProjects) {
     const container = document.getElementById('Earn_Cards_Container');
-    if (!container) return;
+    if (!container || !earnProjects) return;
 
     container.innerHTML = earnProjects.map(m => `
-        <div class="mobile-project-card" onclick="window.open('${m.links.live}', '_blank')">
+        <div class="mobile-project-card" onclick="window.open('${m.url}', '_blank')">
             <div class="mobile-card-img" style="background-image: url('${m.image}')"></div>
             <div class="mobile-card-content">
-                <span class="mobile-tag">${m.tags[0]}</span>
+                <span class="mobile-tag">${m.category || 'Portfolio'}</span>
                 <h3>${m.title}</h3>
-                <p>${m.description_short}</p>
+                <p>${m.description}</p>
                 <div class="mobile-card-footer">
                     <span>View Project</span>
                     <i class="fas fa-arrow-right"></i>
@@ -229,15 +220,15 @@ function renderMobileEarn(earnProjects) {
 
 function renderMobileGreat(greatProjects) {
     const container = document.getElementById('Great_Cards_Container');
-    if (!container) return;
+    if (!container || !greatProjects) return;
 
     container.innerHTML = greatProjects.map(m => `
-        <div class="mobile-great-card" onclick="window.open('${m.links.live}', '_blank')">
+        <div class="mobile-great-card" onclick="window.open('${m.url || '#'}', '_blank')">
             <div class="mobile-great-blueprint" style="background-image: url('${m.image}')"></div>
             <div class="mobile-great-info">
-                <span class="mobile-tag-gold">Expert Mastery</span>
+                <span class="mobile-tag-gold">${m.category || 'Expert Mastery'}</span>
                 <h3>${m.title}</h3>
-                <p>${m.description_short}</p>
+                <p>${m.description}</p>
                 <div class="mobile-progress-ui">
                     <div class="mobile-progress-bar" style="width: 85%"></div>
                 </div>
