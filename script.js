@@ -198,11 +198,19 @@ function renderGreatSection(mastery) {
     const container = document.getElementById('Great_Cards_Container');
     if(!container) return;
     container.innerHTML = mastery.map(m => `
-        <div class="great-card master-logic">
+        <div class="great-card master-logic large">
             <div class="card-glass-effect"></div>
+            <div class="blueprint-bg">
+                <img src="${m.image}" alt="Expert Mastery Blueprint">
+            </div>
             <div class="card-info">
+                 <span class="card-tag">Architecture</span>
                 <h3>${m.title}</h3>
                 <p>${m.description}</p>
+                <div class="optimization-graphic">
+                    <div class="bar-logic"><div class="bar-fill fill-purple" style="width: 95%"></div></div>
+                    <div class="bar-logic"><div class="bar-fill fill-purple" style="width: 98%"></div></div>
+                </div>
             </div>
         </div>
     `).join('');
