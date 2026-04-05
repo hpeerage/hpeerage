@@ -1445,14 +1445,14 @@ body::before {
 
     .gold-divider { margin: 15px auto !important; width: 60% !important; }
 
-    .holy-mission-text { font-size: clamp(32px, 8vw, 48px); text-align: center; }
-    .holy-philosophy { font-size: 18px; text-align: center; max-width: 90%; margin: 0 auto; }
+    .holy-mission-text { font-size: clamp(28px, 7vw, 40px); text-align: center; }
+    .holy-philosophy { font-size: 16px; text-align: center; max-width: 90%; margin: 0 auto; line-height: 1.6; }
     
     .contact-links { 
         flex-direction: column; 
-        gap: 15px; 
+        gap: 12px; 
         align-items: stretch;
-        padding: 0 24px;
+        padding: 0 16px;
     }
     
     .contact-item { width: 100%; justify-content: center; }
@@ -1494,35 +1494,38 @@ body::before {
     }
 
     .brand-formula {
-        font-size: 13px;
-        opacity: 0.7;
-        letter-spacing: 0;
-        line-height: 1.4;
-        max-width: 280px;
+        font-size: 12px;
+        opacity: 0.8;
+        letter-spacing: 0.02em;
+        line-height: 1.6;
+        max-width: 300px;
         margin: 0 auto;
+        padding: 0 10px;
     }
 
     /* 3. Earn Section: High Density Readability */
     .section-headline {
-        font-size: clamp(1.8rem, 8vw, 2.4rem);
-        margin-bottom: 32px;
+        font-size: clamp(1.6rem, 7vw, 2.2rem);
+        margin-bottom: 24px;
         text-align: center !important;
+        position: relative;
+        z-index: 10;
     }
 
     /* 4. Great Section: Image Overlay for Text Clarity */
     .blueprint-bg {
-        opacity: 0.08 !important; /* Make it more subtle */
+        opacity: 0.18 !important; /* Visual enhancement for mobile */
     }
     
     .blueprint-bg::after {
         content: '';
         position: absolute;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(to bottom, rgba(14,14,20,0.4), rgba(14,14,20,0.8));
+        background: linear-gradient(to bottom, rgba(14,14,20,0.3), rgba(14,14,20,0.7));
     }
 
     .great-card.large {
-        min-height: 480px;
+        min-height: 420px;
     }
 
     .great-card h3 {
