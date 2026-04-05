@@ -1434,7 +1434,7 @@ body::before {
     }
 
     .esteem-section {
-        padding: 60px 0;
+        padding: 100px 0 60px 0; /* Increased top padding for better breathing room */
     }
 
     .mission-title {
@@ -1479,6 +1479,7 @@ body::before {
 
     .grid-container {
         padding: 0 16px;
+        margin-top: 20px; /* Slight push down for readability */
     }
 
     /* 2. Hero Section: Smooth Typography */
@@ -1565,5 +1566,10 @@ body::before {
 
     .contact-item .contact-value {
         font-size: 15px;
+    }
+
+    /* 7. Special: Spectrum Dots Adjustment */
+    .spectrum-column {
+        gap: 15px !important; /* Tighter dots for mobile */
     }
 }
