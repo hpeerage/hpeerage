@@ -1608,11 +1608,11 @@ body::before {
         justify-content: center;
     }
 
-    /* Restored Logo Visibility with 2x Larger Size (v15) */
+    /* Restored Logo Visibility with 2x Larger Size (v16: Removed !important for GSAP) */
     .logo-wrapper {
         display: block !important;
-        opacity: 1 !important;
-        transform: translate(-50%, -50%) scale(0.35) !important; /* Doubled from v13/14 */
+        opacity: 1; 
+        transform: translate(-50%, -50%) scale(0.35); 
         pointer-events: none;
         z-index: 100;
     }
