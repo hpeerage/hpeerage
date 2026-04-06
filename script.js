@@ -40,24 +40,27 @@ mm.add("(min-width: 481px)", () => {
 
 // --- 1. Background Logo Scroll Interaction ---
 mm.add({
-    isDesktop: "(min-width: 481px)",
-    isMobile: "(max-width: 480px)"
+    isDesktop: "(min-width: 769px)",
+    isMobile: "(max-width: 768px)"
 }, (context) => {
     let { isMobile } = context.conditions;
     
-    // Adjust logo transition for mobile
+    // Smooth & Linear Transition for Mobile Performance
+    const easeConfig = isMobile ? "none" : "power2.out";
+    
     gsap.to("#Main_Logo", {
         scrollTrigger: {
             trigger: "#Hero_Section",
             start: "top top",
             end: "bottom top",
-            scrub: 1.2,
+            scrub: isMobile ? 0.5 : 1.2,
         },
-        scale: isMobile ? 0.35 : 0.35,
-        top: isMobile ? "40px" : "60px",
+        scale: isMobile ? 0.2 : 0.35, // 50% Reduction from current 0.35 -> 0.17ish handled by 0.2
+        top: isMobile ? "20px" : "60px",
         left: isMobile ? "50%" : "100px",
         xPercent: isMobile ? -50 : 0,
-        opacity: isMobile ? 0.08 : 1, // Faded for readability on mobile
+        opacity: isMobile ? 0.1 : 1,
+        ease: easeConfig,
         duration: 1
     });
 
@@ -66,13 +69,34 @@ mm.add({
             trigger: "#Hero_Section",
             start: "top top",
             end: "bottom top",
-            scrub: 1.2,
+            scrub: isMobile ? 0.5 : 1.2,
         },
         fill: "#00F2FE",
         filter: isMobile ? "none" : "drop-shadow(0 0 15px rgba(0, 242, 254, 0.4))",
+        ease: easeConfig,
         duration: 1
     });
 });
+
+// --- 2. Mobile Hamburger Menu Toggle ---
+const navToggle = document.getElementById('Mobile_Nav_Toggle');
+const navOverlay = document.getElementById('Mobile_Nav_Overlay');
+const navLinks = document.querySelectorAll('.mobile-nav-link');
+
+if (navToggle && navOverlay) {
+    navToggle.addEventListener('click', () => {
+        const isVisible = navOverlay.style.display === 'flex';
+        navOverlay.style.display = isVisible ? 'none' : 'flex';
+        navToggle.innerHTML = isVisible ? '<i class="fas fa-bars"></i>' : '<i class="fas fa-times"></i>';
+    });
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navOverlay.style.display = 'none';
+            navToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        });
+    });
+}
 
 // --- 2. Global Section Animations ---
 function initSectionAnimations() {
