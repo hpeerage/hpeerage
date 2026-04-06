@@ -1456,7 +1456,20 @@ body::before {
     .feature-card.large, .feature-card.medium {
         grid-column: span 1;
         height: auto;
-        min-height: 450px;
+      /* 1. Bento Grid to Single Column Stack (Force 1-column) */
+    #Earn_Section, .bento-grid, .grid-container {
+        grid-template-columns: 1fr !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+
+    .mobile-project-card, .project-card, .bento-item {
+        width: 100% !important;
+        min-height: auto !important;
+        height: auto !important;
+    }
+/* Increased top padding for better breathing room */
     }
 
     .value-cards {
@@ -1595,11 +1608,11 @@ body::before {
         justify-content: center;
     }
 
-    /* Restored Logo Visibility with 50% Reduction */
+    /* Restored Logo Visibility with 2x Larger Size (v15) */
     .logo-wrapper {
         display: block !important;
         opacity: 1 !important;
-        transform: translate(-50%, -50%) scale(0.17) !important; /* ~50% of 0.35 */
+        transform: translate(-50%, -50%) scale(0.35) !important; /* Doubled from v13/14 */
         pointer-events: none;
         z-index: 100;
     }
