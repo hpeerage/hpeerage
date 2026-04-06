@@ -140,6 +140,11 @@ body::before {
     -webkit-text-fill-color: transparent;
 }
 
+/* Hide mobile elements by default (PC) - FORCED with ID Specificity */
+#Mobile_Nav_Toggle, #Mobile_Nav_Overlay {
+    display: none !important;
+}
+
 .brand-formula {
     font-size: 20px;
     color: #A1A1AA;
@@ -1562,7 +1567,7 @@ body::before {
     }
 
     /* 3. Navigation: Hamburger Menu Styles */
-    .mobile-nav-toggle {
+    #Mobile_Nav_Toggle {
         display: flex !important;
         position: fixed;
         top: 20px;
@@ -1578,16 +1583,20 @@ body::before {
         box-shadow: 0 4px 15px rgba(237, 28, 36, 0.3);
     }
 
-    .mobile-nav-overlay {
+    #Mobile_Nav_Overlay {
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(0, 0, 0, 0.98);
         z-index: 999;
-        display: none; /* Controlled by JS */
+        display: none; /* Default hidden on mobile */
         flex-direction: column;
         justify-content: center;
         align-items: center;
         gap: 30px;
+    }
+
+    #Mobile_Nav_Overlay.is-active {
+        display: flex !important;
     }
 
     .mobile-nav-link {

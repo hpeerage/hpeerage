@@ -85,14 +85,14 @@ const navLinks = document.querySelectorAll('.mobile-nav-link');
 
 if (navToggle && navOverlay) {
     navToggle.addEventListener('click', () => {
-        const isVisible = navOverlay.style.display === 'flex';
-        navOverlay.style.display = isVisible ? 'none' : 'flex';
-        navToggle.innerHTML = isVisible ? '<i class="fas fa-bars"></i>' : '<i class="fas fa-times"></i>';
+        navOverlay.classList.toggle('is-active');
+        const isActive = navOverlay.classList.contains('is-active');
+        navToggle.innerHTML = isActive ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
     });
 
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
-            navOverlay.style.display = 'none';
+            navOverlay.classList.remove('is-active');
             navToggle.innerHTML = '<i class="fas fa-bars"></i>';
         });
     });
