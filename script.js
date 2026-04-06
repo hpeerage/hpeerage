@@ -123,10 +123,54 @@ function initSectionAnimations() {
     });
 }
 
-// --- 3. Bento Card Intersection Observer (Mobile Alternative to Hover) ---
+function initMagnifier() {
+    const container = document.getElementById('Philosophy_Magnifier');
+    const lens = document.getElementById('Magnifier_Lens');
+
+    if (!container || !lens) return;
+
+    const zoom = 2; // 2x Zoom
+
+    container.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // Lens movement
+        const lensX = x - lens.offsetWidth / 2;
+        const lensY = y - lens.offsetHeight / 2;
+        
+        gsap.to(lens, {
+            left: lensX,
+            top: lensY,
+            duration: 0.1,
+            ease: "none"
+        });
+
+        // Background zoom synchronization
+        const posX = (x / rect.width) * 100;
+        const posY = (y / rect.height) * 100;
+        
+        lens.style.backgroundPosition = `${posX}% ${posY}%`;
+        lens.style.backgroundSize = `${rect.width * zoom}px ${rect.height * zoom}px`;
+    });
+
+    // Tracking cursor position for all Great cards (for CSS variables)
+    document.querySelectorAll('.great-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            card.style.setProperty('--mouse-x', `${x}%`);
+            card.style.setProperty('--mouse-y', `${y}%`);
+        });
+    });
+}
+
+// 3. Bento Card Intersection Observer (Mobile Alternative to Hover)
 function initMobileObserver() {
-    if (window.innerWidth > 480) return;
-    const cards = document.querySelectorAll(".bento-card");
+    if (window.innerWidth > 768) return;
+    const cards = document.querySelectorAll(".mobile-project-card, .mobile-great-card");
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -135,23 +179,23 @@ function initMobileObserver() {
                 entry.target.classList.remove("mobile-active");
             }
         });
-    }, { threshold: 0.6 });
+    }, { threshold: 0.4 });
 
     cards.forEach(card => observer.observe(card));
 }
 
 // 3D Tilt for Bento Cards (Desktop Only)
 function initBentoTilt() {
-    if (window.innerWidth <= 480) return;
-    const cards = document.querySelectorAll('.bento-card');
+    if (window.innerWidth <= 768) return;
+    const cards = document.querySelectorAll('.bento-card, .great-card');
     cards.forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            const rotateX = (y - (rect.height / 2)) / 20; 
-            const rotateY = ((rect.width / 2) - x) / 20;
-            gsap.to(card, { rotateX, rotateY, transformPerspective: 1000, duration: 0.5 });
+            const rotateX = (y - (rect.height / 2)) / 30; 
+            const rotateY = ((rect.width / 2) - x) / 30;
+            gsap.to(card, { rotateX, rotateY, transformPerspective: 1200, duration: 0.4 });
         });
         card.addEventListener('mouseleave', () => {
             gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.8, ease: "elastic.out(1, 0.3)" });
@@ -160,7 +204,7 @@ function initBentoTilt() {
 }
 
 // --- 4. Respect Horizontal Scroll (Mobile Snapping) ---
-mm.add("(min-width: 481px)", () => {
+mm.add("(min-width: 769px)", () => {
     const hContent = document.querySelector("#Respect_Scroll_Content");
     if (hContent) {
         gsap.to(hContent, {
@@ -178,15 +222,19 @@ const REPO = { owner: 'hpeerage', repo: 'hpeerage' };
 const GITHUB_RAW_BASE = `https://raw.githubusercontent.com/${REPO.owner}/${REPO.repo}/main/web/`;
 
 async function loadDynamicContent() {
-    const response = await fetch('data/projects.json').catch(() => null);
-    let data = response && response.ok ? await response.json() : null;
+    try {
+        const response = await fetch('data/projects.json').catch(() => null);
+        let data = response && response.ok ? await response.json() : null;
 
-    if (!data) {
-        const ghResponse = await fetch(`${GITHUB_RAW_BASE}data/projects.json`).catch(() => null);
-        data = ghResponse && ghResponse.ok ? await ghResponse.json() : null;
+        if (!data) {
+            const ghResponse = await fetch(`${GITHUB_RAW_BASE}data/projects.json`).catch(() => null);
+            data = ghResponse && ghResponse.ok ? await ghResponse.json() : null;
+        }
+
+        if (data) renderAll(data);
+    } catch (e) {
+        console.error("Dynamic content load failed:", e);
     }
-
-    if (data) renderAll(data);
 }
 
 function renderAll(data) {
@@ -201,7 +249,10 @@ function renderAll(data) {
     if (data.system && data.system.links) renderSystemLinks(data.system.links);
     
     initSectionAnimations();
-    if (!isMobile()) initBentoTilt();
+    if (!isMobile()) {
+        initBentoTilt();
+        initMagnifier();
+    }
     if (isMobile()) initMobileObserver();
 }
 
@@ -212,19 +263,9 @@ const isMobile = () => window.innerWidth <= 768;
 function renderMobileLayout(data) {
     document.body.classList.add('mobile-adaptive');
     
-    // Inject Ghost Text for Depth
-    const hero = document.querySelector('.hero-section');
-    if (hero) {
-        const ghost = document.createElement('div');
-        ghost.className = 'ghost-bg-text';
-        ghost.innerText = 'HPEERAGE';
-        ghost.style.top = '10%';
-        hero.appendChild(ghost);
-    }
-
-    renderMobileEarn(data.earn);
-    renderMobileGreat(data.great);
-    renderMobileEsteem(data.esteem);
+    if (data.earn) renderMobileEarn(data.earn);
+    if (data.great) renderMobileGreat(data.great);
+    if (data.esteem) renderMobileEsteem(data.esteem);
 }
 
 function renderDesktopLayout(data) {
@@ -234,17 +275,20 @@ function renderDesktopLayout(data) {
 }
 
 // --- Mobile-Specific Rendering (Bulletproof Layout) ---
-function renderMobileGreat(greatProjects) {
+function renderMobileGreat(greatData) {
     const container = document.getElementById('Great_Cards_Container');
-    if (!container || !greatProjects) return;
+    if (!container || !greatData) return;
 
-    container.innerHTML = greatProjects.map(p => `
-        <div class="mobile-project-card reveal" style="grid-column: span 2;">
-            <div class="mobile-card-img" style="background-image: url('${p.image}')"></div>
-            <div class="mobile-card-content">
-                <span class="mobile-tag">${p.tag || 'Project'}</span>
-                <h3 class="mobile-card-title">${p.title}</h3>
-                <p class="mobile-card-desc">${p.description}</p>
+    container.innerHTML = greatData.map(m => `
+        <div class="mobile-great-card">
+            <div class="mobile-great-blueprint" style="background-image: url('${m.image}')"></div>
+            <div class="mobile-great-info">
+                <span class="mobile-tag-gold">${m.tag || 'Mastery'}</span>
+                <h3>${m.title}</h3>
+                <p>${m.description}</p>
+                <div class="mobile-progress-ui">
+                    <div class="mobile-progress-bar" style="width: 90%"></div>
+                </div>
             </div>
         </div>
     `).join('');
@@ -266,7 +310,6 @@ function renderMobileEsteem(esteemData) {
         </div>
     `).join('');
 
-    // Apply Intersection Observer to Esteem cards too
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -293,7 +336,6 @@ function renderMobileEarn(earnProjects) {
         </div>
     `).join('');
 
-    // --- Premium Reveal Animation Trigger ---
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -303,25 +345,6 @@ function renderMobileEarn(earnProjects) {
     }, { threshold: 0.1 });
 
     document.querySelectorAll('.mobile-project-card').forEach(card => observer.observe(card));
-}
-
-function renderMobileGreat(greatProjects) {
-    const container = document.getElementById('Great_Cards_Container');
-    if (!container || !greatProjects) return;
-
-    container.innerHTML = greatProjects.map(m => `
-        <div class="mobile-great-card" onclick="window.open('${m.url || '#'}', '_blank')">
-            <div class="mobile-great-blueprint" style="background-image: url('${m.image}')"></div>
-            <div class="mobile-great-info">
-                <span class="mobile-tag-gold">${m.category || 'Expert Mastery'}</span>
-                <h3>${m.title}</h3>
-                <p>${m.description}</p>
-                <div class="mobile-progress-ui">
-                    <div class="mobile-progress-bar" style="width: 85%"></div>
-                </div>
-            </div>
-        </div>
-    `).join('');
 }
 
 function renderEarnSection(projects) {
@@ -343,33 +366,53 @@ function renderEarnSection(projects) {
     `).join('');
 }
 
-function renderGreatSection(mastery) {
+function renderGreatSection(greatData) {
     const container = document.getElementById('Great_Cards_Container');
     if(!container) return;
-    container.innerHTML = mastery.map(m => `
-        <div class="great-card master-logic large">
-            <div class="card-glass-effect"></div>
-            <div class="blueprint-bg">
-                <img src="${m.image}" alt="Expert Mastery Blueprint">
-            </div>
-            <div class="card-info">
-                 <span class="card-tag">Architecture</span>
-                <h3>${m.title}</h3>
-                <p>${m.description}</p>
-                <div class="optimization-graphic">
-                    <div class="bar-logic"><div class="bar-fill fill-purple" style="width: 95%"></div></div>
-                    <div class="bar-logic"><div class="bar-fill fill-purple" style="width: 98%"></div></div>
+    
+    container.innerHTML = greatData.map(m => {
+        if (m.id === 'philosophy') {
+            return `
+                <div class="great-card philosophy-card large">
+                    <div class="magnifier-container" id="Philosophy_Magnifier">
+                        <div class="magnifier-bg" style="background-image: url('${m.image}')"></div>
+                        <div class="magnifier-lens" id="Magnifier_Lens" style="background-image: url('${m.image}')"></div>
+                    </div>
+                    <div class="card-info">
+                        <span class="card-tag">${m.tag}</span>
+                        <h3>${m.title.split(': ').join(':<br>')}</h3>
+                        <p>${m.description}</p>
+                    </div>
                 </div>
-            </div>
-        </div>
-    `).join('');
+            `;
+        } else {
+            return `
+                <div class="great-card ${m.id}-card">
+                    <div class="card-visual-bg ${m.id}-bg" style="background-image: url('${m.image}')"></div>
+                    <div class="card-info">
+                        <span class="card-tag">${m.tag}</span>
+                        <h3>${m.title.split(': ').join(':<br>')}</h3>
+                        <p>${m.description}</p>
+                    </div>
+                </div>
+            `;
+        }
+    }).join('');
 }
 
 function renderSystemLinks(links) {
-    if(links.email) document.getElementById('link-email').href = `mailto:${links.email}`;
-    if(links.github) document.getElementById('link-github').href = links.github;
-    if(links.linkedin) document.getElementById('link-linkedin').href = links.linkedin;
+    if(links.email) {
+        const emailLink = document.getElementById('link-email');
+        if (emailLink) emailLink.href = `mailto:${links.email}`;
+    }
+    if(links.github) {
+        const githubLink = document.getElementById('link-github');
+        if (githubLink) githubLink.href = links.github;
+    }
+    if(links.linkedin) {
+        const linkedinLink = document.getElementById('link-linkedin');
+        if (linkedinLink) linkedinLink.href = links.linkedin;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', loadDynamicContent);
-;

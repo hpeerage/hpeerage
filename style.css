@@ -928,10 +928,10 @@ body::before {
 }
 
 .great-bento {
-    grid-column: 1 / -1; /* Fill the entire 12-column grid container */
+    grid-column: 1 / -1;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto; /* Flexible rows for content */
+    grid-template-rows: auto auto;
     gap: 32px;
     margin-top: 60px;
     position: relative;
@@ -939,149 +939,110 @@ body::before {
 }
 
 .great-card {
-    background: rgba(20, 16, 32, 0.5);
+    background: rgba(10, 8, 20, 0.4);
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
-    border: 1px solid rgba(139, 92, 246, 0.2);
-    border-radius: 32px;
-    padding: 40px;
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    border-radius: 40px;
+    padding: 48px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     position: relative;
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    animation: luminescentBorder 4s ease-in-out infinite;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes luminescentBorder {
-    0%, 100% { border-color: rgba(139, 92, 246, 0.2); box-shadow: 0 0 10px rgba(139, 92, 246, 0.1); }
-    50% { border-color: rgba(139, 92, 246, 0.5); box-shadow: 0 0 25px rgba(139, 92, 246, 0.3); }
+.great-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                rgba(139, 92, 246, 0.08), 
+                transparent 40%);
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.great-card:hover::before {
+    opacity: 1;
 }
 
 .great-card.large {
     grid-column: 1 / 2;
     grid-row: 1 / 3;
-    justify-content: space-between;
+    min-height: 700px;
 }
 
-.great-card.master-logic,
-.great-card.master-design {
+.great-card.logic-card,
+.great-card.expertise-card {
     grid-column: 2 / 3;
-    min-height: 280px;
+    min-height: 334px;
 }
 
-.card-glass-effect {
-    position: absolute;
-    top: 0;
-    left: 0;
+/* Magnifier Tool Implementation */
+.magnifier-container {
     width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
-}
-
-.great-card:hover {
-    border-color: rgba(139, 92, 246, 0.4);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 30px rgba(139, 92, 246, 0.12);
-    transform: translateY(-4px);
-}
-
-/* Comparison Slider Container */
-.comparison-slider {
-    width: 100%;
-    height: 350px;
-    border-radius: 16px;
+    height: 420px;
+    border-radius: 24px;
     overflow: hidden;
     position: relative;
-    margin-bottom: 24px;
-    cursor: ew-resize;
-    user-select: none;
+    margin-bottom: 32px;
+    cursor: none;
+    background-color: #050408;
+    border: 1px solid rgba(255, 255, 255, 0.03);
 }
 
-.comparison-img {
-    position: absolute;
-    top: 0;
-    left: 0;
+.magnifier-bg {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    pointer-events: none;
+    background-image: url('images/great_philosophy.png');
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.5s ease;
 }
 
-.comparison-after {
-    width: 50%;
-    z-index: 2;
-    border-right: 2px solid #8B5CF6;
-    background-color: #050408;
-}
-
-.comparison-handle {
+.magnifier-lens {
     position: absolute;
-    top: 0;
-    left: 50%;
-    width: 4px;
-    height: 100%;
-    background: #8B5CF6;
-    transform: translateX(-50%);
-    z-index: 5;
-    pointer-events: none;
-}
-
-.comparison-handle::after {
-    content: '↔';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
-    background: #8B5CF6;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 900;
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
-}
-
-/* Magnifier integration for Slider */
-.magnifier-glass {
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    border: 2px solid #8B5CF6;
-    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 50px rgba(139, 92, 246, 0.5), 
+                inset 0 0 20px rgba(0, 0, 0, 0.3);
     pointer-events: none;
     opacity: 0;
-    visibility: hidden;
-    z-index: 30;
+    transform: scale(0);
+    transition: opacity 0.3s, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10;
+    overflow: hidden;
     background-repeat: no-repeat;
-    box-shadow: 0 0 40px rgba(139, 92, 246, 0.4);
+    background-image: url('images/great_philosophy.png');
+    /* background-size will be set by JS (e.g., 200% for 2x zoom) */
 }
 
-/* Blueprint Background */
-.blueprint-bg {
+.magnifier-container:hover .magnifier-lens {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Sub Card Backgrounds */
+.card-visual-bg {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.15;
-    pointer-events: none;
+    top: 0; right: 0; bottom: 0; left: 0;
+    opacity: 0.2;
+    transition: opacity 0.6s, transform 0.6s;
     z-index: 0;
-    transition: opacity 0.6s;
+    pointer-events: none;
 }
 
-.blueprint-bg img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+.logic-bg { background: url('images/great_logic.png') center/cover no-repeat; }
+.expertise-bg { background: url('images/great_expertise.png') center/cover no-repeat; }
 
-.great-card:hover .blueprint-bg {
-    opacity: 0.3;
+.great-card:hover .card-visual-bg {
+    opacity: 0.4;
+    transform: scale(1.05);
 }
 
 .card-info {
@@ -1097,24 +1058,40 @@ body::before {
     color: #8B5CF6;
     font-size: 13px;
     font-weight: 700;
-    letter-spacing: 0.25em;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
-    margin-bottom: 16px;
-    display: block;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-tag::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.5;
 }
 
 .great-card h3 {
-    font-size: 32px;
+    font-size: 40px;
     font-weight: 800;
     color: #ffffff;
-    margin-bottom: 14px;
-    line-height: 1.2;
+    margin-bottom: 18px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+.logic-card h3, .expertise-card h3 {
+    font-size: 32px;
 }
 
 .great-card p {
-    color: #C4B5FD;
-    line-height: 1.7;
-    font-size: 16px;
+    color: rgba(196, 181, 253, 0.7);
+    line-height: 1.8;
+    font-size: 17px;
+    max-width: 90%;
 }
 
 /* Optimization Graphics */

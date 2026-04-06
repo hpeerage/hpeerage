@@ -48,13 +48,25 @@
     ],
     "great": [
         {
-            "id": "mastery",
-            "title": "Expert Mastery Design",
-            "description": "25년 이상의 PM 및 디자인 노하우가 집약된 기획 방법론입니다. 단순한 기능 구현을 넘어 브랜드의 본연의 가치를 전달하는 최적의 사용자 경험을 창조합니다.",
-            "type": "image",
-            "image": "images/blueprint.png",
-            "after_img": "images/blueprint.png",
-            "status": "active"
+            "id": "philosophy",
+            "tag": "Philosophy",
+            "title": "설계의 철학: The Blueprint",
+            "description": "1px의 오차 없는 정교한 설계도와 와이어프레임. 단순한 화면 구성을 넘어 비즈니스 로직과 사용자 경험이 완벽하게 결합된 기획을 지향합니다.",
+            "image": "images/great_philosophy.png"
+        },
+        {
+            "id": "logic",
+            "tag": "Management",
+            "title": "공정 관리의 기술: Structured Logic",
+            "description": "WBS 기반의 투명하고 체계적인 프로젝트 흐름. 철저한 리스크 관리와 형상 관리로 프로젝트의 신뢰도를 극대화합니다.",
+            "image": "images/great_logic.png"
+        },
+        {
+            "id": "expertise",
+            "tag": "Synergy",
+            "title": "융합형 전문가: Hybrid Expertise",
+            "description": "기획의 논리와 디자인의 미학이 결합된 통찰력. 코드를 이해하는 기획자가 만드는 실질적이고 심미적인 혁신.",
+            "image": "images/great_expertise.png"
         }
     ],
     "system": {
