@@ -1595,8 +1595,16 @@ body::before {
         justify-content: center;
     }
 
-    /* Disable complex parallax/effects for performance */
-    .logo-wrapper, .ghost-bg-text, .parallax-bg {
+    /* Restored Logo Visibility with 50% Reduction */
+    .logo-wrapper {
+        display: block !important;
+        opacity: 1 !important;
+        transform: translate(-50%, -50%) scale(0.17) !important; /* ~50% of 0.35 */
+        pointer-events: none;
+        z-index: 100;
+    }
+
+    .ghost-bg-text, .parallax-bg {
         display: none !important;
     }
 

@@ -59,7 +59,7 @@ mm.add({
         top: isMobile ? "20px" : "60px",
         left: isMobile ? "50%" : "100px",
         xPercent: isMobile ? -50 : 0,
-        opacity: isMobile ? 0.1 : 1,
+        opacity: isMobile ? 1 : 1, // Restored visibility for mobile v13
         ease: easeConfig,
         duration: 1
     });
