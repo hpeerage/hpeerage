@@ -66,11 +66,13 @@
             "after_img": "images/portfolio/great_logic.png"
         },
         {
-            "id": "expertise",
-            "tag": "Synergy",
             "title": "융합형 전문가: Hybrid Expertise",
             "description": "기획의 논리와 디자인의 미학이 결합된 통찰력. 코드를 이해하는 기획자가 만드는 실질적이고 심미적인 혁신.",
-            "image": "images/great_expertise.png"
+            "status": "active",
+            "type": "",
+            "icon": "",
+            "image": "images/portfolio/great_expertise.png",
+            "after_img": "images/portfolio/great_expertise.png"
         }
     ],
     "system": {
