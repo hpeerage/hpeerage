@@ -48,15 +48,19 @@
     ],
     "great": [
         {
+            "id": "philosophy",
+            "tag": "Philosophy",
             "title": "설계의 철학: The Blueprint",
             "description": "1px의 오차 없는 정교한 설계도와 와이어프레임. 단순한 화면 구성을 넘어 비즈니스 로직과 사용자 경험이 완벽하게 결합된 기획을 지향합니다.",
             "status": "active",
             "type": "",
             "icon": "",
-            "image": "images/portfolio/great_01.jpeg",
-            "after_img": "images/portfolio/great_01.jpeg"
+            "image": "images/portfolio/great_philosophy.png",
+            "after_img": "images/portfolio/great_philosophy.png"
         },
         {
+            "id": "logic",
+            "tag": "Management",
             "title": "공정 관리의 기술: Structured Logic",
             "description": "WBS 기반의 투명하고 체계적인 프로젝트 흐름. 철저한 리스크 관리와 형상 관리로 프로젝트의 신뢰도를 극대화합니다.",
             "status": "active",
@@ -66,6 +70,8 @@
             "after_img": "images/portfolio/great_logic.png"
         },
         {
+            "id": "expertise",
+            "tag": "Synergy",
             "title": "융합형 전문가: Hybrid Expertise",
             "description": "기획의 논리와 디자인의 미학이 결합된 통찰력. 코드를 이해하는 기획자가 만드는 실질적이고 심미적인 혁신.",
             "status": "active",
@@ -75,10 +81,64 @@
             "after_img": "images/portfolio/great_expertise.png"
         }
     ],
+    "esteem": [
+        {
+            "index": "01",
+            "title": "Pride",
+            "description": "전문가로서의 자부심과 긍지"
+        },
+        {
+            "index": "02",
+            "title": "Love",
+            "description": "이웃과 세상을 향한 따뜻한 사랑"
+        },
+        {
+            "index": "03",
+            "title": "Respect",
+            "description": "서로의 다름을 인정하는 진정한 존중"
+        }
+    ],
+    "respect": [
+        {
+            "id": "adventure",
+            "tag": "The Adventure",
+            "title": "25년의 여정,<br>불가능을 가능으로<br>바꾼 도전들.",
+            "description": "",
+            "image": "images/respect_adventure.png",
+            "list": []
+        },
+        {
+            "id": "victory",
+            "tag": "The Victory",
+            "title": "Playit<br>200M Sales Record",
+            "description": "모텔과 PC방의 경계를 허문 통합 솔루션의 탄생. 25년 PM 경력의 정점.",
+            "image": "",
+            "list": [
+                "✓ Integrated Automation",
+                "✓ 200M Sale Record",
+                "✓ Cross-Platform Mastery"
+            ]
+        },
+        {
+            "id": "trust",
+            "tag": "The Respect",
+            "title": "Trust &<br>Partnership",
+            "description": "클라이언트의 신뢰가 곧 hpeerage의 긍지입니다.",
+            "image": "",
+            "list": [
+                "Trust",
+                "Victory",
+                "Passion"
+            ]
+        }
+    ],
     "system": {
         "links": {
-            "email": "kococo81@gmail.com",
-            "linkedin": "#"
-        }
+            "github": "https://github.com/hpeerage",
+            "linkedin": "https://linkedin.com/in/hpeerage",
+            "email": "contact@hpeerage.com"
+        },
+        "mission": "역사에 쓰임 받는 기업, hpeerage",
+        "mission_tag": "Mission & Value"
     }
 }

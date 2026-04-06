@@ -257,7 +257,7 @@ function renderAll(data) {
 }
 
 // --- Adaptive Device Detection ---
-const isMobile = () => window.innerWidth <= 768;
+const isMobile = () => window.innerWidth <= 1024; // Updated to 1024 to match tablet breakpoint in CSS
 
 // --- Combined Render Management ---
 function renderMobileLayout(data) {
@@ -266,12 +266,17 @@ function renderMobileLayout(data) {
     if (data.earn) renderMobileEarn(data.earn);
     if (data.great) renderMobileGreat(data.great);
     if (data.esteem) renderMobileEsteem(data.esteem);
+    if (data.respect) renderMobileRespect(data.respect);
+    if (data.system) renderSystemContent(data.system);
 }
 
 function renderDesktopLayout(data) {
     document.body.classList.remove('mobile-adaptive');
     if (data.earn) renderEarnSection(data.earn);
     if (data.great) renderGreatSection(data.great);
+    if (data.esteem) renderEsteemSection(data.esteem);
+    if (data.respect) renderRespectSection(data.respect);
+    if (data.system) renderSystemContent(data.system);
 }
 
 // --- Mobile-Specific Rendering (Bulletproof Layout) ---
@@ -302,7 +307,7 @@ function renderMobileEsteem(esteemData) {
         <div class="mobile-project-card" style="border-left: 4px solid #FFD700 !important;">
             <div class="mobile-card-content">
                 <span class="mobile-tag" style="background: rgba(255, 215, 0, 0.1) !important; color: #FFD700 !important; border-color: rgba(255, 215, 0, 0.3) !important;">
-                    ${e.tag || 'Value'}
+                    Value ${e.index}
                 </span>
                 <h3 class="mobile-card-title" style="color: #FFD700;">${e.title}</h3>
                 <p class="mobile-card-desc">${e.description}</p>
@@ -319,6 +324,25 @@ function renderMobileEsteem(esteemData) {
     }, { threshold: 0.1 });
 
     container.querySelectorAll('.mobile-project-card').forEach(card => observer.observe(card));
+}
+
+function renderMobileRespect(respectData) {
+    const content = document.getElementById('Respect_Scroll_Content');
+    if (!content || !respectData) return;
+    
+    // On mobile, we only show the first major slide (Adventure) as per current CSS design
+    const m = respectData[0];
+    content.innerHTML = `
+        <div class="respect-slide slide-adventure">
+            <div class="slide-inner">
+                <span class="slide-tag">${m.tag}</span>
+                <h3 class="slide-title">${m.title}</h3>
+                <div class="adventure-visual">
+                    <img src="${m.image}" alt="${m.tag}">
+                </div>
+            </div>
+        </div>
+    `;
 }
 
 function renderMobileEarn(earnProjects) {
@@ -380,7 +404,7 @@ function renderGreatSection(greatData) {
                     </div>
                     <div class="card-info">
                         <span class="card-tag">${m.tag}</span>
-                        <h3>${m.title.split(': ').join(':<br>')}</h3>
+                        <h3>${m.title}</h3>
                         <p>${m.description}</p>
                     </div>
                 </div>
@@ -391,13 +415,57 @@ function renderGreatSection(greatData) {
                     <div class="card-visual-bg ${m.id}-bg" style="background-image: url('${m.image}')"></div>
                     <div class="card-info">
                         <span class="card-tag">${m.tag}</span>
-                        <h3>${m.title.split(': ').join(':<br>')}</h3>
+                        <h3>${m.title}</h3>
                         <p>${m.description}</p>
                     </div>
                 </div>
             `;
         }
     }).join('');
+}
+
+function renderEsteemSection(esteemData) {
+    const container = document.querySelector('.value-cards');
+    if (!container || !esteemData) return;
+
+    container.innerHTML = esteemData.map(e => `
+        <div class="value-card">
+            <span class="value-index">${e.index}</span>
+            <div class="value-content">
+                <h4>${e.title}</h4>
+                <p>${e.description}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderRespectSection(respectData) {
+    const content = document.getElementById('Respect_Scroll_Content');
+    if (!content || !respectData) return;
+
+    content.innerHTML = respectData.map(m => `
+        <div class="respect-slide slide-${m.id}">
+            <div class="slide-inner">
+                <span class="slide-tag">${m.tag}</span>
+                <h3 class="slide-title">${m.title}</h3>
+                ${m.image ? `<div class="adventure-visual"><img src="${m.image}" alt="${m.tag}"></div>` : ''}
+                ${m.description ? `<p class="slide-desc">${m.description}</p>` : ''}
+                ${m.list && m.list.length > 0 ? `
+                    <ul class="${m.id === 'victory' ? 'victory' : 'respect'}-list">
+                        ${m.list.map(li => `<li>${li}</li>`).join('')}
+                    </ul>
+                ` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderSystemContent(system) {
+    if (!system) return;
+    const titleEl = document.getElementById('Mission_Title');
+    const tagEl = document.getElementById('Mission_Tag');
+    if (titleEl && system.mission) titleEl.innerHTML = system.mission.replace('hpeerage', '<span class="brand-accent">hpeerage</span>');
+    if (tagEl && system.mission_tag) tagEl.innerText = system.mission_tag;
 }
 
 function renderSystemLinks(links) {

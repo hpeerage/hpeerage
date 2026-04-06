@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=25">
+    <link rel="stylesheet" href="style.css?v=26">
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- GSAP for Premium Scroll Interaction -->
@@ -102,36 +102,16 @@
             <div class="esteem-left" style="grid-column: 1 / span 8; display: flex; flex-direction: column; justify-content: center;">
                 <h2 class="section-headline gold" style="text-align: left; margin-bottom: 20px; white-space: nowrap; font-size: calc(24px + 1.5vw);">Esteem - <span class="highlight-gold">존중 받는 기업 (긍지, 사랑)</span></h2>
                 <div class="gold-divider" style="margin: 20px 0;"></div>
-                <div class="mission-text">
-                    <p class="mission-sub">Mission & Value</p>
-                    <h3 class="mission-title" style="font-size: min(48px, 6vw); line-height: 1.2;">역사에<br>쓰임 받는 기업, <span class="brand-accent">hpeerage</span></h3>
+                <div class="mission-text" id="Mission_Area">
+                    <p class="mission-sub" id="Mission_Tag">MISSION & VALUE</p>
+                    <h3 class="mission-title" id="Mission_Title" style="font-size: min(48px, 6vw); line-height: 1.2;">역사에<br>쓰임 받는 기업, <span class="brand-accent">hpeerage</span></h3>
                 </div>
             </div>
 
             <!-- Right Side: Value Cards (Span 4) -->
             <div class="esteem-right" style="grid-column: 7 / span 6; position: relative; z-index: 50;">
                 <div class="value-cards">
-                    <div class="value-card">
-                        <span class="value-index">01</span>
-                        <div class="value-content">
-                            <h4>Pride</h4>
-                            <p>전문가로서의 자부심과 긍지</p>
-                        </div>
-                    </div>
-                    <div class="value-card">
-                        <span class="value-index">02</span>
-                        <div class="value-content">
-                            <h4>Love</h4>
-                            <p>이웃과 세상을 향한 따뜻한 사랑</p>
-                        </div>
-                    </div>
-                    <div class="value-card">
-                        <span class="value-index">03</span>
-                        <div class="value-content">
-                            <h4>Respect</h4>
-                            <p>서로의 다름을 인정하는 진정한 존중</p>
-                        </div>
-                    </div>
+                    <!-- Dynamic Values will be injected here via script.js -->
                 </div>
             </div>
         </div>
@@ -144,45 +124,7 @@
 
         <div class="horizontal-wrapper">
             <div class="horizontal-content" id="Respect_Scroll_Content">
-                <!-- Slide 1: The Adventure -->
-                <div class="respect-slide slide-adventure">
-                    <div class="slide-inner">
-                        <span class="slide-tag">The Adventure</span>
-                        <h3 class="slide-title">25년의 여정,<br>불가능을 가능으로<br>바꾼 도전들.</h3>
-                        <div class="adventure-visual">
-                            <img src="images/respect_adventure.png" alt="Adventure Path">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Slide 2: The Victory -->
-                <div class="respect-slide slide-victory">
-                    <div class="slide-inner">
-                        <span class="slide-tag">The Victory</span>
-                        <h3 class="slide-title">Playit<br><span class="victory-highlight">200M Sales Record</span>
-                        </h3>
-                        <p class="slide-desc">모텔과 PC방의 경계를 허문 통합 솔루션의 탄생. 25년 PM 경력의 정점.</p>
-                        <ul class="victory-list">
-                            <li>✓ Integrated Automation</li>
-                            <li>✓ 200M Sale Record</li>
-                            <li>✓ Cross-Platform Mastery</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Slide 3: The Respect -->
-                <div class="respect-slide slide-respect">
-                    <div class="slide-inner">
-                        <span class="slide-tag">The Respect</span>
-                        <h3 class="slide-title">Trust &<br>Partnership</h3>
-                        <p class="slide-desc">클라이언트의 신뢰가 곧 hpeerage의 긍지입니다.</p>
-                        <ul class="respect-values">
-                            <li>Trust</li>
-                            <li>Victory</li>
-                            <li>Passion</li>
-                        </ul>
-                    </div>
-                </div>
+                <!-- Dynamic Slides will be injected here via script.js -->
             </div>
         </div>
 
@@ -332,7 +274,7 @@
         <a href="#Holy_Section" class="mobile-nav-link">Vision</a>
     </div>
 
-    <script src="script.js?v=25"></script>
+    <script src="script.js?v=26"></script>
 </body>
 
 </html>

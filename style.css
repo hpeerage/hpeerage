@@ -235,7 +235,6 @@ body::before {
     position: relative;
     overflow: hidden;
     text-decoration: none;
-    transform-style: preserve-3d;
     perspective: 1000px;
     will-change: transform, border-color, background;
     height: 480px; /* Fixed height for consistency in bento */
@@ -997,48 +996,47 @@ body::before {
 .magnifier-bg {
     width: 100%;
     height: 100%;
-    background-image: url('images/great_philosophy.png');
     background-size: cover;
     background-position: center;
     transition: transform 0.5s ease;
+    will-change: transform;
 }
 
 .magnifier-lens {
     position: absolute;
-    width: 180px;
-    height: 180px;
+    width: 250px;
+    height: 250px;
     border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 0 50px rgba(139, 92, 246, 0.5), 
-                inset 0 0 20px rgba(0, 0, 0, 0.3);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.1);
     pointer-events: none;
-    opacity: 0;
-    transform: scale(0);
-    transition: opacity 0.3s, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity: 0; /* Changed from display:none for smooth GSAP/CSS transitions */
     z-index: 10;
     overflow: hidden;
     background-repeat: no-repeat;
-    background-image: url('images/great_philosophy.png');
+    /* background-image will be set by JS via projects.json */
     /* background-size will be set by JS (e.g., 200% for 2x zoom) */
 }
 
 .magnifier-container:hover .magnifier-lens {
     opacity: 1;
-    transform: scale(1);
 }
 
 /* Sub Card Backgrounds */
 .card-visual-bg {
     position: absolute;
     top: 0; right: 0; bottom: 0; left: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     opacity: 0.2;
     transition: opacity 0.6s, transform 0.6s;
     z-index: 0;
     pointer-events: none;
 }
 
-.logic-bg { background: url('images/great_logic.png') center/cover no-repeat; }
-.expertise-bg { background: url('images/great_expertise.png') center/cover no-repeat; }
+.logic-bg { background-image: none; }
+.expertise-bg { background-image: none; }
 
 .great-card:hover .card-visual-bg {
     opacity: 0.4;
@@ -1146,6 +1144,19 @@ body::before {
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
     }
+
+    .great-bento {
+        grid-template-columns: 1fr !important;
+        gap: 24px;
+    }
+
+    .great-card.large,
+    .great-card.logic-card,
+    .great-card.expertise-card {
+        grid-column: 1 / -1 !important;
+        grid-row: auto !important;
+        min-height: auto !important;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1156,12 +1167,13 @@ body::before {
         grid-template-columns: 1fr;
     }
     .great-bento {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
         grid-auto-rows: auto;
+        gap: 20px;
     }
-    .great-card.master-touch, .great-card.innovation, .great-card.awards {
-        grid-column: span 1;
-        grid-row: auto;
+    .great-card.large, .great-card.logic-card, .great-card.expertise-card {
+        grid-column: 1 / -1 !important;
+        grid-row: auto !important;
     }
     .great-card.awards {
         flex-direction: column;
@@ -1594,6 +1606,23 @@ body::before {
         justify-content: center;
     }
 
+    /* 5. Esteem & Respect Mobile Layout Polish */
+    .esteem-left, .esteem-right {
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+        text-align: center !important;
+    }
+    
+    .esteem-left { margin-bottom: 40px; }
+    .section-headline { text-align: center !important; }
+    .mission-title { font-size: 32px !important; text-align: center !important; }
+    
+    .value-cards {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+
     /* Restored Logo Visibility with 2x Larger Size (v16: Removed !important for GSAP) */
     .logo-wrapper {
         display: block !important;
@@ -1608,6 +1637,53 @@ body::before {
     }
 
     .hero-section { min-height: 70vh !important; }
+
+    /* Respect Section Mobile Fix */
+    .mobile-adaptive .horizontal-content {
+        width: 100% !important;
+        transform: none !important;
+    }
+    .mobile-adaptive .respect-slide {
+        padding: 40px 20px !important;
+    }
+
+    /* Mobile Great Card Logic Update */
+    .mobile-great-card {
+        display: flex !important;
+        flex-direction: column !important;
+        min-height: auto !important;
+        padding: 30px 20px !important;
+    }
+
+    .mobile-great-info p {
+        font-size: 14px !important;
+        letter-spacing: 0.02em !important;
+        column-count: 1 !important;
+        writing-mode: horizontal-tb !important;
+        width: 100% !important;
+        display: block !important;
+    }
+
+    .mobile-great-blueprint {
+        opacity: 0.1 !important;
+    }
+
+    .mobile-great-info h3 {
+        font-size: 24px !important;
+        word-break: keep-all !important;
+        text-wrap: balance !important;
+        margin-bottom: 12px !important;
+    }
+
+    .mobile-adaptive .magnifier-container {
+        height: 180px !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Adjusting Bento spacing for mobile */
+    .mobile-adaptive .stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
 }
 
 /* --- Adaptive Mobile-Specific Independent Styles (Triggered by JS) --- */
@@ -1637,24 +1713,18 @@ body::before {
 /* Asymmetric Bento Grid for Mobile */
 .mobile-adaptive #Earn_Cards_Container {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 15px !important;
-    padding: 15px !important;
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+    padding: 20px !important;
 }
 
 .mobile-project-card {
-    grid-column: span 2; /* Default: wide items */
+    grid-column: 1 / -1;
     position: relative;
     background: rgba(30, 30, 35, 0.4) !important;
     border: 1px solid rgba(255, 255, 255, 0.03) !important;
     overflow: hidden;
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-/* Make every 3rd card small for rhythm */
-.mobile-project-card:nth-child(3n+2),
-.mobile-project-card:nth-child(3n+3) {
-    grid-column: span 1;
 }
 
 /* Light Sweep Effect on Cards */
@@ -1681,12 +1751,7 @@ body::before {
 }
 
 .mobile-card-img {
-    height: 180px;
-}
-
-.mobile-project-card:nth-child(3n+2) .mobile-card-img,
-.mobile-project-card:nth-child(3n+3) .mobile-card-img {
-    height: 120px;
+    height: 220px;
 }
 
 /* Ghost Text Layer for Depth */

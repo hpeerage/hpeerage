@@ -42,6 +42,12 @@
             <div class="nav-item" onclick="switchSection('mastery', this)">
                 <i class="fas fa-palette"></i> <span>Brand Story</span>
             </div>
+            <div class="nav-item" onclick="switchSection('esteem', this)">
+                <i class="fas fa-heart"></i> <span>Core Values</span>
+            </div>
+            <div class="nav-item" onclick="switchSection('respect', this)">
+                <i class="fas fa-medal"></i> <span>Challenges</span>
+            </div>
             <div class="nav-item" onclick="switchSection('system', this)">
                 <i class="fas fa-link"></i> <span>System Link</span>
             </div>
@@ -153,6 +159,54 @@
                             </tr>
                         </thead>
                         <tbody id="great-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: ESTEEM (VALUES) -->
+        <section id="esteem" class="content-section">
+            <header class="dashboard-header">
+                <div class="header-title"><h1>Core Values Manager</h1><p>'Esteem' 섹션의 미션과 핵심 가치를 관리합니다.</p></div>
+                <button class="btn btn-primary" onclick="openModal('esteem')"><i class="fas fa-plus"></i> Add New Value</button>
+            </header>
+
+            <div class="card">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Index</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="esteem-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: RESPECT (CHALLENGES) -->
+        <section id="respect" class="content-section">
+            <header class="dashboard-header">
+                <div class="header-title"><h1>Challenge History Manager</h1><p>'Respect' 섹션의 주요 성과와 도전 과제들을 관리합니다.</p></div>
+                <button class="btn btn-primary" onclick="openModal('respect')"><i class="fas fa-plus"></i> Add New Slide</button>
+            </header>
+
+            <div class="card">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tag</th>
+                                <th>Title</th>
+                                <th>Items</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="respect-table-body"></tbody>
                     </table>
                 </div>
             </div>
@@ -273,9 +327,13 @@
         const REPO = { owner: 'hpeerage', repo: 'hpeerage' };
         let db = { earn: [], great: [] };
         let currentSha = null;
-        let currentDataPath = 'data/projects.json';
-        let editingIdx = -1;
+        let currentDataPath = null;
         let isSyncing = false;
+        let editingIdx = -1;
+        let currentSectionType = 'earn';
+        
+        // --- Phase 3: Optimistic UI Cache ---
+        const localImageCache = {};
 
         // Security & Session
         const AUTH_SESSION_KEY = 'hp_auth_session';
@@ -388,7 +446,14 @@
                 }
 
                 if (success) {
-                    if(!db.system) db.system = { links: { email: '', github: '', linkedin: '' } };
+                    if(!db.system) db.system = { links: { email: '', github: '', linkedin: '' }, mission: '', mission_tag: '' };
+                    else {
+                        // Ensure new fields exist even if db.system existed
+                        if (!db.system.mission) db.system.mission = '';
+                        if (!db.system.mission_tag) db.system.mission_tag = '';
+                    }
+                    if(!db.esteem) db.esteem = [];
+                    if(!db.respect) db.respect = [];
                     renderAll();
                     updateStats();
                     fetchHistory(token);
@@ -399,11 +464,12 @@
                     const defaultPath = manualPath || 'data/projects.json';
                     if(confirm(`저장소 내 projects.json 파일을 찾을 수 없습니다.\n[${defaultPath}] 경로에 초기 데이터를 생성하시겠습니까?`)) {
                         currentDataPath = defaultPath;
-                        db = { earn: [], great: [], system: { links: { email: '', github: '', linkedin: '' } } };
-                        await pushDatabase('Initial Database Setup');
-                        renderAll();
-                        updateStats();
-                        checkDeployStatus(token);
+                        if(!db.system) db.system = { links: { email: '', github: '', linkedin: '' }, mission: '', mission_tag: '' };
+                    if(!db.esteem) db.esteem = [];
+                    if(!db.respect) db.respect = [];
+                    renderAll();
+                    updateStats();
+                    checkDeployStatus(token);
                     } else {
                         alert('Database Error: 깃허브 저장소에서 projects.json 파일을 찾을 수 없습니다.\n파일이 존재하는지, 경로가 맞는지 확인해 주세요.');
                     }
@@ -422,11 +488,16 @@
         function renderAll() {
             renderEarn();
             renderGreat();
+            renderEsteem();
+            renderRespect();
             renderSystem();
         }
 
         function getImageUrl(path) {
             if(!path) return 'none';
+            // Use local blob cache for immediate preview if available
+            if(localImageCache[path]) return localImageCache[path];
+            
             if(path.startsWith('http') || path.startsWith('data:')) return path;
             // Support legacy assets path by redirecting to images
             const cleanPath = path.replace('assets/portfolio/', 'images/portfolio/');
@@ -473,24 +544,100 @@
             `).join('');
         }
 
-        function renderSystem() {
-            const container = document.getElementById('system-links-container');
-            if(!container || !db.system) return;
-            const links = db.system.links;
-            container.innerHTML = Object.keys(links).map(key => `
-                <div class="input-group">
-                    <label class="input-label" style="text-transform: capitalize;">${key} Link</label>
-                    <input type="text" id="sys-${key}" class="form-input" value="${links[key]}" data-key="${key}">
-                </div>
+        function renderEsteem() {
+            const body = document.getElementById('esteem-table-body');
+            if(!body || !db || !db.esteem) return;
+            body.innerHTML = db.esteem.map((e, idx) => `
+                <tr>
+                    <td><span class="status-badge" style="background: rgba(255, 215, 0, 0.1); color: #FFD700;">${e.index}</span></td>
+                    <td style="font-weight: 700;">${e.title}</td>
+                    <td>${e.description}</td>
+                    <td>
+                        <button class="btn" style="padding: 6px;" onclick="openModal('esteem', ${idx})"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger" style="padding: 6px;" onclick="deleteEntry('esteem', ${idx})"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
             `).join('');
         }
 
-        async function saveSystemLinks() {
-            const inputs = document.querySelectorAll('[id^="sys-"]');
-            inputs.forEach(input => {
+        function renderRespect() {
+            const body = document.getElementById('respect-table-body');
+            if(!body || !db || !db.respect) return;
+            body.innerHTML = db.respect.map((r, idx) => `
+                <tr>
+                    <td><span class="status-badge" style="background: rgba(124, 252, 0, 0.1); color: #7CFC00;">${r.tag}</span></td>
+                    <td style="font-weight: 700;">${r.title.replace('<br>', ' ')}</td>
+                    <td>${r.list ? r.list.length : 0} items</td>
+                    <td>
+                        <button class="btn" style="padding: 6px;" onclick="openModal('respect', ${idx})"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger" style="padding: 6px;" onclick="deleteEntry('respect', ${idx})"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderSystem() {
+            const container = document.getElementById('system-links-container');
+            if(!container || !db.system) return;
+            
+            const links = db.system.links || {};
+            const mission = db.system.mission || '';
+            const mission_tag = db.system.mission_tag || '';
+
+            let html = `
+                <div class="input-group" style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <h3 style="margin-bottom: 15px; color: var(--gold);">Mission Statement</h3>
+                    <div class="input-group">
+                        <label class="input-label">Mission Tag</label>
+                        <input type="text" id="sys-mission-tag" class="form-input" value="${mission_tag}">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Mission Title (HTML allowed)</label>
+                        <textarea id="sys-mission-title" class="form-input" style="height: 80px;">${mission}</textarea>
+                    </div>
+                </div>
+                <h3 style="margin-bottom: 15px; color: var(--gold);">Social Links</h3>
+            `;
+
+            html += Object.keys(links).map(key => `
+                <div class="input-group">
+                    <label class="input-label" style="text-transform: capitalize;">${key} Link</label>
+                    <input type="text" id="sys-link-${key}" class="form-input" value="${links[key]}" data-key="${key}">
+                </div>
+            `).join('');
+
+            container.innerHTML = html;
+        }
+
+        async function saveSystemConfig() {
+            const btn = document.querySelector('button[onclick="saveSystemConfig()"]'); 
+            const originalHTML = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+                btn.disabled = true;
+            }
+
+            if(!db.system) db.system = { links: {} };
+            
+            db.system.mission = document.getElementById('sys-mission-title').value;
+            db.system.mission_tag = document.getElementById('sys-mission-tag').value;
+            
+            const linkInputs = document.querySelectorAll('[id^="sys-link-"]');
+            linkInputs.forEach(input => {
                 db.system.links[input.dataset.key] = input.value;
             });
-            await pushDatabase('System Settings Updated');
+
+            try {
+                await pushDatabase('System Configuration Updated');
+                notify('System Settings Saved');
+            } catch (e) {
+                alert('Save failed: ' + e.message);
+            } finally {
+                if (btn) {
+                    btn.innerHTML = originalHTML;
+                    btn.disabled = false;
+                }
+            }
         }
 
         async function deleteEntry(listKey, idx) {
@@ -516,7 +663,7 @@
                     const updated = await res.json();
                     currentSha = updated.content.sha;
                     localStorage.setItem('last_sync_time', Date.now().toString());
-                    notify('Database Synchronized');
+                    notify('Database Synchronized. <br><small>Changes will be live on the site in 1-2 minutes.</small>');
                     updateStats();
                 } else { 
                     const err = await res.json();
@@ -525,13 +672,44 @@
             } catch (e) { alert(`Unexpected Error: ${e.message}`); }
         }
 
-        let currentSectionType = 'earn';
+
         function openModal(type, idx = -1) { 
             currentSectionType = type;
             editingIdx = idx; 
             document.getElementById('project-modal').style.display = 'flex';
-            document.getElementById('modal-title').innerText = (idx >= 0 ? 'Edit ' : 'Add New ') + (type === 'earn' ? 'Project' : 'Brand Story');
             
+            let typeLabel = 'Project';
+            if(type === 'great') typeLabel = 'Brand Story';
+            if(type === 'esteem') typeLabel = 'Core Value';
+            if(type === 'respect') typeLabel = 'Challenge';
+
+            document.getElementById('modal-title').innerText = (idx >= 0 ? 'Edit ' : 'Add New ') + typeLabel;
+            
+            // UI Adaptation based on type
+            const categoryLabel = document.querySelector('label[for="m-category"]') || { innerText: '' };
+            const urlLabel = document.querySelector('label[for="m-url"]') || { innerText: '' };
+            
+            // Finding the labels by text if IDs don't exist yet
+            const labels = document.querySelectorAll('.input-label');
+            const catLabel = labels[1];
+            const uLabel = labels[2];
+
+            if(type === 'esteem') {
+                catLabel.innerText = 'Index (e.01)';
+                uLabel.parentElement.style.display = 'none';
+                document.getElementById('drop-zone').parentElement.parentElement.style.display = 'none';
+            } else if(type === 'respect') {
+                catLabel.innerText = 'Tag (The Victory)';
+                uLabel.innerText = 'Items (Comma separated)';
+                uLabel.parentElement.style.display = 'block';
+                document.getElementById('drop-zone').parentElement.parentElement.style.display = 'block';
+            } else {
+                catLabel.innerText = (type === 'earn' ? 'Category' : 'Type/Tag');
+                uLabel.innerText = (type === 'earn' ? 'Live URL (GitHub Pages)' : 'Icon/Tag');
+                uLabel.parentElement.style.display = 'block';
+                document.getElementById('drop-zone').parentElement.parentElement.style.display = 'block';
+            }
+
             // Clear current file selection
             document.getElementById('m-file').value = '';
             document.getElementById('m-file-name').innerText = 'Drag & Drop Image Here';
@@ -539,8 +717,8 @@
             if(idx >= 0) {
                 const data = db[type][idx];
                 document.getElementById('m-title').value = data.title || '';
-                document.getElementById('m-category').value = data.category || data.type || '';
-                document.getElementById('m-url').value = data.url || data.icon || '';
+                document.getElementById('m-category').value = data.index || data.category || data.type || data.tag || '';
+                document.getElementById('m-url').value = (data.list ? data.list.join(', ') : (data.url || data.icon || ''));
                 document.getElementById('m-desc').value = data.description || '';
             } else {
                 document.getElementById('m-title').value = '';
@@ -597,15 +775,26 @@
                     entry.category = document.getElementById('m-category').value;
                     entry.url = document.getElementById('m-url').value;
                     entry.size = 'medium';
-                } else {
+                    entry.id = entry.title.toLowerCase().replace(/\s+/g, '-');
+                } else if(currentSectionType === 'great') {
                     entry.type = document.getElementById('m-category').value;
                     entry.icon = document.getElementById('m-url').value;
+                    entry.id = entry.title.toLowerCase().replace(/\s+/g, '-');
+                } else if(currentSectionType === 'esteem') {
+                    entry.index = document.getElementById('m-category').value;
+                } else if(currentSectionType === 'respect') {
+                    entry.tag = document.getElementById('m-category').value;
+                    entry.list = document.getElementById('m-url').value.split(',').map(s => s.trim()).filter(s => s !== '');
+                    entry.id = entry.tag.toLowerCase().split(' ').pop();
                 }
 
                 const file = document.getElementById('m-file').files[0];
                 if(file) {
                     const path = `images/portfolio/${file.name}`;
-                    entry.image = `images/portfolio/${file.name}`;
+                    // Cache local URL for immediate preview
+                    localImageCache[path] = URL.createObjectURL(file);
+                    
+                    entry.image = path;
                     if(currentSectionType === 'great') entry.after_img = entry.image;
                     await pushAsset(file, path, token);
                 } else if(editingIdx >= 0) { 
@@ -640,33 +829,39 @@
                 reader.onload = async () => {
                     try {
                         const content = reader.result.split(',')[1];
-                        let assetSha = null;
                         
-                        // Check if file already exists to get its SHA
-                        const checkRes = await fetch(`https://api.github.com/repos/${REPO.owner}/${REPO.repo}/contents/${path}`, {
-                            headers: { 'Authorization': `token ${token}` }
-                        });
-                        
-                        if(checkRes.ok) {
-                            const currentFile = await checkRes.json();
-                            assetSha = currentFile.sha;
-                        }
-
-                        const putRes = await fetch(`https://api.github.com/repos/${REPO.owner}/${REPO.repo}/contents/${path}`, {
+                        // --- Phase 3: Optimistic Upload (suppress 404 console log) ---
+                        // Try uploading immediately without a SHA. 
+                        // If it's a new file, it will succeed. 
+                        // If it's an update, it will fail with 422, then we fetch the SHA.
+                        let response = await fetch(`https://api.github.com/repos/${REPO.owner}/${REPO.repo}/contents/${path}`, {
                             method: 'PUT',
                             headers: { 'Authorization': `token ${token}` },
-                            body: JSON.stringify({ message: `Upload: ${file.name}`, content, sha: assetSha })
+                            body: JSON.stringify({ message: `Upload: ${file.name}`, content })
                         });
+
+                        if (!response.ok && response.status === 422) {
+                            // File already exists, fetch SHA and retry
+                            const checkRes = await fetch(`https://api.github.com/repos/${REPO.owner}/${REPO.repo}/contents/${path}`, {
+                                headers: { 'Authorization': `token ${token}` }
+                            });
+                            if (checkRes.ok) {
+                                const currentFile = await checkRes.json();
+                                response = await fetch(`https://api.github.com/repos/${REPO.owner}/${REPO.repo}/contents/${path}`, {
+                                    method: 'PUT',
+                                    headers: { 'Authorization': `token ${token}` },
+                                    body: JSON.stringify({ message: `Update: ${file.name}`, content, sha: currentFile.sha })
+                                });
+                            }
+                        }
                         
-                        if(!putRes.ok) {
-                            const err = await putRes.json();
+                        if(!response.ok) {
+                            const err = await response.json();
                             console.error('Asset Push Failed:', err);
-                            if(putRes.status === 401) {
+                            if(response.status === 401) {
                                 localStorage.removeItem('gh_token');
-                                alert('인증 실패(401): 잘못된 토큰이거나 권한(repo)이 부족합니다.\n토큰 설정 페이지로 자동 이동합니다.');
+                                alert('인증 실패(401): 잘못된 토큰이거나 권한(repo)이 부족합니다.');
                                 switchSection('sync', document.querySelector('.nav-item[onclick*="sync"]'));
-                                document.getElementById('gh-token').value = '';
-                                document.getElementById('gh-token').focus();
                             } else {
                                 alert(`Upload Failed: ${err.message}`);
                             }
@@ -781,6 +976,8 @@
 
             if(db.earn) db.earn.forEach(p => checkFields(p, ['title', 'description', 'image', 'url']));
             if(db.great) db.great.forEach(s => checkFields(s, ['title', 'description', 'image', 'type']));
+            if(db.esteem) db.esteem.forEach(v => checkFields(v, ['title', 'description', 'index']));
+            if(db.respect) db.respect.forEach(r => checkFields(r, ['title', 'tag']));
             if(db.system && db.system.links) checkFields(db.system.links, ['email', 'github', 'linkedin']);
             
             const score = totalFields > 0 ? Math.round((filledFields / totalFields) * 100) : 100;
