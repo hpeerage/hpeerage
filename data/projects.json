@@ -48,11 +48,13 @@
     ],
     "great": [
         {
-            "id": "philosophy",
-            "tag": "Philosophy",
             "title": "설계의 철학: The Blueprint",
             "description": "1px의 오차 없는 정교한 설계도와 와이어프레임. 단순한 화면 구성을 넘어 비즈니스 로직과 사용자 경험이 완벽하게 결합된 기획을 지향합니다.",
-            "image": "images/great_philosophy.png"
+            "status": "active",
+            "type": "",
+            "icon": "",
+            "image": "images/portfolio/great_01.jpeg",
+            "after_img": "images/portfolio/great_01.jpeg"
         },
         {
             "id": "logic",
