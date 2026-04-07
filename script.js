@@ -117,6 +117,7 @@ function initSectionAnimations() {
                 holyTl.to(".spectrum-row", { opacity: 1, duration: 1, ease: "power2.out" })
                       .to(".spectrum-step", { opacity: 1, stagger: 0.15, duration: 0.6, scale: 1, ease: "back.out(1.7)" }, "-=0.5")
                       .to(".holy-mission-block", { opacity: 1, y: 0, duration: 1.2, ease: "slow(0.7, 0.7, false)" }, "-=0.6")
+                      .to(".holy-inquiry-container", { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, "-=0.4")
                       .call(() => document.querySelector(".spectrum-row")?.classList.add("complete"), null, "+=0.2");
             }
         }
@@ -223,11 +224,13 @@ const GITHUB_RAW_BASE = `https://raw.githubusercontent.com/${REPO.owner}/${REPO.
 
 async function loadDynamicContent() {
     try {
-        const response = await fetch('data/projects.json').catch(() => null);
+        // Use hConfig for dynamic path mapping
+        const localPath = hConfig.BASE_URL + 'data/projects.json';
+        const response = await fetch(localPath).catch(() => null);
         let data = response && response.ok ? await response.json() : null;
 
-        if (!data) {
-            const ghResponse = await fetch(`${GITHUB_RAW_BASE}data/projects.json`).catch(() => null);
+        if (!data && window.hConfig) {
+            const ghResponse = await fetch(`${hConfig.GITHUB.RAW_URL}data/projects.json`).catch(() => null);
             data = ghResponse && ghResponse.ok ? await ghResponse.json() : null;
         }
 
@@ -483,4 +486,78 @@ function renderSystemLinks(links) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', loadDynamicContent);
+// --- 6. Inquiry System (Holy Stage) ---
+function initInquiryForm() {
+    const form = document.getElementById('inquiryForm');
+    const successMsg = document.getElementById('inquirySuccess');
+    if(!form) return;
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // 1. Collect Data
+        const formData = {
+            id: 'inq_' + Date.now(),
+            timestamp: new Date().toISOString(),
+            name: document.getElementById('inqName').value.trim(),
+            contact: document.getElementById('inqContact').value.trim(),
+            category: document.getElementById('inqCategory').value,
+            budget: document.getElementById('inqBudget').value,
+            schedule: document.getElementById('inqSchedule').value.trim(),
+            details: document.getElementById('inqDetails').value.trim()
+        };
+
+        // 2. Local-First Storage (Mocking DB)
+        let localInquiries = JSON.parse(localStorage.getItem('hpeerage_inquiries') || '[]');
+        localInquiries.push(formData);
+        localStorage.setItem('hpeerage_inquiries', JSON.stringify(localInquiries));
+        
+        console.log("=== Mission Delivered: Local Mode ===");
+        console.log("Saved Inquiry:", formData);
+        
+        // 3. Google Apps Script / EmailJS 연동 (배포 모드)
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.innerText;
+
+        if (window.hConfig && hConfig.GAS_URL && hConfig.GAS_URL.trim() !== '') {
+            submitBtn.innerText = "전송 중...";
+            submitBtn.disabled = true;
+
+            fetch(hConfig.GAS_URL, {
+                redirect: "follow",
+                method: "POST",
+                body: JSON.stringify(formData),
+                headers: {
+                    "Content-Type": "text/plain;charset=utf-8",
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Email Notification Sent:", data);
+            })
+            .catch(err => {
+                console.error("Email Notification Failed:", err);
+            })
+            .finally(() => {
+                // UI Feedback
+                form.style.opacity = '0';
+                setTimeout(() => {
+                    form.style.display = 'none';
+                    successMsg.style.display = 'block';
+                }, 500);
+            });
+        } else {
+            // 로컬 전용 처리 (이메일 발송 미설정 시)
+            form.style.opacity = '0';
+            setTimeout(() => {
+                form.style.display = 'none';
+                successMsg.style.display = 'block';
+            }, 500);
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadDynamicContent();
+    initInquiryForm();
+});

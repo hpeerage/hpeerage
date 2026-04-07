@@ -237,6 +237,45 @@
                 Hesed + peerage = <span class="formula-result">hpeerage</span>
             </div>
 
+            <!-- Inquiry & Quotation System -->
+            <div class="holy-inquiry-container" id="Holy_Inquiry">
+                <form id="inquiryForm" class="holy-inquiry-form">
+                    <div class="form-row">
+                        <input type="text" id="inqName" name="inqName" class="glass-input" placeholder="의뢰인 또는 업체명" required>
+                        <input type="text" id="inqContact" name="inqContact" class="glass-input" placeholder="이메일 또는 연락처" required>
+                    </div>
+                    <div class="form-row">
+                        <select id="inqCategory" name="inqCategory" class="glass-input" required>
+                            <option value="" disabled selected>프로젝트 카테고리</option>
+                            <option value="Web PM & Planning">Web PM & Planning</option>
+                            <option value="App UI/UX">App UI/UX</option>
+                            <option value="Full-stack Solution">Full-stack Solution</option>
+                            <option value="Others">Others</option>
+                        </select>
+                        <select id="inqBudget" name="inqBudget" class="glass-input" required>
+                            <option value="" disabled selected>예상 예산</option>
+                            <option value="협의 필요">협의 필요</option>
+                            <option value="1천만 원 이하">1천만 원 이하</option>
+                            <option value="1천~5천">1천~5천</option>
+                            <option value="5천~1억">5천~1억</option>
+                            <option value="1억 이상">1억 이상</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <input type="text" id="inqSchedule" name="inqSchedule" class="glass-input" placeholder="희망 시작일 및 기간" required>
+                    </div>
+                    <div class="form-row">
+                        <textarea id="inqDetails" name="inqDetails" class="glass-input" rows="4" placeholder="프로젝트 상세 내용 및 비전" required></textarea>
+                    </div>
+                    <button type="submit" class="holy-submit-btn">함께 위대한 역사를 시작하기</button>
+                </form>
+                <div id="inquirySuccess" class="form-success-message" style="display: none;">
+                    <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+                    <h3>Mission Delivered</h3>
+                    <p>대표님의 비전이 전달되었습니다.<br>25년 차 PM이 직접 검토 후 24시간 내에 연락드리겠습니다.</p>
+                </div>
+            </div>
+
             <!-- Minimal Footer Contact -->
             <footer class="holy-footer" id="Holy_Footer">
                 <canvas id="holy-particles" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.5;"></canvas>
@@ -274,6 +313,8 @@
         <a href="#Holy_Section" class="mobile-nav-link">Vision</a>
     </div>
 
+    <!-- Core Application Scripts: config.js must load before script.js -->
+    <script src="config.js"></script>
     <script src="script.js?v=26"></script>
 </body>
 

@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Configuration management for Local-First Workflow -->
+    <script src="config.js"></script>
 </head>
 <body class="admin-locked">
 
@@ -50,6 +52,9 @@
             </div>
             <div class="nav-item" onclick="switchSection('system', this)">
                 <i class="fas fa-link"></i> <span>System Link</span>
+            </div>
+            <div class="nav-item" onclick="switchSection('inquiries', this)">
+                <i class="fas fa-envelope"></i> <span>Inquiries</span>
             </div>
             <div class="nav-item" onclick="switchSection('sync', this)">
                 <i class="fas fa-sync-alt"></i> <span>Git Sync</span>
@@ -212,6 +217,30 @@
             </div>
         </section>
 
+        <!-- SECTION: INQUIRIES -->
+        <section id="inquiries" class="content-section">
+            <header class="dashboard-header">
+                <div class="header-title"><h1>Inquiry Management</h1><p>'Holy' 섹션에서 접수된 프로젝트 견적 및 의뢰를 확인합니다. (Local 모드)</p></div>
+            </header>
+
+            <div class="card">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Name / Company</th>
+                                <th>Category</th>
+                                <th>Budget</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inquiries-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
         <!-- SECTION: SYSTEM LINK -->
         <section id="system" class="content-section">
             <header class="dashboard-header">
@@ -220,7 +249,7 @@
             <div class="card" style="max-width: 800px;">
                 <h3 class="card-title" style="margin-bottom: 25px;">Social & External Links</h3>
                 <div id="system-links-container"></div>
-                <button class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 25px;" onclick="saveSystemLinks()">
+                <button class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 25px;" onclick="saveSystemConfig()">
                     <i class="fas fa-save"></i> Save Global Settings
                 </button>
             </div>
@@ -314,6 +343,19 @@
             <div style="display: flex; gap: 12px; margin-top: 30px;">
                 <button class="btn" style="flex: 1; justify-content: center;" onclick="closeModal()">Cancel</button>
                 <button class="btn btn-primary" id="save-btn" style="flex: 1; justify-content: center;" onclick="saveEntry()">Save & Push to Git</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Inquiry Details -->
+    <div class="modal-overlay" id="inquiry-modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <h3 class="card-title" style="margin-bottom: 25px;"><i class="fas fa-envelope-open-text"></i> Inquiry Details</h3>
+            <div id="inquiry-details" style="font-size: 14px; line-height: 1.6; color: var(--text-color); margin-bottom: 25px;">
+                <!-- Details injected here -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn" style="width: 100%; justify-content: center;" onclick="closeInquiryModal()">Close</button>
             </div>
         </div>
     </div>
@@ -491,6 +533,7 @@
             renderEsteem();
             renderRespect();
             renderSystem();
+            renderInquiries();
         }
 
         function getImageUrl(path) {
@@ -576,6 +619,71 @@
             `).join('');
         }
 
+        // --- INQUIRIES LOGIC ---
+        function renderInquiries() {
+            const body = document.getElementById('inquiries-table-body');
+            if(!body) return;
+            const inquiries = JSON.parse(localStorage.getItem('hpeerage_inquiries') || '[]');
+            
+            if (inquiries.length === 0) {
+                body.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">No inquiries found in local storage.</td></tr>';
+                return;
+            }
+
+            // Sort by latest timestamp
+            inquiries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            body.innerHTML = inquiries.map((inq, idx) => {
+                const date = new Date(inq.timestamp).toLocaleString('ko-KR');
+                return `
+                <tr>
+                    <td style="font-size: 12px; color: var(--text-muted);">${date}</td>
+                    <td style="font-weight: 700;">${inq.name}</td>
+                    <td><span class="status-badge" style="background: rgba(139, 92, 246, 0.1); color: #8B5CF6;">${inq.category}</span></td>
+                    <td>${inq.budget}</td>
+                    <td>
+                        <button class="btn btn-primary" style="padding: 6px; margin-right: 5px;" onclick="viewInquiry('${inq.id}')"><i class="fas fa-search"></i> View</button>
+                        <button class="btn btn-danger" style="padding: 6px;" onclick="deleteInquiryLocal('${inq.id}')"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        function viewInquiry(id) {
+            const inquiries = JSON.parse(localStorage.getItem('hpeerage_inquiries') || '[]');
+            const inq = inquiries.find(i => i.id === id);
+            if(!inq) return;
+
+            const container = document.getElementById('inquiry-details');
+            container.innerHTML = `
+                <div style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px;">
+                    <p style="margin-bottom: 5px;"><strong style="color: var(--gold); display: inline-block; width: 80px;">의뢰인:</strong> ${inq.name}</p>
+                    <p style="margin-bottom: 5px;"><strong style="color: var(--gold); display: inline-block; width: 80px;">연락처:</strong> ${inq.contact}</p>
+                    <p style="margin-bottom: 5px;"><strong style="color: var(--gold); display: inline-block; width: 80px;">시작일정:</strong> ${inq.schedule}</p>
+                </div>
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.02);">
+                    <h4 style="margin-bottom: 10px; color: var(--gold); font-size: 13px;">프로젝트 상세 내용</h4>
+                    <p style="white-space: pre-wrap; font-size: 13px; color: var(--text-muted);">${inq.details}</p>
+                </div>
+            `;
+            
+            document.getElementById('inquiry-modal').style.display = 'flex';
+        }
+
+        function closeInquiryModal() {
+            document.getElementById('inquiry-modal').style.display = 'none';
+        }
+
+        function deleteInquiryLocal(id) {
+            if(!confirm('이 문의 내역을 완전히 삭제하시겠습니까? (로컬 전용)')) return;
+            let inquiries = JSON.parse(localStorage.getItem('hpeerage_inquiries') || '[]');
+            inquiries = inquiries.filter(i => i.id !== id);
+            localStorage.setItem('hpeerage_inquiries', JSON.stringify(inquiries));
+            renderInquiries();
+            notify('Inquiry Deleted from LocalStorage');
+        }
+
         function renderSystem() {
             const container = document.getElementById('system-links-container');
             if(!container || !db.system) return;
@@ -648,6 +756,13 @@
         }
 
         async function pushDatabase(message) {
+            if (window.hConfig && hConfig.ENV === 'LOCAL' && !hConfig.LOCAL_FIRST.PUSH_ENABLED) {
+                console.log("Local Mode: Pushing to GitHub disabled. Exporting JSON instead.");
+                downloadData(db, "projects.json");
+                alert("Local Export Success: projects.json downloaded. Please replace it in the data/ folder.");
+                return true;
+            }
+
             const token = localStorage.getItem('gh_token');
             if(!token) return alert('GitHub Token Required. Configure sync first.');
             
@@ -824,16 +939,16 @@
         }
 
         async function pushAsset(file, path, token) {
+            if (window.hConfig && hConfig.ENV === 'LOCAL' && !hConfig.LOCAL_FIRST.PUSH_ENABLED) {
+                console.warn("Local Mode Asset Upload: GitHub push skipped. Please manually place the file in: " + path);
+                return true;
+            }
+
             const reader = new FileReader();
-            return new Promise(resolve => {
+            return new Promise((resolve, reject) => {
                 reader.onload = async () => {
                     try {
                         const content = reader.result.split(',')[1];
-                        
-                        // --- Phase 3: Optimistic Upload (suppress 404 console log) ---
-                        // Try uploading immediately without a SHA. 
-                        // If it's a new file, it will succeed. 
-                        // If it's an update, it will fail with 422, then we fetch the SHA.
                         let response = await fetch(`https://api.github.com/repos/${REPO.owner}/${REPO.repo}/contents/${path}`, {
                             method: 'PUT',
                             headers: { 'Authorization': `token ${token}` },
@@ -841,7 +956,6 @@
                         });
 
                         if (!response.ok && response.status === 422) {
-                            // File already exists, fetch SHA and retry
                             const checkRes = await fetch(`https://api.github.com/repos/${REPO.owner}/${REPO.repo}/contents/${path}`, {
                                 headers: { 'Authorization': `token ${token}` }
                             });
@@ -857,65 +971,20 @@
                         
                         if(!response.ok) {
                             const err = await response.json();
-                            console.error('Asset Push Failed:', err);
-                            if(response.status === 401) {
-                                localStorage.removeItem('gh_token');
-                                alert('인증 실패(401): 잘못된 토큰이거나 권한(repo)이 부족합니다.');
-                                switchSection('sync', document.querySelector('.nav-item[onclick*="sync"]'));
-                            } else {
-                                alert(`Upload Failed: ${err.message}`);
-                            }
+                            throw new Error(err.message || 'Asset Upload Failed');
                         }
+                        resolve();
                     } catch (e) { 
                         console.error('Asset upload critical error:', e); 
-                        alert(`Fatal Error: ${e.message}`);
+                        reject(e);
                     }
-                    resolve();
                 };
+                reader.onerror = () => reject(new Error("File read error"));
                 reader.readAsDataURL(file);
             });
         }
 
-        async function pushDatabase(message) {
-            const token = localStorage.getItem('gh_token');
-            if(!token) return;
 
-            const content = btoa(unescape(encodeURIComponent(JSON.stringify(db, null, 4))));
-            
-            try {
-                const body = { message, content };
-                if (currentSha) body.sha = currentSha;
-
-                const res = await fetch(`https://api.github.com/repos/${REPO.owner}/${REPO.repo}/contents/${currentDataPath}`, {
-                    method: 'PUT',
-                    headers: { 'Authorization': `token ${token}` },
-                    body: JSON.stringify(body)
-                });
-
-                if(!res.ok) {
-                    if(res.status === 404) {
-                        alert('404 Error: 파일 생성 실패!\n\n현재 GitHub 저장소가 비어있거나(README 없음) 소유자/저장소명이 틀렸을 가능성이 높습니다.\n\n해결 방법:\n1. GitHub 웹에서 README.md 파일을 생성해 첫 커밋을 만들어 주세요.\n2. 저장소 이름이 [hpeerage.github.io]가 맞는지 확인해 주세요.');
-                    }
-                    if(res.status === 401) {
-                        localStorage.removeItem('gh_token');
-                        alert('인증 실패(401): 데이터베이스 푸시 권한이 없습니다. 토큰 설정을 다시 확인해 주세요.');
-                        switchSection('sync', document.querySelector('.nav-item[onclick*="sync"]'));
-                        document.getElementById('gh-token').focus();
-                    }
-                    throw new Error(`Push Failed: ${res.statusText}`);
-                }
-                
-                const updated = await res.json();
-                currentSha = updated.content.sha;
-                localStorage.setItem('last_sync_time', Date.now());
-                logActivity(`Database Update: ${message}`, 'success');
-                notify('Database Synced with GitHub');
-            } catch (err) {
-                console.error('Database Push Error:', err);
-                logActivity(`Push Error: ${err.message}`, 'error');
-                throw err;
-            }
-        }
 
         async function checkDeployStatus(token) {
             if(!token || token === 'undefined') {
@@ -1081,6 +1150,17 @@
 
         // Initialize session check
         checkSession();
-    </script>
+        function downloadData(data, filename) {
+        const blob = new Blob([JSON.stringify(data, null, 4)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+</script>
 </body>
 </html>

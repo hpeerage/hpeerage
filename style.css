@@ -1371,6 +1371,138 @@ body::before {
     font-style: italic;
 }
 
+/* Inquiry & Quotation Form (Holy Stage) */
+.holy-inquiry-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 40px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.05);
+    opacity: 0; /* Animated in via GSAP */
+    transform: translateY(20px);
+}
+
+.holy-inquiry-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: opacity 0.5s ease;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+    }
+    .holy-inquiry-container {
+        padding: 24px 16px;
+        margin: 20px 15px;
+        width: auto;
+    }
+}
+
+.glass-input {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    color: #ffffff;
+    font-size: 15px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.glass-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.glass-input:focus {
+    outline: none;
+    background: rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+select.glass-input {
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+select.glass-input option {
+    background: #111111;
+    color: #ffffff;
+}
+
+textarea.glass-input {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.holy-submit-btn {
+    background: #0a0a0a;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 18px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 10px;
+}
+
+.holy-submit-btn:hover {
+    border-color: #ffffff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+    background: #1a1a1a;
+}
+
+.form-success-message {
+    text-align: center;
+    color: #ffffff;
+    padding: 40px 20px;
+    animation: fadeIn 0.8s ease forwards;
+}
+
+.form-success-message .success-icon {
+    font-size: 48px;
+    color: #ffffff;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+}
+
+.form-success-message h3 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    letter-spacing: 0.05em;
+}
+
+.form-success-message p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
 /* Holy Footer */
 .holy-footer {
     width: 100%;
