@@ -469,6 +469,17 @@ function renderSystemContent(system) {
     const tagEl = document.getElementById('Mission_Tag');
     if (titleEl && system.mission) titleEl.innerHTML = system.mission.replace('hpeerage', '<span class="brand-accent">hpeerage</span>');
     if (tagEl && system.mission_tag) tagEl.innerText = system.mission_tag;
+    
+    // Inquiry Form Texts
+    if (system.inquiry) {
+        const btnEl = document.getElementById('inqSubmitBtn');
+        const sucTitleEl = document.getElementById('inqSuccessTitle');
+        const sucDescEl = document.getElementById('inqSuccessDesc');
+        
+        if (btnEl && system.inquiry.btnText) btnEl.innerText = system.inquiry.btnText;
+        if (sucTitleEl && system.inquiry.successTitle) sucTitleEl.innerText = system.inquiry.successTitle;
+        if (sucDescEl && system.inquiry.successDesc) sucDescEl.innerHTML = system.inquiry.successDesc;
+    }
 }
 
 function renderSystemLinks(links) {

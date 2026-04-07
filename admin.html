@@ -691,6 +691,10 @@
             const links = db.system.links || {};
             const mission = db.system.mission || '';
             const mission_tag = db.system.mission_tag || '';
+            
+            const btn_text = (db.system.inquiry && db.system.inquiry.btnText) ? db.system.inquiry.btnText : '함께 위대한 역사를 시작하기';
+            const suc_title = (db.system.inquiry && db.system.inquiry.successTitle) ? db.system.inquiry.successTitle : 'Mission Delivered';
+            const suc_desc = (db.system.inquiry && db.system.inquiry.successDesc) ? db.system.inquiry.successDesc : '대표님의 비전이 전달되었습니다.<br>25년 차 PM이 직접 검토 후 24시간 내에 연락드리겠습니다.';
 
             let html = `
                 <div class="input-group" style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);">
@@ -714,6 +718,24 @@
                 </div>
             `).join('');
 
+            html += `
+                <div class="input-group" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                    <h3 style="margin-bottom: 15px; color: var(--gold);">Inquiry Form UI Settings</h3>
+                    <div class="input-group">
+                        <label class="input-label">Submit Button Text</label>
+                        <input type="text" id="sys-inq-btn" class="form-input" value="${btn_text}">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Success Message Title</label>
+                        <input type="text" id="sys-inq-title" class="form-input" value="${suc_title}">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Success Message Desc (HTML Allowed)</label>
+                        <textarea id="sys-inq-desc" class="form-input" style="height: 60px;">${suc_desc}</textarea>
+                    </div>
+                </div>
+            `;
+
             container.innerHTML = html;
         }
 
@@ -725,10 +747,14 @@
                 btn.disabled = true;
             }
 
-            if(!db.system) db.system = { links: {} };
+            if(!db.system) db.system = { links: {}, inquiry: {} };
+            if(!db.system.inquiry) db.system.inquiry = {};
             
             db.system.mission = document.getElementById('sys-mission-title').value;
             db.system.mission_tag = document.getElementById('sys-mission-tag').value;
+            db.system.inquiry.btnText = document.getElementById('sys-inq-btn').value;
+            db.system.inquiry.successTitle = document.getElementById('sys-inq-title').value;
+            db.system.inquiry.successDesc = document.getElementById('sys-inq-desc').value;
             
             const linkInputs = document.querySelectorAll('[id^="sys-link-"]');
             linkInputs.forEach(input => {
