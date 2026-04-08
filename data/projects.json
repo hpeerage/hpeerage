@@ -44,6 +44,16 @@
             "url": "https://hpeerage.github.io/playit-platform/#/partner",
             "size": "medium",
             "image": "images/portfolio/portfolio_02_Playit-partner_luncher.png"
+        },
+        {
+            "title": "아트링크 (ArtLink)\"The Bridge to New Art\" (예술과 일상을 잇는 다리)",
+            "description": "미술품 대여/판매 하는 AR 커머스 ",
+            "status": "active",
+            "category": "e-Commerce",
+            "url": "https://artlink-alpha.vercel.app/",
+            "size": "medium",
+            "id": "아트링크-(artlink)\"the-bridge-to-new-art\"-(예술과-일상을-잇는-다리)",
+            "image": "images/portfolio/artlink_logo.jpg"
         }
     ],
     "great": [
