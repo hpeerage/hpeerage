@@ -289,7 +289,7 @@ function renderMobileGreat(greatData) {
 
     container.innerHTML = greatData.map(m => `
         <div class="mobile-great-card">
-            <div class="mobile-great-blueprint" style="background-image: url('${m.image}')"></div>
+            <div class="mobile-great-blueprint" style="background-image: url('${hConfig.getAssetPath(m.image)}')"></div>
             <div class="mobile-great-info">
                 <span class="mobile-tag-gold">${m.tag || 'Mastery'}</span>
                 <h3>${m.title}</h3>
@@ -341,7 +341,7 @@ function renderMobileRespect(respectData) {
                 <span class="slide-tag">${m.tag}</span>
                 <h3 class="slide-title">${m.title}</h3>
                 <div class="adventure-visual">
-                    <img src="${m.image}" alt="${m.tag}">
+                    <img src="${hConfig.getAssetPath(m.image)}" alt="${m.tag}">
                 </div>
             </div>
         </div>
@@ -354,9 +354,9 @@ function renderMobileEarn(earnProjects) {
 
     container.innerHTML = earnProjects.map((p, index) => `
         <div class="mobile-project-card" onclick="window.open('${p.url || '#'}', '_blank')">
-            <div class="mobile-card-img" style="background-image: url('${p.image}')"></div>
+            <div class="mobile-card-img" style="background-image: url('${hConfig.getAssetPath(p.image)}')"></div>
             <div class="mobile-card-content">
-                <span class="mobile-tag">${p.tag || 'Project'}</span>
+                <span class="mobile-tag">${p.category || 'Project'}</span>
                 <h3 class="mobile-card-title">${p.title}</h3>
                 <p class="mobile-card-desc">${p.description}</p>
             </div>
@@ -380,7 +380,7 @@ function renderEarnSection(projects) {
     grid.innerHTML = projects.map(p => `
         <div class="bento-card ${p.id}-card feature-card ${p.size}">
             <div class="glass-reflection"></div>
-            <div class="card-visual" style="background-image: url('${p.image}');"></div>
+            <div class="card-visual" style="background-image: url('${hConfig.getAssetPath(p.image)}');"></div>
             <div class="card-content">
                 <span class="card-tag">${p.category}</span>
                 <h3 class="card-title">${p.title}</h3>
@@ -402,8 +402,8 @@ function renderGreatSection(greatData) {
             return `
                 <div class="great-card philosophy-card large">
                     <div class="magnifier-container" id="Philosophy_Magnifier">
-                        <div class="magnifier-bg" style="background-image: url('${m.image}')"></div>
-                        <div class="magnifier-lens" id="Magnifier_Lens" style="background-image: url('${m.image}')"></div>
+                        <div class="magnifier-bg" style="background-image: url('${hConfig.getAssetPath(m.image)}')"></div>
+                        <div class="magnifier-lens" id="Magnifier_Lens" style="background-image: url('${hConfig.getAssetPath(m.image)}')"></div>
                     </div>
                     <div class="card-info">
                         <span class="card-tag">${m.tag}</span>
@@ -415,7 +415,7 @@ function renderGreatSection(greatData) {
         } else {
             return `
                 <div class="great-card ${m.id}-card">
-                    <div class="card-visual-bg ${m.id}-bg" style="background-image: url('${m.image}')"></div>
+                    <div class="card-visual-bg ${m.id}-bg" style="background-image: url('${hConfig.getAssetPath(m.image)}')"></div>
                     <div class="card-info">
                         <span class="card-tag">${m.tag}</span>
                         <h3>${m.title}</h3>
@@ -451,7 +451,7 @@ function renderRespectSection(respectData) {
             <div class="slide-inner">
                 <span class="slide-tag">${m.tag}</span>
                 <h3 class="slide-title">${m.title}</h3>
-                ${m.image ? `<div class="adventure-visual"><img src="${m.image}" alt="${m.tag}"></div>` : ''}
+                ${m.image ? `<div class="adventure-visual"><img src="${hConfig.getAssetPath(m.image)}" alt="${m.tag}"></div>` : ''}
                 ${m.description ? `<p class="slide-desc">${m.description}</p>` : ''}
                 ${m.list && m.list.length > 0 ? `
                     <ul class="${m.id === 'victory' ? 'victory' : 'respect'}-list">
