@@ -464,13 +464,28 @@ body::before {
 }
 
 .card-tag {
-    color: #00F2FE;
-    font-size: 14px;
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(0, 242, 254, 0.08);
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    border-radius: 50px;
+    color: #00f2fe;
+    font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    margin-bottom: 12px;
-    display: block;
+    letter-spacing: 0.12em;
+    margin-bottom: 20px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover .card-tag {
+    background: rgba(0, 242, 254, 0.15);
+    border-color: rgba(0, 242, 254, 0.5);
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+    transform: translateY(-2px);
 }
 
 .card-title {
@@ -1052,24 +1067,30 @@ body::before {
     justify-content: flex-end;
 }
 
-.card-tag {
+.great-card .card-tag {
     color: #8B5CF6;
-    font-size: 13px;
+    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 12px;
     font-weight: 700;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     margin-bottom: 20px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    backdrop-filter: blur(8px);
 }
 
-.card-tag::before {
+.great-card .card-tag::before {
     content: '';
-    width: 24px;
-    height: 1px;
-    background: currentColor;
-    opacity: 0.5;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #8B5CF6;
+    box-shadow: 0 0 10px #8B5CF6;
 }
 
 .great-card h3 {
@@ -1899,12 +1920,17 @@ textarea.glass-input {
 }
 
 .mobile-tag {
-    font-size: 11px;
+    font-size: 10px;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.1em;
     color: #4dcad9;
-    display: block;
-    margin-bottom: 10px;
+    background: rgba(77, 202, 217, 0.1);
+    border: 1px solid rgba(77, 202, 217, 0.3);
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 15px;
 }
 
 .mobile-card-content h3 {
