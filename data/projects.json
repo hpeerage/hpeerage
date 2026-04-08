@@ -96,41 +96,6 @@
             "after_img": "images/portfolio/great_expertise.png"
         }
     ],
-    "great": [
-        {
-            "id": "philosophy",
-            "tag": "Philosophy",
-            "title": "설계의 철학: The Blueprint",
-            "description": "1px의 오차 없는 정교한 설계도와 와이어프레임. 단순한 화면 구성을 넘어 비즈니스 로직과 사용자 경험이 완벽하게 결합된 기획을 지향합니다.",
-            "status": "active",
-            "type": "",
-            "icon": "",
-            "image": "images/portfolio/great_philosophy.png",
-            "after_img": "images/portfolio/great_philosophy.png"
-        },
-        {
-            "id": "logic",
-            "tag": "Management",
-            "title": "공정 관리의 기술: Structured Logic",
-            "description": "WBS 기반의 투명하고 체계적인 프로젝트 흐름. 철저한 리스크 관리와 형상 관리로 프로젝트의 신뢰도를 극대화합니다.",
-            "status": "active",
-            "type": "",
-            "icon": "",
-            "image": "images/portfolio/great_logic.png",
-            "after_img": "images/portfolio/great_logic.png"
-        },
-        {
-            "id": "expertise",
-            "tag": "Synergy",
-            "title": "융합형 전문가: Hybrid Expertise",
-            "description": "기획의 논리와 디자인의 미학이 결합된 통찰력. 코드를 이해하는 기획자가 만드는 실질적이고 심미적인 혁신.",
-            "status": "active",
-            "type": "",
-            "icon": "",
-            "image": "images/portfolio/great_expertise.png",
-            "after_img": "images/portfolio/great_expertise.png"
-        }
-    ],
     "esteem": [
         {
             "index": "01",
