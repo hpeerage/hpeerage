@@ -20,13 +20,14 @@
             "image": "images/portfolio/ARIA_logo_01.jpeg"
         },
         {
-            "id": "duct",
-            "category": "Corporate Website",
             "title": "Clean Air Duct",
             "description": "공장 및 상업 시설 전문 닥트 클리닝 기업 '클린에어덕트'의 공식 웹사이트입니다. 신뢰성 있는 기술력과 서비스 프로세스를 보여주는 디자인으로 제작되었습니다.",
-            "image": "images/portfolio/portfolio_03_Duct.png",
+            "status": "active",
+            "category": "Corporate Website",
             "url": "https://hpeerage.github.io/duct/",
-            "size": "medium"
+            "size": "medium",
+            "id": "clean-air-duct",
+            "image": "images/portfolio/logo.jpg"
         },
         {
             "title": "Playit PMS Admin",
