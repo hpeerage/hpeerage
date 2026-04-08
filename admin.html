@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mastery Dashboard | hpeerage Admin</title>
-    <link rel="icon" type="image/png" href="favicon.png?v=2">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg?v=3">
+    <link rel="alternate icon" type="image/png" href="favicon.png?v=3">
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -277,8 +278,8 @@
                     <button class="btn" onclick="testConnection()" style="flex: 1; justify-content: center;">
                         <i class="fas fa-vial"></i> Test Connection
                     </button>
-                    <button class="btn btn-primary" onclick="initializeSync()" style="flex: 2; justify-content: center;">
-                        <i class="fas fa-sync"></i> Refresh GitHub Link
+                    <button class="btn btn-primary" id="btn-sync-push" onclick="manualSyncPush()" style="flex: 2; justify-content: center; gap: 8px;">
+                        <i class="fas fa-cloud-upload-alt"></i> Push to GitHub
                     </button>
                 </div>
                 <div id="test-result" style="margin-top: 15px; font-size: 13px; display: none; padding: 10px; border-radius: 8px;"></div>
@@ -442,9 +443,9 @@
             if(isSyncing) return;
             isSyncing = true;
 
-            const syncBtn = document.querySelector('button[onclick="initializeSync()"]');
+            const syncBtn = document.getElementById('btn-sync-push');
             const originalHTML = syncBtn.innerHTML;
-            syncBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing...';
+            syncBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
             syncBtn.disabled = true;
 
             if (window.location.protocol === 'file:') {
@@ -519,6 +520,32 @@
             } catch (err) {
                 console.error('Initialize Sync Error:', err);
                 alert(`Sync Error: ${err.message}`);
+            } finally {
+                isSyncing = false;
+                syncBtn.innerHTML = originalHTML;
+                syncBtn.disabled = false;
+            }
+        }
+
+        /**
+         * New Manual Push Handler requested by User
+         */
+        async function manualSyncPush() {
+            if(isSyncing) return;
+            isSyncing = true;
+
+            const syncBtn = document.getElementById('btn-sync-push');
+            const originalHTML = syncBtn.innerHTML;
+            syncBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Pushing...';
+            syncBtn.disabled = true;
+
+            try {
+                const success = await pushDatabase('Manual GitHub Push from Admin Dashboard');
+                if(success) {
+                    notify('Push Successful <br><small>GitHub is updating...</small>');
+                }
+            } catch (e) {
+                notify('Push Failed: ' + e.message);
             } finally {
                 isSyncing = false;
                 syncBtn.innerHTML = originalHTML;
