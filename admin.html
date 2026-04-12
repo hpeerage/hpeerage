@@ -817,7 +817,17 @@
             }
 
             const token = localStorage.getItem('gh_token');
-            if(!token) return alert('GitHub Token Required. Configure sync first.');
+            if(!token || token === 'undefined') return alert('GitHub Token Required. Configure sync first.');
+            
+            if(!currentSha) {
+                const retry = confirm('저장소와 동기화가 되지 않았습니다. (SHA 누락)\n지금 동기화를 시도한 후 다시 푸시하시겠습니까?');
+                if(retry) {
+                    await initializeSync();
+                    if(!currentSha) return alert('동기화 실패: GitHub 연결 상태나 파일을 확인해 주세요.');
+                } else {
+                    return;
+                }
+            }
             
             try {
                 const content = btoa(unescape(encodeURIComponent(JSON.stringify(db, null, 4))));
@@ -1118,26 +1128,29 @@
             const p = localStorage.getItem('gh_path');
 
             // --- Server-side Token Recovery (Local Mode) ---
-            if (!t || t === 'undefined') {
+            if (!t || t === 'undefined' || t === null) {
                 try {
                     const res = await fetch('/api/config');
-                    const config = await res.json();
-                    if (config.GITHUB_TOKEN) {
-                        t = config.GITHUB_TOKEN;
-                        localStorage.setItem('gh_token', t);
-                        logActivity('Token auto-loaded from server', 'success');
+                    if (res.ok) {
+                        const config = await res.json();
+                        if (config.GITHUB_TOKEN) {
+                            t = config.GITHUB_TOKEN;
+                            localStorage.setItem('gh_token', t);
+                            logActivity('Token auto-loaded from server', 'success');
+                        }
                     }
                 } catch (e) {
-                    console.warn("Failed to fetch server config:", e);
+                    // Fail silently in production (static hosting)
+                    console.log("Local config server not found, skipping auto-load.");
                 }
             }
 
-            if(t) document.getElementById('gh-token').value = t;
+            if(t && t !== 'undefined' && t !== 'null') document.getElementById('gh-token').value = t;
             if(p) {
                 document.getElementById('gh-path').value = p;
                 currentDataPath = p;
             }
-            if(t) initializeSync(); 
+            if(t && t !== 'undefined' && t !== 'null') initializeSync(); 
         }
 
         async function fetchHistory(t) {
@@ -1201,7 +1214,12 @@
                     } else {
                         resDiv.style.color = '#10B981';
                         resDiv.style.background = 'rgba(16, 185, 129, 0.1)';
-                        resDiv.innerHTML = '<i class="fas fa-check-circle"></i> Connection Successful! (Repo access OK)';
+                        resDiv.innerHTML = '<i class="fas fa-check-circle"></i> Connection Successful! Setting up dashboard...';
+                        
+                        // Auto-Save and Initialize Sync upon successful test
+                        localStorage.setItem('gh_token', token);
+                        notify('GitHub Token Saved & Synchronizing...');
+                        initializeSync(); // Load projects.json and get SHA
                     }
                 } else {
                     const err = await res.json();
