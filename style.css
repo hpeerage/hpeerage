@@ -83,6 +83,25 @@ body::before {
     justify-content: center;
     align-items: flex-end; /* Align text to bottom area */
     padding-bottom: 12vh; /* Space from bottom */
+    position: relative; /* Added to contain absolute background */
+}
+
+.hero-sky-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background: radial-gradient(circle at 50% 80%, #0c0c22 0%, #000000 100%);
+    overflow: hidden;
+    pointer-events: none;
+}
+
+#Sky_Canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 
 .grid-container {

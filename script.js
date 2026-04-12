@@ -568,7 +568,94 @@ function initInquiryForm() {
     });
 }
 
+/* --- 7. Hero Night Sky Animation --- */
+function initNightSky() {
+    const canvas = document.getElementById('Sky_Canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let width, height, stars = [], shootingStars = [];
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+
+    class Star {
+        constructor() {
+            this.reset();
+        }
+        reset() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.size = Math.random() * 1.5;
+            this.opacity = Math.random();
+            this.twinkleSpeed = 0.005 + Math.random() * 0.01;
+        }
+        update() {
+            this.opacity += this.twinkleSpeed;
+            if (this.opacity > 1 || this.opacity < 0) this.twinkleSpeed *= -1;
+            this.y -= 0.15; // Slow drift
+            if (this.y < 0) this.y = height;
+        }
+        draw() {
+            ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    class ShootingStar {
+        constructor() { this.reset(); }
+        reset() {
+            this.x = Math.random() * width;
+            this.y = -20;
+            this.len = 50 + Math.random() * 100;
+            this.speed = 15 + Math.random() * 15;
+            this.opacity = 1;
+            this.active = false;
+        }
+        update() {
+            if (!this.active) {
+                if (Math.random() < 0.001) this.active = true;
+                return;
+            }
+            this.x += this.speed;
+            this.y += this.speed;
+            this.opacity -= 0.015;
+            if (this.opacity <= 0) this.reset();
+        }
+        draw() {
+            if (!this.active) return;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity})`;
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(this.x - this.len, this.y - this.len);
+            ctx.stroke();
+        }
+    }
+
+    function init() {
+        resize();
+        stars = Array.from({ length: 200 }, () => new Star());
+        shootingStars = [new ShootingStar()];
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        stars.forEach(s => { s.update(); s.draw(); });
+        shootingStars.forEach(s => { s.update(); s.draw(); });
+        requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resize);
+    init();
+    animate();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     loadDynamicContent();
     initInquiryForm();
+    initNightSky();
 });
