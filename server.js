@@ -20,6 +20,22 @@ app.get('/health', (req, res) => {
     res.status(200).json({ status: 'UP', timestamp: new Date().toISOString() });
 });
 
+// GitHub Config Endpoint for Local Development
+app.get('/api/config', (req, res) => {
+    const fs = require('fs');
+    const tokenPath = path.join(__dirname, '..', 'github_token');
+    
+    let token = null;
+    if (fs.existsSync(tokenPath)) {
+        token = fs.readFileSync(tokenPath, 'utf8').trim();
+    }
+    
+    res.json({
+        GITHUB_TOKEN: token,
+        ENV: 'LOCAL'
+    });
+});
+
 // Fallback for SPA or just to handle specific routes if needed
 app.get('*', (req, res) => {
     res.sendFile(path.join(webPath, 'index.html'));

@@ -1113,9 +1113,25 @@
             }
         }
 
-        function loadSavedToken() { 
-            const t = localStorage.getItem('gh_token'); 
+        async function loadSavedToken() { 
+            let t = localStorage.getItem('gh_token'); 
             const p = localStorage.getItem('gh_path');
+
+            // --- Server-side Token Recovery (Local Mode) ---
+            if (!t || t === 'undefined') {
+                try {
+                    const res = await fetch('/api/config');
+                    const config = await res.json();
+                    if (config.GITHUB_TOKEN) {
+                        t = config.GITHUB_TOKEN;
+                        localStorage.setItem('gh_token', t);
+                        logActivity('Token auto-loaded from server', 'success');
+                    }
+                } catch (e) {
+                    console.warn("Failed to fetch server config:", e);
+                }
+            }
+
             if(t) document.getElementById('gh-token').value = t;
             if(p) {
                 document.getElementById('gh-path').value = p;
