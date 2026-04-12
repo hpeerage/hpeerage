@@ -1,14 +1,14 @@
 {
     "earn": [
         {
-            "id": "playit-platform",
-            "category": "Hospitality TECH",
             "title": "Playit Platform",
             "description": "올인원 무인 호텔 솔루션 '플레이잇'의 통합 브랜드 허브 사이트입니다. 전국 48개 지점의 실시간 관제 및 사용자 서비스 제공 프로세스를 설계하고 구현했습니다.",
-            "image": "images/portfolio/Playit_logo_04.jpeg",
-            "url": "https://playit.kr",
-            "size": "large",
-            "status": "active"
+            "status": "active",
+            "category": "Hospitality TECH",
+            "url": "https://hpeerage.github.io/playit-platform/#/client",
+            "size": "medium",
+            "id": "playit-platform",
+            "image": "images/portfolio/Playit_logo_04.jpeg"
         },
         {
             "id": "jeongseon-aria",
