@@ -573,7 +573,7 @@ function initNightSky() {
     const canvas = document.getElementById('Sky_Canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    let width, height, stars = [], shootingStars = [], milkyWayStars = [];
+    let width, height, stars = [], shootingStars = [], milkyWayStars = [], nebulaClouds = [];
 
     function resize() {
         width = canvas.width = window.innerWidth;
@@ -581,20 +581,18 @@ function initNightSky() {
     }
 
     class Star {
-        constructor() {
-            this.reset();
-        }
+        constructor() { this.reset(); }
         reset() {
             this.x = Math.random() * width;
             this.y = Math.random() * height;
             this.size = Math.random() * 1.5;
             this.opacity = Math.random();
-            this.twinkleSpeed = 0.005 + Math.random() * 0.01;
+            this.twinkleSpeed = 0.003 + Math.random() * 0.007;
         }
         update() {
             this.opacity += this.twinkleSpeed;
-            if (this.opacity > 1 || this.opacity < 0) this.twinkleSpeed *= -1;
-            this.y -= 0.15; // Slow drift
+            if (this.opacity > 1 || this.opacity < 0.2) this.twinkleSpeed *= -1;
+            this.y -= 0.1;
             if (this.y < 0) this.y = height;
         }
         draw() {
@@ -608,25 +606,49 @@ function initNightSky() {
     class MilkyWayStar {
         constructor() { this.reset(); }
         reset() {
-            // Place stars in a diagonal band from top-left to bottom-right
             const spread = width > height ? width : height;
             const t = Math.random();
-            const offset = (Math.random() - 0.5) * (spread * 0.35); // Band width
-            
+            const offset = (Math.random() - 0.5) * (spread * 0.3);
             this.x = t * width + offset;
-            this.y = t * height + (Math.random() - 0.5) * (spread * 0.1);
-            this.size = Math.random() * 0.8;
-            this.opacity = Math.random() * 0.3;
+            this.y = t * height + (Math.random() - 0.5) * (spread * 0.05);
+            this.size = Math.random() * 0.7;
+            this.opacity = Math.random() * 0.4;
         }
         update() {
-            this.y -= 0.08;
+            this.y -= 0.05;
             if (this.y < -20) this.y = height + 20;
         }
         draw() {
-            ctx.fillStyle = `rgba(200, 220, 255, ${this.opacity})`;
+            ctx.fillStyle = `rgba(220, 230, 255, ${this.opacity})`;
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
+        }
+    }
+
+    class NebulaCloud {
+        constructor() { this.reset(); }
+        reset() {
+            const spread = width > height ? width : height;
+            const t = Math.random();
+            this.x = t * width + (Math.random() - 0.5) * (spread * 0.3);
+            this.y = t * height + (Math.random() - 0.5) * (spread * 0.08);
+            this.size = 150 + Math.random() * 300;
+            const colors = [
+                'rgba(139, 92, 246, 0.12)', // Purple
+                'rgba(236, 72, 153, 0.08)', // Pink/Magenta
+                'rgba(245, 158, 11, 0.06)', // Orange
+                'rgba(30, 50, 150, 0.05)'   // Deep Blue
+            ];
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+        }
+        draw() {
+            const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+            grad.addColorStop(0, this.color);
+            grad.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = grad;
+            ctx.globalCompositeOperation = 'screen';
+            ctx.fillRect(this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
         }
     }
 
@@ -635,60 +657,75 @@ function initNightSky() {
         reset() {
             this.x = Math.random() * width;
             this.y = -20;
-            this.len = 50 + Math.random() * 100;
-            this.speed = 15 + Math.random() * 15;
+            this.len = 60 + Math.random() * 120;
+            this.speed = 12 + Math.random() * 10;
             this.opacity = 1;
             this.active = false;
         }
         update() {
             if (!this.active) {
-                if (Math.random() < 0.001) this.active = true;
+                if (Math.random() < 0.0008) this.active = true;
                 return;
             }
             this.x += this.speed;
-            this.y += this.speed;
-            this.opacity -= 0.015;
+            this.y += this.speed * 0.5;
+            this.opacity -= 0.012;
             if (this.opacity <= 0) this.reset();
         }
         draw() {
             if (!this.active) return;
             ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity})`;
-            ctx.lineWidth = 1.5;
+            ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(this.x, this.y);
-            ctx.lineTo(this.x - this.len, this.y - this.len);
+            ctx.lineTo(this.x - this.len, this.y - this.len * 0.5);
             ctx.stroke();
         }
     }
 
-    function drawMilkyWayGlow() {
-        const gradient = ctx.createLinearGradient(0, 0, width, height);
-        gradient.addColorStop(0, 'rgba(10, 10, 30, 0)');
-        gradient.addColorStop(0.3, 'rgba(25, 25, 70, 0.05)');
-        gradient.addColorStop(0.5, 'rgba(45, 45, 110, 0.12)');
-        gradient.addColorStop(0.7, 'rgba(25, 25, 70, 0.05)');
-        gradient.addColorStop(1, 'rgba(10, 10, 30, 0)');
+    function drawGalacticCore() {
+        const coreX = width * 0.6;
+        const coreY = height * 0.6;
+        const grad = ctx.createRadialGradient(coreX, coreY, 0, coreX, coreY, width * 0.4);
+        grad.addColorStop(0, 'rgba(255, 140, 60, 0.15)');
+        grad.addColorStop(0.5, 'rgba(139, 92, 246, 0.05)');
+        grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
         
         ctx.save();
-        ctx.fillStyle = gradient;
-        ctx.globalCompositeOperation = 'lighter';
+        ctx.fillStyle = grad;
+        ctx.globalCompositeOperation = 'screen';
         ctx.fillRect(0, 0, width, height);
         ctx.restore();
     }
 
     function init() {
         resize();
-        stars = Array.from({ length: 150 }, () => new Star());
-        milkyWayStars = Array.from({ length: 800 }, () => new MilkyWayStar());
+        stars = Array.from({ length: 120 }, () => new Star());
+        milkyWayStars = Array.from({ length: 1200 }, () => new MilkyWayStar());
+        nebulaClouds = Array.from({ length: 25 }, () => new NebulaCloud());
         shootingStars = [new ShootingStar()];
     }
 
     function animate() {
         ctx.clearRect(0, 0, width, height);
-        drawMilkyWayGlow();
+        
+        // Background Glow
+        drawGalacticCore();
+        
+        // Nebula Clouds (The gaseous background)
+        ctx.save();
+        nebulaClouds.forEach(n => n.draw());
+        ctx.restore();
+
+        // Stars
+        ctx.save();
         milkyWayStars.forEach(s => { s.update(); s.draw(); });
         stars.forEach(s => { s.update(); s.draw(); });
+        ctx.restore();
+
+        // Foremost effects
         shootingStars.forEach(s => { s.update(); s.draw(); });
+        
         requestAnimationFrame(animate);
     }
 
