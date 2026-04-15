@@ -1761,6 +1761,9 @@ textarea.glass-input {
         width: 100% !important;
         border-radius: 12px;
         order: -1; /* Image always on top */
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
     }
 
     .mobile-card-content {
@@ -1967,6 +1970,9 @@ textarea.glass-input {
 
 .mobile-card-img {
     height: 220px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 /* Ghost Text Layer for Depth */
