@@ -64,7 +64,7 @@
             "title": "joykinder",
             "description": "발도르프 교육 안내, 입소 상담 신청, 일일 알림장, 투약 의뢰 및 식단 확인 기능을 갖춘 어린이집 통합 관리 사이트입니다. 학부모와 교사 간의 원활한 소통을 위한 전용 대시보드와 SNS 기능을 지원합니다. ",
             "status": "active",
-            "category": "Management System",
+            "category": "Integrated Management System",
             "url": "https://joykinder.vercel.app/",
             "size": "medium",
             "id": "joykinder",
