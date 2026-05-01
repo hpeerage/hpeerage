@@ -41,13 +41,13 @@
             "image": "images/portfolio/portfolio_02_Playit-PC-Tel-Total-Management.png"
         },
         {
-            "id": "partner",
             "title": "playit_partner",
             "description": "플래이잇 협력업체 포스 런처",
             "status": "active",
             "category": "luncher",
-            "url": "https://hpeerage.github.io/playit-platform/#/partner",
+            "url": "https://playit-platform.vercel.app/#/partner",
             "size": "medium",
+            "id": "playit_partner",
             "image": "images/portfolio/portfolio_02_Playit-partner_luncher.png"
         },
         {
