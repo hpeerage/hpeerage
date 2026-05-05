@@ -79,6 +79,16 @@
             "size": "medium",
             "id": "바른몸케어센터",
             "image": "images/portfolio/TalkMedia_i_6e4b91302d1a.jpeg.jpeg"
+        },
+        {
+            "title": "Playit guardian-core",
+            "description": "관제 시스템",
+            "status": "active",
+            "category": "Management System",
+            "url": "http://localhost:5173/#/monitoring",
+            "size": "medium",
+            "id": "playit-guardian-core",
+            "image": "images/portfolio/Playit_logo_monitoring.jpg"
         }
     ],
     "great": [
