@@ -85,7 +85,7 @@
             "description": "관제 시스템",
             "status": "active",
             "category": "Management System",
-            "url": "http://localhost:5173/#/monitoring",
+            "url": "https://playit-platform.vercel.app/#/monitoring",
             "size": "medium",
             "id": "playit-guardian-core",
             "image": "images/portfolio/Playit_logo_monitoring.jpg"
