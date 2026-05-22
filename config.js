@@ -8,7 +8,7 @@ const CONFIG = {
     ENV: 'PRODUCTION',
 
     // 구글 애널리틱스 4 (GA4) 측정 ID (G-XXXXXXXXXX)
-    GA_ID: 'G-PZZMY8204T',
+    GA_ID: 'G-FZ7VMHY184',
 
     // 기본 URL 설정 (로컬 환경에서는 현재 상대 경로 기반)
     BASE_URL: window.location.origin + window.location.pathname.split('/').slice(0, -1).join('/') + '/',
