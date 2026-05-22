@@ -300,8 +300,8 @@ td { padding: 20px 16px; border-bottom: 1px solid var(--border); }
     box-shadow: 0 25px 50px rgba(0,0,0,0.5);
 }
 
-/* --- Mobile Optimization (v12: 768px) --- */
-@media (max-width: 768px) {
+/* --- Mobile Optimization (v12: 1024px - Matched with JS breakpoint) --- */
+@media (max-width: 1024px) {
     body {
         flex-direction: column;
         font-size: 14px !important;

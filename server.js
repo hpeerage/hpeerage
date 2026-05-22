@@ -11,8 +11,8 @@ app.use(compression()); // Gzip compression
 app.use(morgan('combined')); // Better logging
 app.use(express.json()); // Body parser
 
-// Static Files (Serve the 'web' folder)
-const webPath = path.join(__dirname, 'web');
+// Static Files (Serve the root of this directory)
+const webPath = __dirname;
 app.use(express.static(webPath));
 
 // Health Check Endpoint for Monitoring/Gabia

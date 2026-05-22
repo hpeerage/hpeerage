@@ -436,9 +436,18 @@
         // Section Switching
         function switchSection(id, el) {
             document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            const targetSection = document.getElementById(id);
+            if (targetSection) targetSection.classList.add('active');
+            
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
+            
+            // If el is provided, use it. Otherwise, find the corresponding nav-item.
+            if (el) {
+                el.classList.add('active');
+            } else {
+                const navItem = document.querySelector(`.nav-item[onclick*="${id}"]`);
+                if (navItem) navItem.classList.add('active');
+            }
         }
 
         // GitHub Logic
@@ -844,7 +853,7 @@
                     const updated = await res.json();
                     currentSha = updated.content.sha;
                     localStorage.setItem('last_sync_time', Date.now().toString());
-                    notify('Database Synchronized. <br><small>Changes will be live on the site in 1-2 minutes.</small>');
+                    notify('데이터가 성공적으로 업데이트되었습니다. <br><small>GitHub 배포 프로세스로 인해 실제 반영까지 1~2분 정도 소요될 수 있습니다.</small>');
                     updateStats();
                 } else { 
                     const err = await res.json();
@@ -934,6 +943,49 @@
             }
         }
 
+        /**
+         * Image Compression Utility
+         * 리사이징 및 JPEG 압축 (0.7 quality)을 수행합니다.
+         */
+        async function compressImage(file, maxWidth = 1200, quality = 0.7) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > maxWidth) {
+                            height = (maxWidth / width) * height;
+                            width = maxWidth;
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Canvas to Blob (Compressed)
+                        canvas.toBlob((blob) => {
+                            if (!blob) return reject(new Error('Compression failed'));
+                            // Create a new File object from the blob
+                            const compressedFile = new File([blob], file.name, {
+                                type: 'image/jpeg',
+                                lastModified: Date.now()
+                            });
+                            resolve(compressedFile);
+                        }, 'image/jpeg', quality);
+                    };
+                    img.onerror = reject;
+                };
+                reader.onerror = reject;
+            });
+        }
+
         async function saveEntry() {
             const token = localStorage.getItem('gh_token');
             if(!token || token === 'undefined') {
@@ -972,12 +1024,18 @@
                 const file = document.getElementById('m-file').files[0];
                 if(file) {
                     const path = `images/portfolio/${file.name}`;
+                    
+                    // --- PHASE 2: Image Compression ---
+                    console.log(`Original size: ${(file.size / 1024).toFixed(2)}KB`);
+                    const compressedFile = await compressImage(file);
+                    console.log(`Compressed size: ${(compressedFile.size / 1024).toFixed(2)}KB`);
+
                     // Cache local URL for immediate preview
-                    localImageCache[path] = URL.createObjectURL(file);
+                    localImageCache[path] = URL.createObjectURL(compressedFile);
                     
                     entry.image = path;
                     if(currentSectionType === 'great') entry.after_img = entry.image;
-                    await pushAsset(file, path, token);
+                    await pushAsset(compressedFile, path, token);
                 } else if(editingIdx >= 0) { 
                     entry.image = db[currentSectionType][editingIdx].image; 
                     if(currentSectionType === 'great') entry.after_img = db[currentSectionType][editingIdx].after_img;

@@ -224,13 +224,13 @@ const GITHUB_RAW_BASE = `https://raw.githubusercontent.com/${REPO.owner}/${REPO.
 
 async function loadDynamicContent() {
     try {
-        // Use hConfig for dynamic path mapping
-        const localPath = hConfig.BASE_URL + 'data/projects.json';
+        // Use hConfig for dynamic path mapping with cache-busting
+        const localPath = hConfig.BASE_URL + 'data/projects.json?t=' + Date.now();
         const response = await fetch(localPath).catch(() => null);
         let data = response && response.ok ? await response.json() : null;
 
         if (!data && window.hConfig) {
-            const ghResponse = await fetch(`${hConfig.GITHUB.RAW_URL}data/projects.json`).catch(() => null);
+            const ghResponse = await fetch(`${hConfig.GITHUB.RAW_URL}data/projects.json?t=${Date.now()}`).catch(() => null);
             data = ghResponse && ghResponse.ok ? await ghResponse.json() : null;
         }
 
