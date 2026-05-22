@@ -5,7 +5,7 @@
             "description": "올인원 무인 호텔 솔루션 '플레이잇'의 통합 브랜드 허브 사이트입니다. 전국 48개 지점의 실시간 관제 및 사용자 서비스 제공 프로세스를 설계하고 구현했습니다.",
             "status": "active",
             "category": "Hospitality TECH",
-            "url": "https://hpeerage.github.io/playit-platform/#/client",
+            "url": "https://playit-platform.vercel.app/#/client",
             "size": "medium",
             "id": "playit-platform",
             "image": "images/portfolio/Playit_logo_04.jpeg"
@@ -21,33 +21,33 @@
             "status": "active"
         },
         {
-            "id": "clean-air-duct",
-            "category": "Corporate Website",
             "title": "Clean Air Duct",
             "description": "공장 및 상업 시설 전문 닥트 클리닝 기업 '클린에어덕트'의 공식 웹사이트입니다. 신뢰성 있는 기술력과 서비스 프로세스를 보여주는 디자인으로 제작되었습니다.",
-            "image": "images/portfolio/logo.jpg",
+            "status": "active",
+            "category": "Corporate Website",
             "url": "https://hpeerage.github.io/duct/",
             "size": "medium",
-            "status": "active"
+            "id": "clean-air-duct",
+            "image": "images/portfolio/logo.jpg"
         },
         {
-            "id": "pms",
             "title": "Playit PMS Admin",
             "description": "전국 48개 지점의 무인 호텔을 관리하는 실시간 관제 시스템입니다. 대시보드, 주문 알림, 객실 상태 관리 기능을 포함한 고성능 어드민 패널입니다.",
             "status": "active",
             "category": "Management System",
-            "url": "https://hpeerage.github.io/playit-platform/#/",
+            "url": "https://playit-platform.vercel.app/#/",
             "size": "medium",
+            "id": "playit-pms-admin",
             "image": "images/portfolio/portfolio_02_Playit-PC-Tel-Total-Management.png"
         },
         {
-            "id": "partner",
             "title": "playit_partner",
             "description": "플래이잇 협력업체 포스 런처",
             "status": "active",
             "category": "luncher",
-            "url": "https://hpeerage.github.io/playit-platform/#/partner",
+            "url": "https://playit-platform.vercel.app/#/partner",
             "size": "medium",
+            "id": "playit_partner",
             "image": "images/portfolio/portfolio_02_Playit-partner_luncher.png"
         },
         {
@@ -59,6 +59,36 @@
             "url": "https://artlink-alpha.vercel.app/",
             "size": "medium",
             "image": "images/portfolio/artlink_logo.jpg"
+        },
+        {
+            "title": "joykinder",
+            "description": "발도르프 교육 안내, 입소 상담 신청, 일일 알림장, 투약 의뢰 및 식단 확인 기능을 갖춘 어린이집 통합 관리 사이트입니다. 학부모와 교사 간의 원활한 소통을 위한 전용 대시보드와 SNS 기능을 지원합니다. ",
+            "status": "active",
+            "category": "Integrated Management System",
+            "url": "https://joykinder.vercel.app/",
+            "size": "medium",
+            "id": "joykinder",
+            "image": "images/portfolio/logo-SQ1BlmZY.png"
+        },
+        {
+            "title": "바른몸케어센터",
+            "description": "바른몸 케어센터는 체형 교정, 통증 관리, 임산부 케어 등 전문 프로그램을 제공하며, 실시간 예약과 임상 사례 공유를 통해 신뢰도 높은 맞춤형 건강 관리를 지원하는 프리미엄 헬스케어 플랫폼입니다.",
+            "status": "active",
+            "category": "pletform",
+            "url": "https://brmclinic.vercel.app/",
+            "size": "medium",
+            "id": "바른몸케어센터",
+            "image": "images/portfolio/TalkMedia_i_6e4b91302d1a.jpeg.jpeg"
+        },
+        {
+            "title": "Playit guardian-core",
+            "description": "관제 시스템",
+            "status": "active",
+            "category": "Management System",
+            "url": "https://playit-platform.vercel.app/#/monitoring",
+            "size": "medium",
+            "id": "playit-guardian-core",
+            "image": "images/portfolio/Playit_logo_monitoring.jpg"
         }
     ],
     "great": [
