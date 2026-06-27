@@ -192,7 +192,8 @@
             "status": "active",
             "tag": "PART 3",
             "list": [],
-            "id": "3"
+            "id": "3",
+            "image": "images/portfolio/step03.png"
         }
     ],
     "system": {
