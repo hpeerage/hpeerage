@@ -11,14 +11,14 @@
             "image": "images/portfolio/Playit_logo_04.jpeg"
         },
         {
-            "id": "jeongseon-aria",
-            "category": "Wellness Tourism Curation Platform",
             "title": "Jeongseon Aria",
             "description": "정선군 웰니스 관광 프로젝트 '정선 아리아'의 공식 큐레이션 플랫폼입니다. 사용자 여정 중심의 UX 설계와 미려한 인터페이스를 통해 지역 관광 자원을 연결했습니다.",
-            "image": "images/portfolio/ARIA_logo_01.jpeg",
-            "url": "https://hpeerage.github.io/aria/",
+            "status": "active",
+            "category": "Wellness Tourism Curation Platform",
+            "url": "https://ariajs.kr",
             "size": "medium",
-            "status": "active"
+            "id": "jeongseon-aria",
+            "image": "images/portfolio/ARIA_logo_01.jpeg"
         },
         {
             "title": "Clean Air Duct",
