@@ -1001,10 +1001,15 @@ body::before {
     color: #ffffff;
 }
 
-.slide-desc {
+.slide-desc,
+.great-card .card-info p,
+.mobile-great-info p,
+.value-content p,
+.mobile-card-desc {
     font-size: 14px;
     color: rgba(255, 255, 255, 0.65);
     line-height: 1.5; /* 줄간격 미세 조정으로 높이 절약 */
+    white-space: pre-wrap; /* 어드민 줄바꿈 개행 문자(new line) 원본 보존 렌더링 */
 }
 
 .slide-visual {
