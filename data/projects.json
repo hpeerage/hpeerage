@@ -183,7 +183,8 @@
             "status": "active",
             "tag": "PART 2",
             "list": [],
-            "id": "2"
+            "id": "2",
+            "image": "images/portfolio/step02.jpeg"
         },
         {
             "title": "PART 3. 검증 및 안정화",
