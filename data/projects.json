@@ -174,7 +174,8 @@
             "status": "active",
             "tag": "PART 1",
             "list": [],
-            "id": "1"
+            "id": "1",
+            "image": "images/portfolio/step01.jpeg"
         },
         {
             "title": "PART 2. 정교한 설계 및 구현",
