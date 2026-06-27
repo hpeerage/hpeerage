@@ -457,13 +457,53 @@ body::before {
     display: none !important;
 }
 
-.mobile-adaptive .respect-slide.slide-adventure {
-    width: 100vw !important;
-    flex: 0 0 100vw !important;
+.mobile-adaptive .respect-section {
+    min-height: auto !important;
+    height: auto !important;
+    padding: 80px 0 60px !important;
+    overflow: visible !important;
+}
+
+.mobile-adaptive .respect-header-container {
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+    padding: 0 24px !important;
+    margin-bottom: 40px !important;
+    max-width: 100% !important;
+    pointer-events: auto !important;
+}
+
+.mobile-adaptive .respect-main-title {
+    font-size: 24px !important;
+    line-height: 1.4 !important;
+}
+
+.mobile-adaptive .respect-sub-title {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
 }
 
 .mobile-adaptive .horizontal-wrapper {
-    overflow-x: hidden !important;
+    height: auto !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 0 24px 30px !important;
+    box-sizing: border-box !important;
+}
+
+.mobile-adaptive .horizontal-wrapper::-webkit-scrollbar {
+    height: 4px;
+}
+
+.mobile-adaptive .horizontal-wrapper::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.mobile-adaptive .horizontal-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(124, 252, 0, 0.3);
+    border-radius: 2px;
 }
 
 /* --- Card Footer Link --- */
@@ -808,12 +848,15 @@ body::before {
     z-index: 1;
 }
 
-/* --- Section 4: Respect (Horizontal Scroll) --- */
+/* --- Section 4: Respect (Horizontal Scroll & Glassmorphism) --- */
 .respect-section {
     overflow: hidden;
     position: relative;
     background-color: var(--forest-black);
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .grain-overlay {
@@ -838,9 +881,44 @@ body::before {
     z-index: 1;
 }
 
+/* Section Headcopy Styling */
+.respect-header-container {
+    position: absolute;
+    top: 170px; /* 로고 영역 아래로 안전하게 이동 */
+    left: 120px;
+    z-index: 10;
+    max-width: 900px;
+    pointer-events: none;
+}
+
+.respect-main-title {
+    font-size: calc(20px + 0.6vw); /* 글자 크기를 세련되게 최적화 */
+    font-weight: 800;
+    line-height: 1.35;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    word-break: keep-all; /* 단어가 임의로 잘리지 않도록 설정 */
+}
+
+.highlight-lime {
+    color: var(--respect-lime);
+    text-shadow: 0 0 25px rgba(124, 252, 0, 0.4);
+}
+
+.respect-sub-title {
+    font-size: 14px; /* 서브카피 가독성 높은 크기로 축소 */
+    font-weight: 400;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 750px;
+}
+
 .horizontal-wrapper {
     height: 100vh;
     width: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .horizontal-content {
@@ -856,91 +934,110 @@ body::before {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 120px;
+    padding: 270px 120px 70px; /* 상하 패딩 대폭 축소하여 가용 높이 60px 추가 확보 */
     position: relative;
+    box-sizing: border-box;
 }
 
 .slide-inner {
     max-width: 1100px;
     width: 100%;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 50px;
+    align-items: center;
     position: relative;
     z-index: 5;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    padding: 30px 40px; /* 상하 패딩 30px로 축소하여 세로 공간 추가 확보 */
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(255, 255, 255, 0.02);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+    overflow: visible; /* 수평 잘림 현상 방지를 위해 visible로 원복 */
+}
+
+.respect-slide:hover .slide-inner {
+    border-color: rgba(124, 252, 0, 0.2);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6), 0 0 45px rgba(124, 252, 0, 0.08);
+}
+
+.slide-text-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .slide-tag {
     color: var(--respect-lime);
     text-transform: uppercase;
     font-weight: 700;
-    font-size: 16px;
-    letter-spacing: 0.4em;
-    margin-bottom: 24px;
-    display: block;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    margin-bottom: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.section-headline h2 {
-    font-size: 64px;
-    font-weight: 850;
-    line-height: 1.05;
-    letter-spacing: -0.05em;
-    margin-bottom: 28px;
+.slide-tag::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--respect-lime);
+    box-shadow: 0 0 10px var(--respect-lime);
+}
+
+.slide-title {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
     color: #ffffff;
-    text-wrap: balance;
 }
 
-.section-headline .highlight {
-    color: #00F2FE;
-    text-shadow: 0 0 40px rgba(0, 242, 254, 0.4);
+.slide-desc {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.5; /* 줄간격 미세 조정으로 높이 절약 */
 }
 
-.section-headline p {
-    font-size: 18px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    opacity: 0.6;
-    margin-bottom: 12px;
-}
-
-.victory-highlight {
-    color: var(--respect-lime);
-    text-shadow: 0 0 20px rgba(124, 252, 0, 0.3);
+.slide-visual {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    perspective: 1000px;
 }
 
 .adventure-visual {
-    margin-top: 40px;
     width: 100%;
-    max-width: 600px;
-    opacity: 0.8;
+    max-width: 290px; /* 이미지 최대 규격 제한으로 카드 뚫림 방지 */
+    max-height: 290px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    aspect-ratio: 1 / 1;
+    transition: transform 0.5s ease;
 }
 
 .adventure-visual img {
     width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
 }
 
-.victory-list, .respect-values {
-    list-style: none;
-    margin-top: 30px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.victory-list li, .respect-values li {
-    background: rgba(124, 252, 0, 0.05);
-    border: 1px solid rgba(124, 252, 0, 0.2);
-    padding: 12px 24px;
-    border-radius: 40px;
-    color: var(--respect-lime);
-    font-weight: 600;
-    font-size: 18px;
-}
-
-.slide-desc {
-    font-size: 24px;
-    color: var(--zinc-grey);
-    line-height: 1.6;
-    max-width: 700px;
+.respect-slide:hover .adventure-visual img {
+    transform: scale(1.05);
 }
 
 /* Progress Tracker */
@@ -1856,13 +1953,36 @@ textarea.glass-input {
 
     .hero-section { min-height: 70vh !important; }
 
-    /* Respect Section Mobile Fix */
+    /* Respect Section Mobile Fix (Snap Scroll) */
     .mobile-adaptive .horizontal-content {
-        width: 100% !important;
+        display: flex !important;
+        width: max-content !important;
         transform: none !important;
+        gap: 20px !important;
     }
     .mobile-adaptive .respect-slide {
-        padding: 40px 20px !important;
+        width: calc(100vw - 48px) !important;
+        height: auto !important;
+        flex: 0 0 calc(100vw - 48px) !important;
+        scroll-snap-align: start !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    .mobile-adaptive .respect-slide .slide-inner {
+        grid-template-columns: 1fr !important;
+        gap: 30px !important;
+        padding: 30px 24px !important;
+        border-radius: 24px !important;
+    }
+    .mobile-adaptive .respect-slide .slide-title {
+        font-size: 22px !important;
+        margin-bottom: 16px !important;
+    }
+    .mobile-adaptive .respect-slide .slide-desc {
+        font-size: 14px !important;
+    }
+    .mobile-adaptive .respect-progress-container {
+        display: none !important;
     }
 
     /* Mobile Great Card Logic Update */

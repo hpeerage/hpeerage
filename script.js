@@ -40,8 +40,8 @@ mm.add("(min-width: 481px)", () => {
 
 // --- 1. Background Logo Scroll Interaction ---
 mm.add({
-    isDesktop: "(min-width: 769px)",
-    isMobile: "(max-width: 768px)"
+    isDesktop: "(min-width: 1025px)",
+    isMobile: "(max-width: 1024px)"
 }, (context) => {
     let { isMobile } = context.conditions;
     
@@ -170,7 +170,7 @@ function initMagnifier() {
 
 // 3. Bento Card Intersection Observer (Mobile Alternative to Hover)
 function initMobileObserver() {
-    if (window.innerWidth > 768) return;
+    if (window.innerWidth > 1024) return;
     const cards = document.querySelectorAll(".mobile-project-card, .mobile-great-card");
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -187,15 +187,15 @@ function initMobileObserver() {
 
 // 3D Tilt for Bento Cards (Desktop Only)
 function initBentoTilt() {
-    if (window.innerWidth <= 768) return;
-    const cards = document.querySelectorAll('.bento-card, .great-card');
+    if (window.innerWidth <= 1024) return;
+    const cards = document.querySelectorAll('.bento-card, .great-card, .slide-inner');
     cards.forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            const rotateX = (y - (rect.height / 2)) / 30; 
-            const rotateY = ((rect.width / 2) - x) / 30;
+            const rotateX = (y - (rect.height / 2)) / 35; 
+            const rotateY = ((rect.width / 2) - x) / 35;
             gsap.to(card, { rotateX, rotateY, transformPerspective: 1200, duration: 0.4 });
         });
         card.addEventListener('mouseleave', () => {
@@ -204,19 +204,48 @@ function initBentoTilt() {
     });
 }
 
-// --- 4. Respect Horizontal Scroll (Mobile Snapping) ---
-mm.add("(min-width: 769px)", () => {
+// --- 4. Respect Horizontal Scroll (Mobile Snapping & Parallax) ---
+function initRespectScroll() {
     const hContent = document.querySelector("#Respect_Scroll_Content");
-    if (hContent) {
-        gsap.to(hContent, {
-            x: () => -(hContent.scrollWidth - window.innerWidth),
-            scrollTrigger: {
-                trigger: "#Respect_Section", start: "top top", end: () => `+=${hContent.scrollWidth}`,
-                scrub: 1.5, pin: true, anticipatePin: 1
+    if (!hContent) return;
+
+    // Create master timeline linked to scroll trigger
+    const respectTl = gsap.timeline({
+        scrollTrigger: {
+            trigger: "#Respect_Section",
+            start: "top top",
+            end: () => `+=${hContent.scrollWidth}`,
+            scrub: 1.5,
+            pin: true,
+            anticipatePin: 1,
+            onUpdate: (self) => {
+                const progress = document.getElementById("Respect_Progress");
+                if (progress) {
+                    progress.style.width = `${self.progress * 100}%`;
+                }
             }
-        });
-    }
-});
+        }
+    });
+
+    // Horizontal Scroll translation (using dynamic function)
+    respectTl.to(hContent, {
+        x: () => -(hContent.scrollWidth - window.innerWidth),
+        ease: "none"
+    });
+
+    // Slide internal elements horizontal parallax offsets
+    const slides = gsap.utils.toArray(".respect-slide");
+    slides.forEach((slide) => {
+        const text = slide.querySelector("[data-parallax-text]");
+        
+        if (text) {
+            respectTl.to(text, {
+                x: 60, // 텍스트는 반대로 밀어줌
+                ease: "none"
+            }, 0);
+        }
+    });
+}
 
 // --- 5. Data Loading & Rendering ---
 const REPO = { owner: 'hpeerage', repo: 'hpeerage' };
@@ -255,6 +284,7 @@ function renderAll(data) {
     if (!isMobile()) {
         initBentoTilt();
         initMagnifier();
+        initRespectScroll();
     }
     if (isMobile()) initMobileObserver();
 }
@@ -333,19 +363,18 @@ function renderMobileRespect(respectData) {
     const content = document.getElementById('Respect_Scroll_Content');
     if (!content || !respectData) return;
     
-    // On mobile, we only show the first major slide (Adventure) as per current CSS design
-    const m = respectData[0];
-    content.innerHTML = `
-        <div class="respect-slide slide-adventure">
+    content.innerHTML = respectData.map(m => `
+        <div class="respect-slide slide-${m.id}">
             <div class="slide-inner">
-                <span class="slide-tag">${m.tag}</span>
-                <h3 class="slide-title">${m.title}</h3>
-                <div class="adventure-visual">
-                    <img src="${hConfig.getAssetPath(m.image)}" alt="${m.tag}">
+                <div class="slide-text-area" data-parallax-text>
+                    <span class="slide-tag">${m.tag}</span>
+                    <h3 class="slide-title">${m.title}</h3>
+                    ${m.description ? `<p class="slide-desc">${m.description}</p>` : ''}
                 </div>
+                ${m.image ? `<div class="slide-visual" data-parallax-visual><div class="adventure-visual"><img src="${hConfig.getAssetPath(m.image)}" alt="${m.tag}"></div></div>` : ''}
             </div>
         </div>
-    `;
+    `).join('');
 }
 
 function renderMobileEarn(earnProjects) {
@@ -449,15 +478,12 @@ function renderRespectSection(respectData) {
     content.innerHTML = respectData.map(m => `
         <div class="respect-slide slide-${m.id}">
             <div class="slide-inner">
-                <span class="slide-tag">${m.tag}</span>
-                <h3 class="slide-title">${m.title}</h3>
-                ${m.image ? `<div class="adventure-visual"><img src="${hConfig.getAssetPath(m.image)}" alt="${m.tag}"></div>` : ''}
-                ${m.description ? `<p class="slide-desc">${m.description}</p>` : ''}
-                ${m.list && m.list.length > 0 ? `
-                    <ul class="${m.id === 'victory' ? 'victory' : 'respect'}-list">
-                        ${m.list.map(li => `<li>${li}</li>`).join('')}
-                    </ul>
-                ` : ''}
+                <div class="slide-text-area" data-parallax-text>
+                    <span class="slide-tag">${m.tag}</span>
+                    <h3 class="slide-title">${m.title}</h3>
+                    ${m.description ? `<p class="slide-desc">${m.description}</p>` : ''}
+                </div>
+                ${m.image ? `<div class="slide-visual" data-parallax-visual><div class="adventure-visual"><img src="${hConfig.getAssetPath(m.image)}" alt="${m.tag}"></div></div>` : ''}
             </div>
         </div>
     `).join('');
@@ -738,4 +764,13 @@ document.addEventListener('DOMContentLoaded', () => {
     loadDynamicContent();
     initInquiryForm();
     initNightSky();
+});
+
+window.addEventListener('load', () => {
+    // 모든 이미지와 리소스가 완전히 로드된 시점에 GSAP ScrollTrigger를 새로고침하여 가로 영역 너비가 꼬이지 않도록 합니다.
+    setTimeout(() => {
+        if (typeof ScrollTrigger !== 'undefined') {
+            ScrollTrigger.refresh();
+        }
+    }, 300);
 });
