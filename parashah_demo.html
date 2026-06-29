@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parashah App Simulator - Premium UX Prototype</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Serif+Hebrew:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="parashah_demo.css">
+</head>
+<body>
+    <div class="simulation-container">
+        <!-- Background decorative gradients -->
+        <div class="bg-glow blue"></div>
+        <div class="bg-glow purple"></div>
+
+        <!-- Phone Frame Wrapper -->
+        <div class="phone-frame">
+            <div class="phone-notch"></div>
+            
+            <!-- App Container inside Phone -->
+            <div class="app-container">
+                <!-- Status Bar -->
+                <div class="app-status-bar">
+                    <span class="status-time">09:41</span>
+                    <div class="status-icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-three-quarters"></i>
+                    </div>
+                </div>
+
+                <!-- App Header -->
+                <header class="app-header">
+                    <div class="header-top">
+                        <div class="user-greeting">
+                            <span class="jewish-date" id="JewishDateDisplay">5786 Tevet 10</span>
+                            <h2 class="app-logo">Hpeerage Torah</h2>
+                        </div>
+                        <button class="icon-btn notification-btn">
+                            <i class="far fa-bell"></i>
+                            <span class="badge-dot"></span>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- MAIN SCROLLABLE VIEWPORT -->
+                <main class="app-viewport">
+                    
+                    <!-- TAB 1: HOME VIEW -->
+                    <section class="tab-view active" id="View_Home">
+                        <!-- Weekly Parashah Card -->
+                        <div class="parashah-hero-card">
+                            <div class="hero-glow"></div>
+                            <span class="sub-label">WEEKLY PARASHAH</span>
+                            <h3 class="hero-title" id="HeroParashahName">베레시트 (Bereishit)</h3>
+                            <p class="hero-range" id="HeroParashahRange">창세기 1:1 - 6:8</p>
+                            <div class="hero-badges">
+                                <span class="range-badge torah"><i class="fas fa-scroll"></i> 토라</span>
+                                <span class="range-badge haftarah"><i class="fas fa-book"></i> 하프타라</span>
+                                <span class="range-badge brit"><i class="fas fa-cross"></i> 브릿 하다샤</span>
+                            </div>
+                        </div>
+
+                        <!-- Daily Reading (Aliyah) Progress Card -->
+                        <div class="aliyah-today-card">
+                            <div class="card-header">
+                                <h4 class="card-title">오늘의 토라 분량 (Aliyah)</h4>
+                                <span class="aliyah-status-indicator" id="AliyahIndicator">0 / 7 완료</span>
+                            </div>
+                            <div class="aliyah-content">
+                                <span class="aliyah-day" id="AliyahDayName">Rishon (1일차 - 일요일)</span>
+                                <p class="aliyah-range-text" id="AliyahRangeText">창세기 1:1 - 2:3</p>
+                                
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" id="AliyahProgressBar" style="width: 0%"></div>
+                                </div>
+
+                                <button class="btn btn-primary start-reading-btn" id="StartReadingBtn">
+                                    <i class="fas fa-play-circle"></i> 오늘의 Aliyah 읽기
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Hebcal Integration Insight -->
+                        <div class="insight-card">
+                            <div class="insight-icon"><i class="fas fa-info-circle"></i></div>
+                            <div class="insight-body">
+                                <h5>유대력 동기화 완료</h5>
+                                <p id="InsightText">디아스포라(Diaspora) 기준 연간 일정이 캐싱되어 인터넷 없이 동작 중입니다.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- TAB 2: BIBLE READER VIEW -->
+                    <section class="tab-view" id="View_Reader">
+                        <div class="reader-control-header">
+                            <div class="reader-title-area">
+                                <span class="section-tag" id="ReaderSectionTag">Rishon (1일차)</span>
+                                <h3 class="reader-chapter-title" id="ReaderTitle">창세기 1장</h3>
+                            </div>
+                            <button class="toggle-btn active" id="LangToggleBtn">
+                                <i class="fas fa-language"></i> 한/히 대조
+                            </button>
+                        </div>
+
+                        <div class="reader-scroll-content" id="ReaderTextContent">
+                            <!-- Verses injected by JavaScript -->
+                        </div>
+
+                        <div class="reader-floating-action">
+                            <button class="btn btn-success complete-btn" id="CompleteReadingBtn">
+                                <i class="fas fa-check-circle"></i> 오늘의 Aliyah 완독 완료!
+                            </button>
+                        </div>
+                    </section>
+
+                    <!-- TAB 3: CALENDAR VIEW -->
+                    <section class="tab-view" id="View_Calendar">
+                        <div class="calendar-header-nav">
+                            <button class="nav-arrow"><i class="fas fa-chevron-left"></i></button>
+                            <h3 class="calendar-month-title">테벳 (Tevet 5786)</h3>
+                            <button class="nav-arrow"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+
+                        <!-- Calendar Grid -->
+                        <div class="calendar-grid">
+                            <div class="day-header">일</div>
+                            <div class="day-header">월</div>
+                            <div class="day-header">화</div>
+                            <div class="day-header">수</div>
+                            <div class="day-header">목</div>
+                            <div class="day-header">금</div>
+                            <div class="day-header">토</div>
+
+                            <!-- Calendar days injected by JS (shows badge on Saturday) -->
+                            <div class="day-cell prev-month">27</div>
+                            <div class="day-cell prev-month">28</div>
+                            <div class="day-cell prev-month">29</div>
+                            <div class="day-cell prev-month">30</div>
+                            <div class="day-cell">1</div>
+                            <div class="day-cell">2</div>
+                            <div class="day-cell Saturday-cell" data-badge-id="1">
+                                <span class="date-num">3</span>
+                                <div class="badge-icon locked" id="Badge_Bereishit"><i class="fas fa-scroll"></i></div>
+                                <span class="badge-label">베레시트</span>
+                            </div>
+                            
+                            <div class="day-cell">4</div>
+                            <div class="day-cell">5</div>
+                            <div class="day-cell">6</div>
+                            <div class="day-cell">7</div>
+                            <div class="day-cell">8</div>
+                            <div class="day-cell">9</div>
+                            <div class="day-cell Saturday-cell" data-badge-id="2">
+                                <span class="date-num">10</span>
+                                <div class="badge-icon locked" id="Badge_Noach"><i class="fas fa-scroll"></i></div>
+                                <span class="badge-label">노아</span>
+                            </div>
+
+                            <div class="day-cell">11</div>
+                            <div class="day-cell">12</div>
+                            <div class="day-cell">13</div>
+                            <div class="day-cell">14</div>
+                            <div class="day-cell">15</div>
+                            <div class="day-cell">16</div>
+                            <div class="day-cell Saturday-cell" data-badge-id="3">
+                                <span class="date-num">17</span>
+                                <div class="badge-icon locked"><i class="fas fa-lock"></i></div>
+                                <span class="badge-label">레흐레하</span>
+                            </div>
+                            
+                            <div class="day-cell">18</div>
+                            <div class="day-cell">19</div>
+                            <div class="day-cell">20</div>
+                            <div class="day-cell">21</div>
+                            <div class="day-cell">22</div>
+                            <div class="day-cell">23</div>
+                            <div class="day-cell Saturday-cell">
+                                <span class="date-num">24</span>
+                                <div class="badge-icon locked"><i class="fas fa-lock"></i></div>
+                                <span class="badge-label">바예이라</span>
+                            </div>
+
+                            <div class="day-cell">25</div>
+                            <div class="day-cell">26</div>
+                            <div class="day-cell">27</div>
+                            <div class="day-cell">28</div>
+                            <div class="day-cell">29</div>
+                            <div class="day-cell">30</div>
+                            <div class="day-cell next-month">1</div>
+                        </div>
+
+                        <!-- Achievement Status -->
+                        <div class="achievement-section">
+                            <h4 class="section-title">🏆 안식일 파라샤 컬렉션</h4>
+                            <div class="badge-collection-grid">
+                                <div class="badge-status-item" id="BadgeItem_Bereishit">
+                                    <div class="status-badge-icon locked"><i class="fas fa-scroll"></i></div>
+                                    <span>베레시트</span>
+                                </div>
+                                <div class="badge-status-item" id="BadgeItem_Noach">
+                                    <div class="status-badge-icon locked"><i class="fas fa-scroll"></i></div>
+                                    <span>노아</span>
+                                </div>
+                                <div class="badge-status-item">
+                                    <div class="status-badge-icon locked"><i class="fas fa-lock"></i></div>
+                                    <span>레흐레하</span>
+                                </div>
+                                <div class="badge-status-item">
+                                    <div class="status-badge-icon locked"><i class="fas fa-lock"></i></div>
+                                    <span>바예이라</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- TAB 4: SETTINGS VIEW -->
+                    <section class="tab-view" id="View_Settings">
+                        <div class="settings-group">
+                            <h4 class="group-title">유대력 및 절기 스케줄 설정</h4>
+                            <div class="settings-item">
+                                <div class="item-label-area">
+                                    <h5>디아스포라 (Diaspora) 스케줄</h5>
+                                    <p>이스라엘 외 거주자 표준 스케줄 적용</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="DiasporaToggle" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <h4 class="group-title">일몰(Sunset) 스마트 리마인더</h4>
+                            <div class="settings-item">
+                                <div class="item-label-area">
+                                    <h5>금요일 안식일 시작 대비 알림</h5>
+                                    <p>일몰 1시간 전 토라 준비 푸시 수신</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="SunsetToggle" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="settings-item">
+                                <div class="item-label-area">
+                                    <h5>GPS 위치 정보 활용</h5>
+                                    <p>로컬 일몰 시간 계산에 위경도 사용</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="GPSToggle">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <h4 class="group-title">오프라인 성경 데이터셋</h4>
+                            <div class="settings-item">
+                                <div class="item-label-area">
+                                    <h5>한국어 개역개정 (KRV)</h5>
+                                    <p>설치 완료 (11.2 MB)</p>
+                                </div>
+                                <i class="fas fa-check-circle verified-icon"></i>
+                            </div>
+                            <div class="settings-item">
+                                <div class="item-label-area">
+                                    <h5>히브리어 원어 성경 (WLC)</h5>
+                                    <p>설치 완료 (8.5 MB)</p>
+                                </div>
+                                <i class="fas fa-check-circle verified-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="settings-info-card">
+                            <p><strong>Hpeerage Mastery Architecture</strong><br>Offline-First Sync v1.0.0</p>
+                        </div>
+                    </section>
+
+                </main>
+
+                <!-- Navigation Tab Bar -->
+                <nav class="app-tab-bar">
+                    <button class="tab-btn active" data-target="View_Home">
+                        <i class="fas fa-home"></i>
+                        <span>홈</span>
+                    </button>
+                    <button class="tab-btn" data-target="View_Reader" id="NavReaderBtn">
+                        <i class="fas fa-scroll"></i>
+                        <span>성경 뷰어</span>
+                    </button>
+                    <button class="tab-btn" data-target="View_Calendar">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>캘린더</span>
+                    </button>
+                    <button class="tab-btn" data-target="View_Settings">
+                        <i class="fas fa-cog"></i>
+                        <span>설정</span>
+                    </button>
+                </nav>
+
+            </div>
+        </div>
+
+        <!-- Simulation Instruction Panel -->
+        <div class="instruction-panel">
+            <h3 class="panel-title"><i class="fas fa-terminal"></i> 파라샤 시뮬레이터 가이드</h3>
+            <p class="panel-desc">미미가 기획한 모바일 앱의 프리미엄 인터랙티브 프로토타입입니다. 다음 시나리오를 가볍게 검증해 보실 수 있습니다.</p>
+            
+            <ul class="scenario-list">
+                <li>
+                    <strong>시나리오 1: 오늘의 토라 읽기</strong>
+                    <p>대시보드에서 <strong>[오늘의 Aliyah 읽기]</strong> 버튼을 누르면 성경 뷰어로 이동해 한글/히브리어 대조 구절을 볼 수 있습니다.</p>
+                </li>
+                <li>
+                    <strong>시나리오 2: Aliyah 완료 및 스탬프 수집</strong>
+                    <p>뷰어 아래의 <strong>[완독 완료]</strong> 버튼을 누르면 1일차 읽기가 기록되며, 진행률이 14%로 올라갑니다. 임의로 여러 번 눌러 7일차를 다 읽으면 캘린더의 <strong>'베레시트' 안식일 뱃지</strong>가 잠금 해제(컬러 활성화)됩니다!</p>
+                </li>
+                <li>
+                    <strong>시나리오 3: 디아스포라 설정 스위칭</strong>
+                    <p><strong>[설정]</strong> 탭에서 디아스포라 토글을 끄면(이스라엘 본토 기준) 4월 18일 안식일 스케줄이 Shemini에서 <strong>Tazria</strong>로 실시간 스위칭되는 디아스포라 편차 연산을 캘린더 탭에서 체감할 수 있습니다.</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="parashah_demo.js"></script>
+</body>
+</html>
