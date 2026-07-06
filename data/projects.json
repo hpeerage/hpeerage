@@ -179,14 +179,6 @@
             "list": []
         },
         {
-            "id": "victory",
-            "tag": "VICTORY",
-            "title": "기간 내 최상의 퀄리티:<br>유연한 기간 조정 및 안정화",
-            "description": "4주 기본 작업 단위를 기준으로 프로젝트 복잡도와 피드백 속도에 맞춰 유연하고 합리적으로 기간을 운영합니다. 철저한 QA(품질 검증)와 안정화 프로세스를 거쳐 정해진 기간 내 반드시 완성도 높은 결과물로 승리를 가져다 드립니다.",
-            "image": "images/respect_victory.png",
-            "list": []
-        },
-        {
             "title": "PART 3. 검증 및 안정화",
             "description": "08. QA (품질 검증) - 철저한 기능 테스트 및 오작동·오류 검증\n09. 배포 - 서버 세팅 및 최종 서비스 안정적 런칭\n10. 유지보수 - 오픈 후 1개월간 무상 결함 수정 및 운영 안정화 지원",
             "status": "active",
@@ -194,6 +186,14 @@
             "list": [],
             "id": "3",
             "image": "images/portfolio/step03.png"
+        },
+        {
+            "id": "victory",
+            "tag": "VICTORY",
+            "title": "기간 내 최상의 퀄리티:<br>유연한 기간 조정 및 안정화",
+            "description": "4주 기본 작업 단위를 기준으로 프로젝트 복잡도와 피드백 속도에 맞춰 유연하고 합리적으로 기간을 운영합니다. 철저한 QA(품질 검증)와 안정화 프로세스를 거쳐 정해진 기간 내 반드시 완성도 높은 결과물로 승리를 가져다 드립니다.",
+            "image": "images/respect_victory.png",
+            "list": []
         }
     ],
     "system": {
