@@ -163,14 +163,6 @@
             "image": "images/portfolio/step02.jpeg"
         },
         {
-            "id": "challenge",
-            "tag": "CHALLENGE",
-            "title": "리스크 없는 출발점:<br>기획서 초안 & 100% 환불 보장",
-            "description": "아이디어를 시각화하는 첫 단계인 '기획서 초안'을 보고 최종 진행 여부를 결정하세요. 전체적인 구조와 핵심 메뉴 동선 설계 단계까지 고객이 확신을 가지지 못한다면, 100% 환불을 보장합니다. 상호 존중(Respect)은 투명한 신뢰로부터 시작됩니다.",
-            "image": "images/respect_challenge.png",
-            "list": []
-        },
-        {
             "title": "PART 3. 검증 및 안정화",
             "description": "08. QA (품질 검증) - 철저한 기능 테스트 및 오작동·오류 검증\n09. 배포 - 서버 세팅 및 최종 서비스 안정적 런칭\n10. 유지보수 - 오픈 후 1개월간 무상 결함 수정 및 운영 안정화 지원",
             "status": "active",
@@ -178,6 +170,14 @@
             "list": [],
             "id": "3",
             "image": "images/portfolio/step03.png"
+        },
+        {
+            "id": "challenge",
+            "tag": "CHALLENGE",
+            "title": "리스크 없는 출발점:<br>기획서 초안 & 100% 환불 보장",
+            "description": "아이디어를 시각화하는 첫 단계인 '기획서 초안'을 보고 최종 진행 여부를 결정하세요. 전체적인 구조와 핵심 메뉴 동선 설계 단계까지 고객이 확신을 가지지 못한다면, 100% 환불을 보장합니다. 상호 존중(Respect)은 투명한 신뢰로부터 시작됩니다.",
+            "image": "images/respect_challenge.png",
+            "list": []
         },
         {
             "id": "process",
