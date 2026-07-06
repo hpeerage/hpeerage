@@ -651,11 +651,38 @@
                     <td style="font-weight: 700;">${r.title.replace('<br>', ' ')}</td>
                     <td>${r.list ? r.list.length : 0} items</td>
                     <td>
-                        <button class="btn" style="padding: 6px;" onclick="openModal('respect', ${idx})"><i class="fas fa-edit"></i></button>
+                        <button class="btn" style="padding: 6px; margin-right: 5px;" onclick="moveRespect(${idx}, -1)" ${idx === 0 ? 'disabled' : ''}><i class="fas fa-arrow-up"></i></button>
+                        <button class="btn" style="padding: 6px; margin-right: 5px;" onclick="moveRespect(${idx}, 1)" ${idx === db.respect.length - 1 ? 'disabled' : ''}><i class="fas fa-arrow-down"></i></button>
+                        <button class="btn" style="padding: 6px; margin-right: 5px;" onclick="openModal('respect', ${idx})"><i class="fas fa-edit"></i></button>
                         <button class="btn btn-danger" style="padding: 6px;" onclick="deleteEntry('respect', ${idx})"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>
             `).join('');
+        }
+
+        async function moveRespect(idx, direction) {
+            if(!db || !db.respect) return;
+            const targetIdx = idx + direction;
+            if(targetIdx < 0 || targetIdx >= db.respect.length) return;
+            
+            // Swap elements
+            const temp = db.respect[idx];
+            db.respect[idx] = db.respect[targetIdx];
+            db.respect[targetIdx] = temp;
+            
+            // Re-render UI immediately for responsiveness
+            renderRespect();
+            
+            const success = await pushDatabase('Respect order changed');
+            if(success) {
+                notify('순서가 변경되었습니다.');
+            } else {
+                // Rollback on failure
+                const rollbackTemp = db.respect[idx];
+                db.respect[idx] = db.respect[targetIdx];
+                db.respect[targetIdx] = rollbackTemp;
+                renderRespect();
+            }
         }
 
         // --- INQUIRIES LOGIC ---
@@ -829,15 +856,21 @@
             }
 
             const token = localStorage.getItem('gh_token');
-            if(!token || token === 'undefined') return alert('GitHub Token Required. Configure sync first.');
+            if(!token || token === 'undefined') {
+                alert('GitHub Token Required. Configure sync first.');
+                return false;
+            }
             
             if(!currentSha) {
                 const retry = confirm('저장소와 동기화가 되지 않았습니다. (SHA 누락)\n지금 동기화를 시도한 후 다시 푸시하시겠습니까?');
                 if(retry) {
                     await initializeSync();
-                    if(!currentSha) return alert('동기화 실패: GitHub 연결 상태나 파일을 확인해 주세요.');
+                    if(!currentSha) {
+                        alert('동기화 실패: GitHub 연결 상태나 파일을 확인해 주세요.');
+                        return false;
+                    }
                 } else {
-                    return;
+                    return false;
                 }
             }
             
@@ -855,11 +888,16 @@
                     localStorage.setItem('last_sync_time', Date.now().toString());
                     notify('데이터가 성공적으로 업데이트되었습니다. <br><small>GitHub 배포 프로세스로 인해 실제 반영까지 1~2분 정도 소요될 수 있습니다.</small>');
                     updateStats();
+                    return true;
                 } else { 
                     const err = await res.json();
                     alert(`Git Push Failed: ${err.message}`); 
+                    return false;
                 }
-            } catch (e) { alert(`Unexpected Error: ${e.message}`); }
+            } catch (e) { 
+                alert(`Unexpected Error: ${e.message}`); 
+                return false;
+            }
         }
 
 
