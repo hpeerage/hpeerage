@@ -171,14 +171,6 @@
             "list": []
         },
         {
-            "id": "process",
-            "tag": "PROCESS",
-            "title": "정교함이 만드는 차이:<br>마케팅 관점의 세부 설계(SB)",
-            "description": "단순한 화면 배치를 넘어, 실제 비즈니스 매출을 견인할 수 있는 마케팅 관점의 화면 설계서(SB)를 상세하게 작성합니다. 개발 착수 전 시각적 디자인 스케치와 정밀한 기획 로직을 융합하여 개발 오차를 0%에 수렴하게 만듭니다.",
-            "image": "images/respect_process.png",
-            "list": []
-        },
-        {
             "title": "PART 3. 검증 및 안정화",
             "description": "08. QA (품질 검증) - 철저한 기능 테스트 및 오작동·오류 검증\n09. 배포 - 서버 세팅 및 최종 서비스 안정적 런칭\n10. 유지보수 - 오픈 후 1개월간 무상 결함 수정 및 운영 안정화 지원",
             "status": "active",
@@ -186,6 +178,14 @@
             "list": [],
             "id": "3",
             "image": "images/portfolio/step03.png"
+        },
+        {
+            "id": "process",
+            "tag": "PROCESS",
+            "title": "정교함이 만드는 차이:<br>마케팅 관점의 세부 설계(SB)",
+            "description": "단순한 화면 배치를 넘어, 실제 비즈니스 매출을 견인할 수 있는 마케팅 관점의 화면 설계서(SB)를 상세하게 작성합니다. 개발 착수 전 시각적 디자인 스케치와 정밀한 기획 로직을 융합하여 개발 오차를 0%에 수렴하게 만듭니다.",
+            "image": "images/respect_process.png",
+            "list": []
         },
         {
             "id": "victory",
