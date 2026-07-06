@@ -145,14 +145,6 @@
     ],
     "respect": [
         {
-            "id": "challenge",
-            "tag": "CHALLENGE",
-            "title": "리스크 없는 출발점:<br>기획서 초안 & 100% 환불 보장",
-            "description": "아이디어를 시각화하는 첫 단계인 '기획서 초안'을 보고 최종 진행 여부를 결정하세요. 전체적인 구조와 핵심 메뉴 동선 설계 단계까지 고객이 확신을 가지지 못한다면, 100% 환불을 보장합니다. 상호 존중(Respect)은 투명한 신뢰로부터 시작됩니다.",
-            "image": "images/respect_challenge.png",
-            "list": []
-        },
-        {
             "title": "PART 1. 분석 및 방향성 수립",
             "description": "01. 요구사항 정의 - 아이디어 구체화 및 핵심 목표 설정\n02. 리서칭 - 관련 시장 자료 취합 및 경쟁사 데이터 분석\n03. 기획서 초안 - 전체적인 구조와 핵심 메뉴 동선 설계\n04. 진행 여부 확인",
             "status": "active",
@@ -160,6 +152,14 @@
             "list": [],
             "id": "1",
             "image": "images/portfolio/step01.jpeg"
+        },
+        {
+            "id": "challenge",
+            "tag": "CHALLENGE",
+            "title": "리스크 없는 출발점:<br>기획서 초안 & 100% 환불 보장",
+            "description": "아이디어를 시각화하는 첫 단계인 '기획서 초안'을 보고 최종 진행 여부를 결정하세요. 전체적인 구조와 핵심 메뉴 동선 설계 단계까지 고객이 확신을 가지지 못한다면, 100% 환불을 보장합니다. 상호 존중(Respect)은 투명한 신뢰로부터 시작됩니다.",
+            "image": "images/respect_challenge.png",
+            "list": []
         },
         {
             "id": "process",
