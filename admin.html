@@ -722,15 +722,78 @@
             if(!inq) return;
 
             const container = document.getElementById('inquiry-details');
+            
+            // 기존 폼 응답 대비 fallback 처리
+            const pName = inq.projectName || '미지정 프로젝트';
+            const target = inq.target || 'N/A';
+            const platforms = inq.platforms ? inq.platforms.join(', ') : 'N/A';
+            const features = inq.features ? inq.features.join(', ') : 'N/A';
+            const phase = inq.phase || 'N/A';
+            const difficulty = inq.difficulty || 'N/A';
+            const adminTools = inq.adminTools ? inq.adminTools.join(', ') : 'N/A';
+            
+            // BM
+            const bmPaid = inq.bmPaid || 'N/A';
+            const bmAd = inq.bmAd || 'N/A';
+            const bmSub = inq.bmSub || 'N/A';
+            const bmBroker = inq.bmBroker || 'N/A';
+            
+            const scale = inq.scale || 'N/A';
+            const benchmark = inq.benchmark || '없음';
+            const attachment = inq.attachment || '없음';
+            
+            const benchmarkLink = inq.benchmark && inq.benchmark.startsWith('http') 
+                ? `<a href="${inq.benchmark}" target="_blank" style="color: var(--purple); text-decoration: underline;">${inq.benchmark}</a>`
+                : benchmark;
+                
+            const attachmentLink = inq.attachment && inq.attachment.startsWith('http')
+                ? `<a href="${inq.attachment}" target="_blank" style="color: var(--purple); text-decoration: underline;">${inq.attachment}</a>`
+                : attachment;
+
             container.innerHTML = `
-                <div style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px;">
-                    <p style="margin-bottom: 5px;"><strong style="color: var(--gold); display: inline-block; width: 80px;">의뢰인:</strong> ${inq.name}</p>
-                    <p style="margin-bottom: 5px;"><strong style="color: var(--gold); display: inline-block; width: 80px;">연락처:</strong> ${inq.contact}</p>
-                    <p style="margin-bottom: 5px;"><strong style="color: var(--gold); display: inline-block; width: 80px;">시작일정:</strong> ${inq.schedule}</p>
-                </div>
-                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.02);">
-                    <h4 style="margin-bottom: 10px; color: var(--gold); font-size: 13px;">프로젝트 상세 내용</h4>
-                    <p style="white-space: pre-wrap; font-size: 13px; color: var(--text-muted);">${inq.details}</p>
+                <div style="max-height: 480px; overflow-y: auto; padding-right: 10px; text-align: left;">
+                    <!-- 의뢰자 및 프로젝트 기본정보 -->
+                    <div style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px;">
+                        <p style="margin-bottom: 8px;"><strong style="color: var(--gold); display: inline-block; width: 100px;">의뢰인/사명:</strong> ${inq.name}</p>
+                        <p style="margin-bottom: 8px;"><strong style="color: var(--gold); display: inline-block; width: 100px;">연락처:</strong> ${inq.contact}</p>
+                        <p style="margin-bottom: 8px;"><strong style="color: var(--gold); display: inline-block; width: 100px;">프로젝트명:</strong> <span style="font-weight: 700; color: #ffffff;">${pName}</span></p>
+                    </div>
+
+                    <!-- 서비스 상세 환경 및 요건 -->
+                    <h4 style="margin-bottom: 10px; color: var(--gold); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">서비스 및 기획 요건</h4>
+                    <div style="background: rgba(255,255,255,0.01); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03); margin-bottom: 15px; display: grid; grid-template-columns: 1fr; gap: 8px; font-size: 13px;">
+                        <p><strong style="color: rgba(255,255,255,0.5); display: inline-block; width: 120px;">서비스 타겟:</strong> ${target}</p>
+                        <p><strong style="color: rgba(255,255,255,0.5); display: inline-block; width: 120px;">요구 플랫폼:</strong> ${platforms}</p>
+                        <p><strong style="color: rgba(255,255,255,0.5); display: inline-block; width: 120px;">필수 핵심 기능:</strong> <span style="color: #ffffff;">${features}</span></p>
+                        <p><strong style="color: rgba(255,255,255,0.5); display: inline-block; width: 120px;">개발 표현 범위:</strong> ${phase}</p>
+                        <p><strong style="color: rgba(255,255,255,0.5); display: inline-block; width: 120px;">기획 예상 난이도:</strong> ${difficulty}</p>
+                        <p><strong style="color: rgba(255,255,255,0.5); display: inline-block; width: 120px;">요구 운영 도구:</strong> ${adminTools}</p>
+                    </div>
+
+                    <!-- 비즈니스 모델(BM) 분석 -->
+                    <h4 style="margin-bottom: 10px; color: var(--gold); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">비즈니스 모델(BM) 분석</h4>
+                    <div style="background: rgba(255,255,255,0.01); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03); margin-bottom: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 13px;">
+                        <p><strong style="color: rgba(255,255,255,0.5);">유료 결제 상품:</strong> ${bmPaid}</p>
+                        <p><strong style="color: rgba(255,255,255,0.5);">광고 노출/수익:</strong> ${bmAd}</p>
+                        <p><strong style="color: rgba(255,255,255,0.5);">구독형 모델:</strong> ${bmSub}</p>
+                        <p><strong style="color: rgba(255,255,255,0.5);">중개/수수료:</strong> ${bmBroker}</p>
+                    </div>
+
+                    <!-- 재무 및 일정, 참고자료 -->
+                    <h4 style="margin-bottom: 10px; color: var(--gold); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">예산 및 일정</h4>
+                    <div style="background: rgba(255,255,255,0.01); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03); margin-bottom: 15px; display: grid; grid-template-columns: 1fr; gap: 8px; font-size: 13px;">
+                        <p><strong style="color: rgba(255,255,255,0.5); display: inline-block; width: 120px;">진행 희망 일정:</strong> ${inq.schedule || 'N/A'}</p>
+                        <p><strong style="color: rgba(255,255,255,0.5); display: inline-block; width: 120px;">MVP 예산 규모:</strong> <span style="color: #FFD700; font-weight:600;">${inq.budget || 'N/A'}</span></p>
+                        <p><strong style="color: rgba(255,255,255,0.5); display: inline-block; width: 120px;">예상 사용자 규모:</strong> ${scale}</p>
+                        <p><strong style="color: rgba(255,255,255,0.5); display: inline-block; width: 120px;">벤치마킹 URL:</strong> ${benchmarkLink}</p>
+                        <p><strong style="color: rgba(255,255,255,0.5); display: inline-block; width: 120px;">첨부 파일 링크:</strong> ${attachmentLink}</p>
+                    </div>
+
+                    <!-- 상세 설명 -->
+                    <h4 style="margin-bottom: 10px; color: var(--gold); font-size: 13px;">상세 요청 사항 & 비전</h4>
+                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.02); margin-bottom: 10px;">
+                        <p style="white-space: pre-wrap; font-size: 13.5px; color: var(--text-muted); line-height: 1.6;">${inq.details}</p>
+                    </div>
                 </div>
             `;
             

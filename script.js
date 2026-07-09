@@ -524,38 +524,168 @@ function renderSystemLinks(links) {
 }
 
 // --- 6. Inquiry System (Holy Stage) ---
+// --- 6. Inquiry System (Holy Stage) - Premium Multi-step Wizard ---
 function initInquiryForm() {
     const form = document.getElementById('inquiryForm');
     const successMsg = document.getElementById('inquirySuccess');
     if(!form) return;
 
+    let currentStep = 1;
+    const totalSteps = 5;
+
+    const steps = form.querySelectorAll('.form-step');
+    const dots = document.querySelectorAll('.step-dot');
+    const progressFill = document.getElementById('Inq_Progress_Fill');
+    
+    const prevBtn = document.getElementById('prevStepBtn');
+    const nextBtn = document.getElementById('nextStepBtn');
+    const submitBtn = document.getElementById('inqSubmitBtn');
+
+    // 스텝 전환 함수
+    function goToStep(step, direction = 'next') {
+        if (step < 1 || step > totalSteps) return;
+
+        const currentEl = form.querySelector(`.form-step[data-step="${currentStep}"]`);
+        const targetEl = form.querySelector(`.form-step[data-step="${step}"]`);
+
+        if (!currentEl || !targetEl) return;
+
+        // GSAP 전환 애니메이션 적용
+        const isNext = direction === 'next';
+        
+        // 현재 스텝 비활성화 및 페이드아웃
+        gsap.to(currentEl, {
+            opacity: 0,
+            x: isNext ? -20 : 20,
+            duration: 0.3,
+            onComplete: () => {
+                currentEl.classList.remove('active');
+                currentEl.style.display = 'none';
+                
+                // 대상 스텝 활성화 및 페이드인
+                targetEl.style.display = 'block';
+                targetEl.classList.add('active');
+                
+                gsap.fromTo(targetEl, 
+                    { opacity: 0, x: isNext ? 20 : -20 },
+                    { opacity: 1, x: 0, duration: 0.4, ease: "power2.out" }
+                );
+            }
+        });
+
+        // 상태 업데이트
+        currentStep = step;
+        updateUI();
+    }
+
+    // UI 상태(프로그램 바, 버튼 등) 업데이트
+    function updateUI() {
+        // 프로그레스 바 채우기 비율
+        const progressPercent = (currentStep / totalSteps) * 100;
+        if (progressFill) progressFill.style.width = `${progressPercent}%`;
+
+        // 상단 단계 도트(Step Indicator) 제어
+        dots.forEach((dot, index) => {
+            const stepNum = index + 1;
+            dot.classList.remove('active', 'complete');
+            if (stepNum < currentStep) {
+                dot.classList.add('complete');
+            } else if (stepNum === currentStep) {
+                dot.classList.add('active');
+            }
+        });
+
+        // 네비게이션 버튼 가시성
+        if (currentStep === 1) {
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'block';
+            submitBtn.style.display = 'none';
+        } else if (currentStep === totalSteps) {
+            prevBtn.style.display = 'block';
+            nextBtn.style.display = 'none';
+            submitBtn.style.display = 'block';
+        } else {
+            prevBtn.style.display = 'block';
+            nextBtn.style.display = 'block';
+            submitBtn.style.display = 'none';
+        }
+    }
+
+    // 현재 활성화된 단계의 필수 입력값 확인
+    function validateStep(step) {
+        const stepEl = form.querySelector(`.form-step[data-step="${step}"]`);
+        if (!stepEl) return true;
+
+        const inputs = stepEl.querySelectorAll('input[required], select[required], textarea[required]');
+        let isValid = true;
+
+        inputs.forEach(input => {
+            if (!input.checkValidity()) {
+                input.reportValidity(); // 브라우저 고유 검증 말풍선 띄움
+                isValid = false;
+            }
+        });
+
+        return isValid;
+    }
+
+    // 이벤트 리스너 연결
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            if (validateStep(currentStep)) {
+                goToStep(currentStep + 1, 'next');
+            }
+        });
+    }
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            goToStep(currentStep - 1, 'prev');
+        });
+    }
+
+    // 최종 제출 처리
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        // 1. Collect Data
+        if (!validateStep(currentStep)) return;
+
+        // 1. 16개 데이터 취합
         const formData = {
             id: 'inq_' + Date.now(),
             timestamp: new Date().toISOString(),
             name: document.getElementById('inqName').value.trim(),
             contact: document.getElementById('inqContact').value.trim(),
-            category: document.getElementById('inqCategory').value,
-            budget: document.getElementById('inqBudget').value,
-            schedule: document.getElementById('inqSchedule').value.trim(),
+            projectName: document.getElementById('inqProjectName').value.trim(),
+            target: form.querySelector('input[name="inqTarget"]:checked')?.value || 'B2C',
+            platforms: Array.from(form.querySelectorAll('input[name="inqPlatform"]:checked')).map(el => el.value),
+            features: Array.from(form.querySelectorAll('input[name="inqFeatures"]:checked')).map(el => el.value),
+            phase: form.querySelector('input[name="inqPhase"]:checked')?.value || '기획/설계 단계',
+            difficulty: form.querySelector('input[name="inqDifficulty"]:checked')?.value || '아이디어 구상 단계',
+            adminTools: Array.from(form.querySelectorAll('input[name="inqAdminTools"]:checked')).map(el => el.value),
+            bmPaid: form.querySelector('input[name="bmPaid"]:checked')?.value || '보통',
+            bmAd: form.querySelector('input[name="bmAd"]:checked')?.value || '보통',
+            bmSub: form.querySelector('input[name="bmSub"]:checked')?.value || '보통',
+            bmBroker: form.querySelector('input[name="bmBroker"]:checked')?.value || '보통',
+            schedule: form.querySelector('select[name="inqSchedule"]').value,
+            budget: form.querySelector('select[name="inqBudget"]').value,
+            scale: form.querySelector('select[name="inqScale"]').value,
+            benchmark: document.getElementById('inqBenchmark').value.trim(),
+            attachment: document.getElementById('inqAttachment').value.trim(),
             details: document.getElementById('inqDetails').value.trim()
         };
 
-        // 2. Local-First Storage (Mocking DB)
+        // 2. 로컬 스토리지에 백업 (Local-First)
         let localInquiries = JSON.parse(localStorage.getItem('hpeerage_inquiries') || '[]');
         localInquiries.push(formData);
         localStorage.setItem('hpeerage_inquiries', JSON.stringify(localInquiries));
         
-        console.log("=== Mission Delivered: Local Mode ===");
+        console.log("=== Mission Delivered: 16-field Google Form Logic ===");
         console.log("Saved Inquiry:", formData);
-        
-        // 3. Google Apps Script / EmailJS 연동 (배포 모드)
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const originalBtnText = submitBtn.innerText;
 
+        // 3. GAS 전송 처리
+        const originalBtnText = submitBtn.innerText;
+        
         if (window.hConfig && hConfig.GAS_URL && hConfig.GAS_URL.trim() !== '') {
             submitBtn.innerText = "전송 중...";
             submitBtn.disabled = true;
@@ -570,28 +700,39 @@ function initInquiryForm() {
             })
             .then(res => res.json())
             .then(data => {
-                console.log("Email Notification Sent:", data);
+                console.log("GAS Spreadsheet Sent Success:", data);
             })
             .catch(err => {
-                console.error("Email Notification Failed:", err);
+                console.error("GAS Spreadsheet Sent Failed:", err);
             })
             .finally(() => {
-                // UI Feedback
-                form.style.opacity = '0';
-                setTimeout(() => {
-                    form.style.display = 'none';
-                    successMsg.style.display = 'block';
-                }, 500);
+                // UI 피드백: 폼 사라지고 완료 메시지 출력
+                gsap.to(form, {
+                    opacity: 0,
+                    duration: 0.4,
+                    onComplete: () => {
+                        form.style.display = 'none';
+                        successMsg.style.display = 'block';
+                        gsap.fromTo(successMsg, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.6 });
+                    }
+                });
             });
         } else {
-            // 로컬 전용 처리 (이메일 발송 미설정 시)
-            form.style.opacity = '0';
-            setTimeout(() => {
-                form.style.display = 'none';
-                successMsg.style.display = 'block';
-            }, 500);
+            // GAS_URL 미설정 시에도 로컬에 저장하고 성공 화면 제공
+            gsap.to(form, {
+                opacity: 0,
+                duration: 0.4,
+                onComplete: () => {
+                    form.style.display = 'none';
+                    successMsg.style.display = 'block';
+                    gsap.fromTo(successMsg, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.6 });
+                }
+            });
         }
     });
+
+    // 초기 UI 동기화
+    updateUI();
 }
 
 /* --- 7. Hero Night Sky Animation --- */

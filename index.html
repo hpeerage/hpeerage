@@ -267,39 +267,210 @@
 
             <!-- Inquiry & Quotation System -->
             <div class="holy-inquiry-container" id="Holy_Inquiry">
-                <form id="inquiryForm" class="holy-inquiry-form">
-                    <div class="form-row">
-                        <input type="text" id="inqName" name="inqName" class="glass-input" placeholder="의뢰인 또는 업체명"
-                            required>
-                        <input type="text" id="inqContact" name="inqContact" class="glass-input"
-                            placeholder="이메일 또는 연락처" required>
+                <!-- Progress Line -->
+                <div class="inquiry-progress-wrapper">
+                    <div class="inquiry-progress-track">
+                        <div class="inquiry-progress-fill" id="Inq_Progress_Fill" style="width: 20%;"></div>
                     </div>
-                    <div class="form-row">
-                        <select id="inqCategory" name="inqCategory" class="glass-input" required>
-                            <option value="" disabled selected>요구사항</option>
-                            <option value="Web PM & Planning">아이디어만 있어요</option>
-                            <option value="App UI/UX">기획이 필요해요</option>
-                            <option value="Full-stack Solution">기획과 디자인이 있어요</option>
-                            <option value="Others">기타</option>
-                        </select>
-                        <select id="inqBudget" name="inqBudget" class="glass-input" required>
-                            <option value="" disabled selected>예상 예산</option>
-                            <option value="협의 필요">협의 필요</option>
-                            <option value="1천만 원 이하">1천만 원 이하</option>
-                            <option value="1천~5천">1천~5천</option>
-                            <option value="5천~1억">5천~1억</option>
-                            <option value="1억 이상">1억 이상</option>
-                        </select>
+                    <div class="inquiry-progress-steps">
+                        <div class="step-dot active" data-step="1">1</div>
+                        <div class="step-dot" data-step="2">2</div>
+                        <div class="step-dot" data-step="3">3</div>
+                        <div class="step-dot" data-step="4">4</div>
+                        <div class="step-dot" data-step="5">5</div>
                     </div>
-                    <div class="form-row">
-                        <input type="text" id="inqSchedule" name="inqSchedule" class="glass-input"
-                            placeholder="희망 시작일 및 기간" required>
+                </div>
+
+                <form id="inquiryForm" class="holy-inquiry-form multi-step">
+                    <!-- Step 1: 기본 정보 -->
+                    <div class="form-step active" data-step="1">
+                        <h3 class="step-title">Step 1. 기본 정보</h3>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="inqName" class="form-label">요청자 또는 회사명 <span class="required">*</span></label>
+                                <input type="text" id="inqName" name="inqName" class="glass-input" placeholder="성함 또는 기업명을 입력해주세요" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="inqContact" class="form-label">연락처 또는 이메일 <span class="required">*</span></label>
+                                <input type="text" id="inqContact" name="inqContact" class="glass-input" placeholder="연락받으실 정보를 입력해주세요" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="inqProjectName" class="form-label">서비스(프로젝트)명 <span class="required">*</span></label>
+                                <input type="text" id="inqProjectName" name="inqProjectName" class="glass-input" placeholder="기획 중인 프로젝트명을 입력해주세요" required>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-row">
-                        <textarea id="inqDetails" name="inqDetails" class="glass-input" rows="4"
-                            placeholder="프로젝트 상세 내용 및 비전" required></textarea>
+
+                    <!-- Step 2: 서비스 환경 -->
+                    <div class="form-step" data-step="2">
+                        <h3 class="step-title">Step 2. 서비스 환경</h3>
+                        <div class="form-group">
+                            <label class="form-label">의뢰하시는 서비스의 타겟은 무엇인가요? <span class="required">*</span></label>
+                            <div class="custom-radio-group">
+                                <label class="custom-radio"><input type="radio" name="inqTarget" value="B2C" checked><span>B2C <small>(일반 대중 대상)</small></span></label>
+                                <label class="custom-radio"><input type="radio" name="inqTarget" value="B2B"><span>B2B <small>(기업 대상)</small></span></label>
+                                <label class="custom-radio"><input type="radio" name="inqTarget" value="B2G"><span>B2G <small>(정부/공공기관 대상)</small></span></label>
+                                <label class="custom-radio"><input type="radio" name="inqTarget" value="사내 시스템"><span>사내 시스템 <small>(임직원 전용)</small></span></label>
+                                <label class="custom-radio"><input type="radio" name="inqTarget" value="기타"><span>기타</span></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">플랫폼(디바이스)은 어떤 형태가 필요하신가요? <span class="required">*</span> <small>(복수 선택 가능)</small></label>
+                            <div class="custom-checkbox-group">
+                                <label class="custom-checkbox"><input type="checkbox" name="inqPlatform" value="Mobile Web/App" checked><span>Mobile Web/App</span></label>
+                                <label class="custom-checkbox"><input type="checkbox" name="inqPlatform" value="Responsive Web"><span>Responsive Web</span></label>
+                                <label class="custom-checkbox"><input type="checkbox" name="inqPlatform" value="PC Desktop"><span>PC Desktop</span></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">기획서에 꼭 포함되어야 하는 핵심 기능을 골라주세요. <small>(복수 선택 가능)</small></label>
+                            <div class="custom-checkbox-grid">
+                                <label class="custom-checkbox"><input type="checkbox" name="inqFeatures" value="회원가입 및 로그인"><span>회원가입 및 로그인</span></label>
+                                <label class="custom-checkbox"><input type="checkbox" name="inqFeatures" value="상품 전시 및 결제"><span>상품 전시 및 결제</span></label>
+                                <label class="custom-checkbox"><input type="checkbox" name="inqFeatures" value="데이터 입력 및 관리"><span>데이터 입력 및 관리</span></label>
+                                <label class="custom-checkbox"><input type="checkbox" name="inqFeatures" value="알림 및 푸시 기능"><span>알림 및 푸시 기능</span></label>
+                                <label class="custom-checkbox"><input type="checkbox" name="inqFeatures" value="소셜 미디어 기능"><span>소셜 미디어 기능</span></label>
+                                <label class="custom-checkbox"><input type="checkbox" name="inqFeatures" value="타사/외부 API 연동"><span>타사/외부 API 연동</span></label>
+                                <label class="custom-checkbox"><input type="checkbox" name="inqFeatures" value="관리자 페이지"><span>관리자 페이지</span></label>
+                            </div>
+                        </div>
                     </div>
-                    <button type="submit" class="holy-submit-btn" id="inqSubmitBtn">함께 위대한 역사를 시작하기</button>
+
+                    <!-- Step 3: 개발 준비도 -->
+                    <div class="form-step" data-step="3">
+                        <h3 class="step-title">Step 3. 개발 준비도</h3>
+                        <div class="form-group">
+                            <label class="form-label">표현하시는 프레임워크 단계는 어떻게 되시나요? <span class="required">*</span></label>
+                            <div class="custom-radio-group">
+                                <label class="custom-radio"><input type="radio" name="inqPhase" value="기획/설계 단계" checked><span>기획/설계 단계</span></label>
+                                <label class="custom-radio"><input type="radio" name="inqPhase" value="퍼블리싱/프론트엔드"><span>퍼블리싱/프론트엔드</span></label>
+                                <label class="custom-radio"><input type="radio" name="inqPhase" value="풀스택"><span>풀스택 통합 개발</span></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">이번 프로젝트의 기획 난이도는 어떻게 예상하시나요? <span class="required">*</span></label>
+                            <div class="custom-radio-group">
+                                <label class="custom-radio"><input type="radio" name="inqDifficulty" value="아이디어 구상 단계" checked><span>아이디어 구상 단계</span></label>
+                                <label class="custom-radio"><input type="radio" name="inqDifficulty" value="상세 기획 필요"><span>상세 기획 필요</span></label>
+                                <label class="custom-radio"><input type="radio" name="inqDifficulty" value="화면 설계 완료"><span>화면 설계 완료</span></label>
+                                <label class="custom-radio"><input type="radio" name="inqDifficulty" value="UI/UX 디자인 가이드라인 완료"><span>디자인 가이드 완료</span></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">프로젝트 개발 완료 후 운영 도구는 무엇이 필요하신가요? <small>(복수 선택 가능)</small></label>
+                            <div class="custom-checkbox-grid">
+                                <label class="custom-checkbox"><input type="checkbox" name="inqAdminTools" value="관리자 콘솔"><span>관리자 콘솔 (어드민)</span></label>
+                                <label class="custom-checkbox"><input type="checkbox" name="inqAdminTools" value="데이터 백업 및 모니터링"><span>데이터 백업 및 모니터링</span></label>
+                                <label class="custom-checkbox"><input type="checkbox" name="inqAdminTools" value="로그 분석 및 리포트 도구"><span>로그 분석 및 리포트</span></label>
+                                <label class="custom-checkbox"><input type="checkbox" name="inqAdminTools" value="고객 지원 도구"><span>고객 지원 도구</span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: 비즈니스 및 재무 -->
+                    <div class="form-step" data-step="4">
+                        <h3 class="step-title">Step 4. 비즈니스 및 재무</h3>
+                        <div class="form-group">
+                            <label class="form-label">비즈니스 모델(BM)에 대한 질문입니다. 해당 사항에 체크해 주세요.</label>
+                            <div class="bm-grid-container">
+                                <table class="bm-grid-table">
+                                    <thead>
+                                        <tr>
+                                            <th>구분</th>
+                                            <th>전혀 해당 없음</th>
+                                            <th>보통</th>
+                                            <th>해당함</th>
+                                            <th>잘 모름</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>유료 결제 상품 존재</td>
+                                            <td><input type="radio" name="bmPaid" value="전혀 해당 없음"></td>
+                                            <td><input type="radio" name="bmPaid" value="보통" checked></td>
+                                            <td><input type="radio" name="bmPaid" value="해당함"></td>
+                                            <td><input type="radio" name="bmPaid" value="잘 모름"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>광고 노출 및 광고 수익</td>
+                                            <td><input type="radio" name="bmAd" value="전혀 해당 없음"></td>
+                                            <td><input type="radio" name="bmAd" value="보통" checked></td>
+                                            <td><input type="radio" name="bmAd" value="해당함"></td>
+                                            <td><input type="radio" name="bmAd" value="잘 모름"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>구독형 모델</td>
+                                            <td><input type="radio" name="bmSub" value="전혀 해당 없음"></td>
+                                            <td><input type="radio" name="bmSub" value="보통" checked></td>
+                                            <td><input type="radio" name="bmSub" value="해당함"></td>
+                                            <td><input type="radio" name="bmSub" value="잘 모름"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>중개 및 수수료 모델</td>
+                                            <td><input type="radio" name="bmBroker" value="전혀 해당 없음"></td>
+                                            <td><input type="radio" name="bmBroker" value="보통" checked></td>
+                                            <td><input type="radio" name="bmBroker" value="해당함"></td>
+                                            <td><input type="radio" name="bmBroker" value="잘 모름"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label class="form-label">예상 진행 희망 일정 <span class="required">*</span></label>
+                                <select name="inqSchedule" class="glass-input" required>
+                                    <option value="즉시 착수 가능 (1개월 내)">즉시 착수 가능 (1개월 내)</option>
+                                    <option value="3개월 이내 착수 희망" selected>3개월 이내 착수 희망</option>
+                                    <option value="3개월 이후 (장기 프로젝트)">3개월 이후 (장기 프로젝트)</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label class="form-label">1차 MVP 예산 규모 <span class="required">*</span></label>
+                                <select name="inqBudget" class="glass-input" required>
+                                    <option value="3천만 원 미만 (스타트업 등)">3천만 원 미만 (스타트업 등)</option>
+                                    <option value="3천~1억 원 (성장기 서비스)" selected>3천~1억 원 (성장기 서비스)</option>
+                                    <option value="1억 원 이상 (대기업/SI)">1억 원 이상 (대기업/SI)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label class="form-label">예상되는 사용자 규모 <span class="required">*</span></label>
+                                <select name="inqScale" class="glass-input" required>
+                                    <option value="1천 명 미만 (소규모 서비스)">1천 명 미만 (소규모 서비스)</option>
+                                    <option value="1천~1만 명 (성장기 서비스)" selected>1천~1만 명 (성장기 서비스)</option>
+                                    <option value="1만 명 이상 (대규모 서비스)">1만 명 이상 (대규모 서비스)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: 상세 비전 -->
+                    <div class="form-step" data-step="5">
+                        <h3 class="step-title">Step 5. 상세 비전</h3>
+                        <div class="form-group">
+                            <label for="inqBenchmark" class="form-label">참고할 만한 벤치마킹 사이트 (참조 URL)</label>
+                            <input type="text" id="inqBenchmark" name="inqBenchmark" class="glass-input" placeholder="https://example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="inqAttachment" class="form-label">첨부 파일이 있으시다면 링크를 남겨주세요.</label>
+                            <input type="text" id="inqAttachment" name="inqAttachment" class="glass-input" placeholder="Google Drive, Dropbox 등 공유 링크 URL">
+                        </div>
+                        <div class="form-group">
+                            <label for="inqDetails" class="form-label">기타 추가 요청 사항 및 비전 <span class="required">*</span></label>
+                            <textarea id="inqDetails" name="inqDetails" class="glass-input" rows="4" placeholder="프로젝트에 대해 상세히 기재해주세요 (BM 상세 등)" required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Action Buttons -->
+                    <div class="step-actions">
+                        <button type="button" class="holy-nav-btn prev-btn" id="prevStepBtn" style="display: none;">이전</button>
+                        <button type="button" class="holy-nav-btn next-btn" id="nextStepBtn">다음 단계</button>
+                        <button type="submit" class="holy-submit-btn" id="inqSubmitBtn" style="display: none;">함께 위대한 역사를 시작하기</button>
+                    </div>
                 </form>
                 <div id="inquirySuccess" class="form-success-message" style="display: none;">
                     <div class="success-icon"><i class="fas fa-check-circle"></i></div>
