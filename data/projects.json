@@ -145,30 +145,6 @@
     ],
     "respect": [
         {
-            "id": "challenge",
-            "tag": "CHALLENGE",
-            "title": "리스크 없는 출발점:<br>기획서 초안 & 100% 환불 보장",
-            "description": "아이디어를 시각화하는 첫 단계인 '기획서 초안'을 보고 최종 진행 여부를 결정하세요. 전체적인 구조와 핵심 메뉴 동선 설계 단계까지 고객이 확신을 가지지 못한다면, 100% 환불을 보장합니다. 상호 존중(Respect)은 투명한 신뢰로부터 시작됩니다.",
-            "image": "images/respect_challenge.png",
-            "list": []
-        },
-        {
-            "id": "process",
-            "tag": "PROCESS",
-            "title": "정교함이 만드는 차이:<br>마케팅 관점의 세부 설계(SB)",
-            "description": "단순한 화면 배치를 넘어, 실제 비즈니스 매출을 견인할 수 있는 마케팅 관점의 화면 설계서(SB)를 상세하게 작성합니다. 개발 착수 전 시각적 디자인 스케치와 정밀한 기획 로직을 융합하여 개발 오차를 0%에 수렴하게 만듭니다.",
-            "image": "images/respect_process.png",
-            "list": []
-        },
-        {
-            "id": "victory",
-            "tag": "VICTORY",
-            "title": "기간 내 최상의 퀄리티:<br>유연한 기간 조정 및 안정화",
-            "description": "4주 기본 작업 단위를 기준으로 프로젝트 복잡도와 피드백 속도에 맞춰 유연하고 합리적으로 기간을 운영합니다. 철저한 QA(품질 검증)와 안정화 프로세스를 거쳐 정해진 기간 내 반드시 완성도 높은 결과물로 승리를 가져다 드립니다.",
-            "image": "images/respect_victory.png",
-            "list": []
-        },
-        {
             "title": "PART 1. 분석 및 방향성 수립",
             "description": "01. 요구사항 정의 - 아이디어 구체화 및 핵심 목표 설정\n02. 리서칭 - 관련 시장 자료 취합 및 경쟁사 데이터 분석\n03. 기획서 초안 - 전체적인 구조와 핵심 메뉴 동선 설계\n04. 진행 여부 확인",
             "status": "active",
@@ -194,6 +170,30 @@
             "list": [],
             "id": "3",
             "image": "images/portfolio/step03.png"
+        },
+        {
+            "id": "challenge",
+            "tag": "CHALLENGE",
+            "title": "리스크 없는 출발점:<br>기획서 초안 & 100% 환불 보장",
+            "description": "아이디어를 시각화하는 첫 단계인 '기획서 초안'을 보고 최종 진행 여부를 결정하세요. 전체적인 구조와 핵심 메뉴 동선 설계 단계까지 고객이 확신을 가지지 못한다면, 100% 환불을 보장합니다. 상호 존중(Respect)은 투명한 신뢰로부터 시작됩니다.",
+            "image": "images/respect_challenge.png",
+            "list": []
+        },
+        {
+            "id": "process",
+            "tag": "PROCESS",
+            "title": "정교함이 만드는 차이:<br>마케팅 관점의 세부 설계(SB)",
+            "description": "단순한 화면 배치를 넘어, 실제 비즈니스 매출을 견인할 수 있는 마케팅 관점의 화면 설계서(SB)를 상세하게 작성합니다. 개발 착수 전 시각적 디자인 스케치와 정밀한 기획 로직을 융합하여 개발 오차를 0%에 수렴하게 만듭니다.",
+            "image": "images/respect_process.png",
+            "list": []
+        },
+        {
+            "id": "victory",
+            "tag": "VICTORY",
+            "title": "기간 내 최상의 퀄리티:<br>유연한 기간 조정 및 안정화",
+            "description": "4주 기본 작업 단위를 기준으로 프로젝트 복잡도와 피드백 속도에 맞춰 유연하고 합리적으로 기간을 운영합니다. 철저한 QA(품질 검증)와 안정화 프로세스를 거쳐 정해진 기간 내 반드시 완성도 높은 결과물로 승리를 가져다 드립니다.",
+            "image": "images/respect_victory.png",
+            "list": []
         }
     ],
     "system": {
